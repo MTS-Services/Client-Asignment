@@ -1,0 +1,118 @@
+<x-admin::layout>
+    <x-slot name="title">{{ __('Create Publisher') }}</x-slot>
+    <x-slot name="breadcrumb">{{ __('Create Publisher') }}</x-slot>
+    <x-slot name="page_slug">publisher</x-slot>
+
+    <section>
+        <div class="glass-card rounded-2xl p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Create Publisher') }}</h2>
+                <x-admin.primary-link href="{{ route('pm.publisher.index') }}">{{ __('Back') }}
+                </x-admin.primary-link>
+            </div>
+        </div>
+
+        <div
+            class="grid grid-cols-1 gap-4 sm:grid-cols-1  {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
+            <!-- Form Section -->
+            <div class="glass-card rounded-2xl p-6 md:col-span-5">
+                <form action="{{ route('pm.publisher.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                        <!-- Name -->
+                        <div class="space-y-2">
+                            <p class="label">{{ __('Name') }}</p>
+                            <label class="input flex items-center gap-2">
+                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
+                                        stroke="currentColor">
+                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </g>
+                                </svg>
+                                <input type="text" placeholder="Enter name" id="title" value="{{ old('name') }}"
+                                    name="name" class="flex-1" />
+                            </label>
+                            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+                        </div>
+                        <div class="space-y-2">
+                            <p class="label">{{ __('Slug') }}</p>
+                            <label class="input flex items-center gap-2">
+                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
+                                        stroke="currentColor">
+                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </g>
+                                </svg>
+                                <input type="text" placeholder="Enter slug" id="slug" value="{{ old('slug') }}"
+                                    name="slug" class="flex-1" />
+                            </label>
+                            <x-input-error class="mt-2" :messages="$errors->get('slug')" />
+                        </div>
+
+                        <!-- Email -->
+                        <div class="space-y-2">
+                            <p class="label">{{ __('Email') }}</p>
+                            <label class="input flex items-center gap-2">
+                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
+                                        stroke="currentColor">
+                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                    </g>
+                                </svg>
+                                <input type="email" name="email" value="{{ old('email') }}"
+                                    placeholder="Enter email" class="flex-1" />
+                            </label>
+                            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+                        </div>
+                        <!-- Phone -->
+                        <div class="space-y-2">
+                            <p class="label">{{ __('Phone') }}</p>
+                            <label class="input flex items-center gap-2">
+                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
+                                        stroke="currentColor">
+                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                    </g>
+                                </svg>
+                                <input type="text" name="phone" value="{{ old('phone') }}"
+                                    placeholder="Enter phone number" class="flex-1" />
+                            </label>
+                            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+                        </div>
+                        <div class="space-y-2">
+                            <p class="label">{{ __('Website') }}</p>
+                            <label class="input flex items-center gap-2">
+                                <input type="url" value="{{ old('website') }}" id="website" name="website"
+                                    class="form-control" placeholder="Enter website">
+                            </label>
+                            <x-input-error class="mt-2" :messages="$errors->get('website')" />
+                        </div>
+
+                        <!-- Address -->
+                        <div class="space-y-2">
+                            <p class="label">{{ __('Address') }}</p>
+                            <label class="input flex items-center gap-2">
+                                <input type="text" value="{{ old('address') }}" id="address" name="address"
+                                    class="form-control" placeholder="Enter address">
+                            </label>
+                            <x-input-error class="mt-2" :messages="$errors->get('address')" />
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-5">
+                        <x-admin.primary-button>{{ __('Create') }}</x-admin.primary-button>
+                    </div>
+                </form>
+            </div>
+
+            {{-- documentation will be loded here and add md:col-span-2 class --}}
+
+        </div>
+    </section>
+    @push('js')
+        <script src="{{ asset('assets/js/filepond.js') }}"></script>
+    @endpush
+</x-admin::layout>
