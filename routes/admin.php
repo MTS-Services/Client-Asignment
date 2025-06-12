@@ -5,7 +5,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
-
+use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
 
 Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
@@ -36,6 +36,17 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () 
             Route::get('/trash/bin', 'trash')->name('trash');
             Route::get('/restore/{permission}', 'restore')->name('restore');
             Route::delete('/permanent-delete/{permission}', 'permanentDelete')->name('permanent-delete');
+        });
+    });
+    Route::group(['as' => 'pm.', 'prefix' => 'publish-management'], function () {
+        // Publisher Routes
+        Route::resource('publisher', PublisherController::class);
+        Route::controller(PublisherController::class)->name('publisher.')->prefix('publisher')->group(function () {
+            Route::post('/show/{publisher}', 'show')->name('show');
+            Route::get('/status/{publisher}', 'status')->name('status');
+            Route::get('/trash/bin', 'trash')->name('trash');
+            Route::get('/restore/{publisher}', 'restore')->name('restore');
+            Route::delete('/permanent-delete/{publisher}', 'permanentDelete')->name('permanent-delete');
         });
     });
 });

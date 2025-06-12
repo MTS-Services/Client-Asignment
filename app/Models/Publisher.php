@@ -22,23 +22,10 @@ class Publisher extends BaseModel
     ];
 
      protected $appends = [
-        'modified_image',
-
-        'verify_label',
-        'verify_color',
-
         'status_label',
         'status_color',
         'status_btn_label',
         'status_btn_color',
-
-        'created_at_human',
-        'updated_at_human',
-        'deleted_at_human',
-
-        'created_at_formatted',
-        'updated_at_formatted',
-        'deleted_at_formatted',
     ];
 
 
@@ -71,5 +58,4 @@ class Publisher extends BaseModel
     {
         return $this->status == self::STATUS_ACTIVE ? 'btn-error' : 'btn-success';
     }
-
 }
