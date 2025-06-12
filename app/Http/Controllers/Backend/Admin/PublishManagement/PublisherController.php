@@ -34,7 +34,7 @@ class PublisherController extends Controller implements HasMiddleware
     {
         $this->publisherService = $publisherService;
     }
-    
+
     public static function middleware(): array
     {
         return [
@@ -61,8 +61,11 @@ class PublisherController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->publisherService->getPublishers();
             return DataTables::eloquent($query)
-                 ->editColumn('created_by', function ($publisher) {
+                ->editColumn('created_by', function ($publisher) {
                     return $this->creater_name($publisher);
+                })
+                ->editColumn('status', function ($admin) {
+                    return "<span class='badge badge-soft " . $admin->status_color . "'>" . $admin->status_label . "</span>";
                 })
                 ->editColumn('created_at', function ($publisher) {
                     return $publisher->created_at_formatted;
@@ -71,7 +74,7 @@ class PublisherController extends Controller implements HasMiddleware
                     $menuItems = $this->menuItems($publisher);
                     return view('components.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['created_by', 'created_at', 'action'])
+                ->rawColumns(['created_by', 'created_at', 'status', 'action'])
                 ->make(true);
         }
         return view('backend.admin.publish-management.publisher.index');
@@ -125,7 +128,7 @@ class PublisherController extends Controller implements HasMiddleware
      */
     public function store(PublisherRequest $request)
     {
-         try {
+        try {
             $validated = $request->validated();
             $this->publisherService->createPublisher($validated);
             session()->flash('success', "Service created successfully");
@@ -161,7 +164,7 @@ class PublisherController extends Controller implements HasMiddleware
      */
     public function update(PublisherRequest $request, string $id)
     {
-         try {
+        try {
             $publisher = $this->publisherService->getPublisher($id);
             $validated = $request->validated();
             $this->publisherService->updatePublisher($publisher, $validated);
@@ -173,7 +176,7 @@ class PublisherController extends Controller implements HasMiddleware
         return $this->redirectIndex();
     }
 
-     public function status(string $id)
+    public function status(string $id)
     {
         $publisher = $this->publisherService->getPublisher($id);
         $this->publisherService->toggleStatus($publisher);
@@ -186,7 +189,7 @@ class PublisherController extends Controller implements HasMiddleware
      */
     public function destroy(string $id)
     {
-         try {
+        try {
             $publisher = $this->publisherService->getPublisher($id);
             $this->publisherService->delete($publisher);
             session()->flash('success', "Service deleted successfully");
@@ -238,7 +241,7 @@ class PublisherController extends Controller implements HasMiddleware
         ];
     }
 
-     public function restore(string $id): RedirectResponse
+    public function restore(string $id): RedirectResponse
     {
         try {
             $this->publisherService->restore($id);
