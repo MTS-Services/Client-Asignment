@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 Route::group(['as' => 'user.'], function () {
     Route::get('/dashboard', function () {
        
-        return view('dashboard');
+        return view('backend.user.dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::middleware('auth')->group(function () {
