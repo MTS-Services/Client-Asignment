@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
+use App\Models\AuthBaseModel;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,6 +20,7 @@ class AdminSeeder extends Seeder
             'email' => 'superadmin@dev.com',
             'email_verified_at' => now(),
             'password' => 'superadmin@dev.com',
+            'status' => AuthBaseModel::STATUS_ACTIVE,
             'role_id' => 1,
         ]);
         $superadmin->assignRole($superadmin->role->name);
@@ -28,6 +30,7 @@ class AdminSeeder extends Seeder
             'email' => 'admin@dev.com',
             'email_verified_at' => now(),
             'password' => 'admin@dev.com',
+            'status' => AuthBaseModel::STATUS_ACTIVE,
             'role_id' => 2,
         ]);
         $admin->assignRole($admin->role->name);

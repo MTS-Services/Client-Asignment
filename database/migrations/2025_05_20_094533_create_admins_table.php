@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('username')->unique()->nullable();
             $table->string('email')->unique();
-            $table->tinyInteger('status')->default(AuthBaseModel::STATUS_ACTIVE);
+            $table->tinyInteger('status')->default(AuthBaseModel::STATUS_INACTIVE);
             $table->timestamp('email_verified_at')->nullable();
 
             // For Eamil OTP Verification
