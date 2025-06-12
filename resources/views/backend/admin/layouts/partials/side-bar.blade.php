@@ -68,6 +68,15 @@
                         'active' => 'admin-users',
                     ],
                 ]" />
+            <x-admin.navlink type="dropdown" icon="app-window" name="Category Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Category',
+                        'route' => route('am.category.index'),
+                        'icon' => 'tags',
+                        'active' => 'admin-category',
+                    ],
+                ]" />
 
             @if (isset($not_use))
                 {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}
