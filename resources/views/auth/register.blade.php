@@ -1,15 +1,15 @@
 <x-frontend::layout>
 
     <x-slot name="title">
-        {{ __('Confirm Password') }}
+        {{ __('Register') }}
     </x-slot>
 
     <x-slot name="breadcrumb">
-        {{ __('Confirm Password') }}
+        {{ __('Register') }}
     </x-slot>
 
     <x-slot name="page_slug">
-        confirm-password
+        register
     </x-slot>
 
     <section>
