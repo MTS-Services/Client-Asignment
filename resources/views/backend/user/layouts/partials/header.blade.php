@@ -83,10 +83,12 @@
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                         class="hidden absolute right-0 mt-2 w-fit min-w-40 glass-card bg-bg-white dark:bg-bg-dark-tertiary rounded-xl shadow-lg py-2 z-50"
                         :class="open ? '!block' : '!hidden'">
-                        @if (isset($not_use))
-                            {{-- <x-admin.profile-navlink route="#" name="{{ __('Profile') }}" />
-                            <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" /> --}}
-                        @endif
+                        {{-- @if (isset($not_use)) --}}
+                        <x-user.profile-navlink route="#" name="{{ __('Profile') }}" />
+                        <x-user.profile-navlink route="{{ route('otp-verification', ['forgot' => true]) }}"
+                            name="{{ __('Password') }}" />
+                        {{-- <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" /> --}}
+                        {{-- @endif --}}
                         <x-user.profile-navlink route="{{ route('logout') }}" logout='true'
                             name="{{ __('Sign Out') }}" />
                         @if (isset($not_use))

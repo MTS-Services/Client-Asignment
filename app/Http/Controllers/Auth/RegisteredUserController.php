@@ -37,25 +37,20 @@ class RegisteredUserController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            ]);
-
-            // Generate a 6-digit OTP
-            $otp = random_int(100000, 999999);
-            $otpExpiresAt = now()->addMinutes(2);
-
+            ]); 
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'email_otp' => $otp,
-                'email_otp_expires_at' => $otpExpiresAt,
                 'password' => Hash::make($request->password),
+                'email_otp' => generateOTP(),
+                'email_otp_expires_at' => now()->addMinutes(2),
+                'last_otp_sent_at' => now()
             ]);
             event(new Registered($user));
             Auth::login($user);
-            Mail::to($user->email)->send(new OtpMail($user, $otp));
+            Mail::to($user->email)->send(new OtpMail($user, $user->email_otp));
             return redirect()->route('otp-verification');
         });
-
         return $response;
     }
 }
