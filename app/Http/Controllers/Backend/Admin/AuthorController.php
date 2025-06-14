@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\AuditRelationTraits;
+use App\Services\Admin\AuthorService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,19 +18,19 @@ class AuthorController extends Controller implements HasMiddleware
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('index route');
+        return redirect()->route('author.index');
     }
 
     protected function redirectTrashed(): RedirectResponse
     {
-        return redirect()->route('trash route');
+        return redirect()->route('author.trash');
     }
 
-    protected ServiceName $serviceName;
+    protected AuthorService $authorService;
 
-    public function __construct(ServiceName $serviceName)
+    public function __construct(AuthorService $authorService)
     {
-        $this->serviceName = $serviceName;
+        $this->authorService = $authorService;
     }
     
     public static function middleware(): array
@@ -38,14 +39,14 @@ class AuthorController extends Controller implements HasMiddleware
             'auth:admin', // Applies 'auth:admin' to all methods
 
             // Permission middlewares using the Middleware class
-            new Middleware('permission:permisison-list', only: ['index']),
-            new Middleware('permission:permisison-details', only: ['show']),
-            new Middleware('permission:permisison-create', only: ['create', 'store']),
-            new Middleware('permission:permisison-edit', only: ['edit', 'update']),
-            new Middleware('permission:permisison-delete', only: ['destroy']),
-            new Middleware('permission:permisison-trash', only: ['trash']),
-            new Middleware('permission:permisison-restore', only: ['restore']),
-            new Middleware('permission:permisison-permanent-delete', only: ['permanentDelete']),
+            new Middleware('permission:author-list', only: ['index']),
+            new Middleware('permission:author-details', only: ['show']),
+            new Middleware('permission:author-create', only: ['create', 'store']),
+            new Middleware('permission:author-edit', only: ['edit', 'update']),
+            new Middleware('permission:author-delete', only: ['destroy']),
+            new Middleware('permission:author-trash', only: ['trash']),
+            new Middleware('permission:author-restore', only: ['restore']),
+            new Middleware('permission:author-permanent-delete', only: ['permanentDelete']),
             //add more permissions if needed
         ];
     }
@@ -56,7 +57,7 @@ class AuthorController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = $this->serviceName->getService();
+            $query = $this->authorService->getAuthors();
             return DataTables::eloquent($query)
                  ->editColumn('created_by', function ($admin) {
                     return $this->creater_name($admin);
@@ -132,7 +133,7 @@ class AuthorController extends Controller implements HasMiddleware
      */
     public function show(Request $request, string $id)
     {
-        $data = $this->serviceName->getService($id);
+        $data = $this->authorService->getAuthor($id);
         $data['creater_name'] = $this->creater_name($data);
         $data['updater_name'] = $this->updater_name($data);
         return response()->json($data);
@@ -141,11 +142,11 @@ class AuthorController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): View
-    {
-        //$data['service'] = $this->serviceName->getService($id);
-        return view('view file url...', $data);
-    }
+    // public function edit(string $id): View
+    // {
+    //     //$data['service'] = $this->serviceName->getService($id);
+    //     return view('view file url...', $data);
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -181,7 +182,7 @@ class AuthorController extends Controller implements HasMiddleware
     public function trash(Request $request)
     {
         if ($request->ajax()) {
-            $query = $this->serviceName->getPermissions()->onlyTrashed();
+            $query = $this->authorService->getAuthors()->onlyTrashed();
             return DataTables::eloquent($query)
                 ->editColumn('deleted_by', function ($admin) {
                     return $this->deleter_name($admin);
@@ -222,7 +223,7 @@ class AuthorController extends Controller implements HasMiddleware
      public function restore(string $id): RedirectResponse
     {
         try {
-            $this->serviceName->restore($id);
+            $this->authorService->restore($id);
             session()->flash('success', "Service restored successfully");
         } catch (\Throwable $e) {
             session()->flash('Service restore failed');
@@ -234,7 +235,7 @@ class AuthorController extends Controller implements HasMiddleware
     public function permanentDelete(string $id): RedirectResponse
     {
         try {
-            $this->serviceName->permanentDelete($id);
+            $this->authorService->permanentDelete($id);
             session()->flash('success', "Service permanently deleted successfully");
         } catch (\Throwable $e) {
             session()->flash('Service permanent delete failed');

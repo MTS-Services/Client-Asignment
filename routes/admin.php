@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
+use App\Http\Controllers\Backend\Admin\AuthorController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
 
@@ -48,5 +49,14 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () 
             Route::get('/restore/{publisher}', 'restore')->name('restore');
             Route::delete('/permanent-delete/{publisher}', 'permanentDelete')->name('permanent-delete');
         });
+    });
+    // Author Management
+        Route::resource('author', AuthorController::class);
+    Route::controller(AuthorController::class)->name('author.')->prefix('author')->group(function () {
+        Route::post('/show/{author}', 'show')->name('show');
+        Route::get('/status/{author}', 'status')->name('status');
+        Route::get('/trash/bin', 'trash')->name('trash');
+        Route::get('/restore/{author}', 'restore')->name('restore');
+        Route::delete('/permanent-delete/{author}', 'permanentDelete')->name('permanent-delete');
     });
 });

@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Traits\AuditColumnsTrait;
+use App\Models\Author;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 return new class extends Migration
@@ -19,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0);
             $table->string('name');
             $table->text('biography')->nullable();
+            $table->tinyInteger('status')->default(Author::STATUS_INACTIVE);
             $table->date('birth_date')->nullable();
             $table->date('death_date')->nullable();
             $table->string('nationality')->nullable();
