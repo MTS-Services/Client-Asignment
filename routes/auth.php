@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController as UserConfirmablePa
 use App\Http\Controllers\Auth\EmailVerificationNotificationController as UserEmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController as UserEmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController as UserNewPasswordController;
+use App\Http\Controllers\Auth\OtpVerificationController;
 use App\Http\Controllers\Auth\PasswordController as UserPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController as UserPasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController as UserRegisteredUserController;
@@ -51,6 +52,12 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth:web')->group(function () {
     Route::get('verify-email', UserEmailVerificationPromptController::class)
         ->name('verification.notice');
+
+    Route::controller(OtpVerificationController::class)->group(function () {
+        Route::get('/otp-verification', 'otp')->name('otp-verification');
+        Route::post('/verify-otp', 'verify')->name('verify-otp');
+        Route::get('/otp-resend', 'resend')->name('otp-resend');
+    });
 
     Route::get('verify-email/{id}/{hash}', UserVerifyEmailController::class)
         ->middleware(['signed', 'throttle:6,1'])

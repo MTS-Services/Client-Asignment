@@ -87,7 +87,7 @@
                             {{-- <x-admin.profile-navlink route="#" name="{{ __('Profile') }}" />
                             <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" /> --}}
                         @endif
-                        <x-admin.profile-navlink route="{{ route('admin.logout') }}" logout='true'
+                        <x-user.profile-navlink route="{{ route('logout') }}" logout='true'
                             name="{{ __('Sign Out') }}" />
                         @if (isset($not_use))
                             {{-- <a href="#"

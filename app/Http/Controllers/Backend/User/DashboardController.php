@@ -7,5 +7,14 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    //
+
+    public function __construct() {}
+
+    public function dashboard()
+    {
+        if (user()->email_verified_at == null) {
+            return redirect()->route('otp-verification');
+        }
+        return view('backend.user.dashboard');
+    }
 }
