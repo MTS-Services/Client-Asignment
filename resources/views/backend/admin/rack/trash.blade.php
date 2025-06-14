@@ -6,10 +6,8 @@
 
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
-                <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Trashed Rack List') }}
-                </h2>
-                <x-admin.primary-link href="{{ route('rack.index') }}">{{ __('Back') }}
-                </x-admin.primary-link>
+                <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Trashed Rack List') }}</h2>
+                <x-admin.primary-link href="{{ route('rack.index') }}">{{ __('Back') }} </x-admin.primary-link>
             </div>
         </div>
 
@@ -18,7 +16,7 @@
                 <thead>
                     <tr>
                         <th width="5%">{{ __('SL') }}</th>
-                       <th>{{ __('Rack Number') }}</th>
+                        <th>{{ __('Rack Number') }}</th>
                         <th>{{ __('Location') }}</th>
                         <th>{{ __('Capacity') }}</th>
                         <th>{{ __('Deleted By') }}</th>
@@ -38,7 +36,7 @@
             document.addEventListener('DOMContentLoaded', () => {
                 let table_columns = [
                     //name and data, orderable, searchable
-                   ['rack_number', true, true],
+                    ['rack_number', true, true],
                     ['location', true, true],
                     ['capacity', true, true],
                     ['deleted_by', true, true],
@@ -51,8 +49,8 @@
                     displayLength: 10,
                     main_route: "{{ route('rack.trash') }}",
                     order_route: "{{ route('update.sort.order') }}",
-                    export_columns: [0, 1, 2, 3, 4],
-                    model: 'Publisher',
+                    export_columns: [0, 1, 2, 3, 4, 5],
+                    model: 'Rack',
                 };
                 initializeDataTable(details);
             })

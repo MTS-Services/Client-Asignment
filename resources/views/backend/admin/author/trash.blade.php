@@ -51,8 +51,8 @@
                     displayLength: 10,
                     main_route: "{{ route('author.trash') }}",
                     order_route: "{{ route('update.sort.order') }}",
-                    export_columns: [0, 1, 2, 3, 4],
-                    model: 'Publisher',
+                    export_columns: [0, 1, 2, 3, 4, 5],
+                    model: 'Author',
                 };
                 initializeDataTable(details);
             })
