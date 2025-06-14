@@ -1,15 +1,17 @@
 <?php
 
 use App\Http\Controllers\Backend\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\Backend\User\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 
-Route::group(['as' => 'user.'], function () {
-    Route::get('/dashboard', [UserDashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
+    Route::get('/dashboard', [UserDashboardController::class, 'dashboard'])->name('dashboard');
 
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profile', 'showProfile')->name('profile');
+        Route::get('/edit-profile', 'editProfile')->name('edit-profile');
+        Route::put('/update-profile', 'updateProfile')->name('update-profile');
+        Route::get('/change-password', 'showPasswordPage')->name('change-password');
+        Route::put('/update-password', 'updatePassword')->name('update-password');
     });
 });

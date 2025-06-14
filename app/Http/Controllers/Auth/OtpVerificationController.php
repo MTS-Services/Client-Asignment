@@ -90,7 +90,7 @@ class OtpVerificationController extends Controller
         $user->save();
 
         if ($isForgot) {
-            return redirect()->route('user.profile.edit')
+            return redirect()->route('user.change-password')
                 ->with('success', 'OTP verified. Please reset your password.');
         }
 
