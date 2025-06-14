@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () 
         });
     });
     // Author Management
-        Route::resource('author', AuthorController::class);
+    Route::resource('author', AuthorController::class);
     Route::controller(AuthorController::class)->name('author.')->prefix('author')->group(function () {
         Route::post('/show/{author}', 'show')->name('show');
         Route::get('/status/{author}', 'status')->name('status');

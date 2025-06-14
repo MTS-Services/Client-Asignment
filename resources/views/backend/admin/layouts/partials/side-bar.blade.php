@@ -77,6 +77,8 @@
                         'active' => 'publisher-users',
                     ],
                 ]" />
+           <x-admin.navlink type="single" icon="layout-dashboard" name="Author" :route="route('author.index')"
+                active="author-users" :page_slug="$active" />
 
             @if (isset($not_use))
                 {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}

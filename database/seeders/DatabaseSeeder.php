@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Publisher;
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -21,6 +19,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             RoleHasPermissionSeeder::class,
             PublisherSeeder::class,
+            AuthorSeeder::class,
         ]);
     }
 }

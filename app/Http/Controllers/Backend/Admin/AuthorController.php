@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AuthorRequest;
 use App\Http\Traits\AuditRelationTraits;
 use App\Services\Admin\AuthorService;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,7 +34,7 @@ class AuthorController extends Controller implements HasMiddleware
     {
         $this->authorService = $authorService;
     }
-    
+
     public static function middleware(): array
     {
         return [
@@ -59,20 +61,23 @@ class AuthorController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->authorService->getAuthors();
             return DataTables::eloquent($query)
-                 ->editColumn('created_by', function ($admin) {
-                    return $this->creater_name($admin);
+                ->editColumn('status', function ($author) {
+                    return "<span class='badge badge-soft " . $author->status_color . "'>" . $author->status_label . "</span>";
                 })
-                ->editColumn('created_at', function ($admin) {
-                    return $admin->created_at_formatted;
+                ->editColumn('created_by', function ($author) {
+                    return $this->creater_name($author);
                 })
-                ->editColumn('action', function ($service) {
-                    $menuItems = $this->menuItems($service);
+                ->editColumn('created_at', function ($author) {
+                    return $author->created_at_formatted;
+                })
+                ->editColumn('action', function ($author) {
+                    $menuItems = $this->menuItems($author);
                     return view('components.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['created_by', 'created_at', 'action'])
+                ->rawColumns(['created_by', 'status', 'created_at', 'action'])
                 ->make(true);
         }
-        return view('view file url..');
+        return view('backend.admin.author.index');
     }
 
     protected function menuItems($model): array
@@ -83,21 +88,26 @@ class AuthorController extends Controller implements HasMiddleware
                 'data-id' => encrypt($model->id),
                 'className' => 'view',
                 'label' => 'Details',
-                'permissions' => ['permission-list', 'permission-delete', 'permission-status']
+                'permissions' => ['author-list', 'author-delete', 'author-status']
             ],
             [
-                'routeName' => '',
+                'routeName' => 'author.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
-                'permissions' => ['permission-edit']
+                'permissions' => ['author-edit']
             ],
-
             [
-                'routeName' => '',
+                'routeName' => 'author.status',
+                'params' => [encrypt($model->id)],
+                'label' => $model->status_btn_label,
+                'permissions' => ['author-status']
+            ],
+            [
+                'routeName' => 'author.destroy',
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
-                'permissions' => ['permission-delete']
+                'permissions' => ['author-delete']
             ]
 
         ];
@@ -109,20 +119,20 @@ class AuthorController extends Controller implements HasMiddleware
     public function create(): View
     {
         //
-        return view('view file url ...');
+        return view('backend.admin.author.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AuthorRequest $request)
     {
-         try {
-            // $validated = $request->validated();
-            //
-            session()->flash('success', "Service created successfully");
+        try {
+            $validated = $request->validated();
+            $this->authorService->createAuthor($validated, $request->file('image'));
+            session()->flash('success', "Author created successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service creation failed');
+            session()->flash('error', "Author creation failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -142,20 +152,21 @@ class AuthorController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    // public function edit(string $id): View
-    // {
-    //     //$data['service'] = $this->serviceName->getService($id);
-    //     return view('view file url...', $data);
-    // }
+    public function edit(string $id): View
+    {
+        $data['author'] = $this->authorService->getAuthor($id);
+        return view('backend.admin.author.edit', $data);
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(AuthorRequest $request, string $id)
     {
-         try {
-            // $validated = $request->validated();
-            //
+        try {
+            $validated = $request->validated();
+            $author = $this->authorService->getAuthor($id);
+            $this->authorService->updateAuthor($author, $validated, $request->file('image'));
             session()->flash('success', "Service updated successfully");
         } catch (\Throwable $e) {
             session()->flash('Service update failed');
@@ -169,8 +180,9 @@ class AuthorController extends Controller implements HasMiddleware
      */
     public function destroy(string $id)
     {
-         try {
-            //
+        try {
+            $author = $this->authorService->getAuthor($id);
+            $this->authorService->delete($author);
             session()->flash('success', "Service deleted successfully");
         } catch (\Throwable $e) {
             session()->flash('Service delete failed');
@@ -184,33 +196,36 @@ class AuthorController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->authorService->getAuthors()->onlyTrashed();
             return DataTables::eloquent($query)
-                ->editColumn('deleted_by', function ($admin) {
-                    return $this->deleter_name($admin);
+                ->editColumn('status', function ($author) {
+                    return "<span class='badge badge-soft " . $author->status_color . "'>" . $author->status_label . "</span>";
                 })
-                ->editColumn('deleted_at', function ($admin) {
-                    return $admin->deleted_at_formatted;
+                ->editColumn('deleted_by', function ($author) {
+                    return $this->deleter_name($author);
+                })
+                ->editColumn('deleted_at', function ($author) {
+                    return $author->deleted_at_formatted;
                 })
                 ->editColumn('action', function ($permission) {
                     $menuItems = $this->trashedMenuItems($permission);
                     return view('components.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['deleted_by', 'deleted_at', 'action'])
+                ->rawColumns(['deleted_by', 'status', 'deleted_at', 'action'])
                 ->make(true);
         }
-        return view('view blade file url...');
+        return view('backend.admin.author.trash');
     }
 
     protected function trashedMenuItems($model): array
     {
         return [
             [
-                'routeName' => '',
+                'routeName' => 'author.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
                 'permissions' => ['permission-restore']
             ],
             [
-                'routeName' => '',
+                'routeName' => 'author.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,
@@ -220,7 +235,7 @@ class AuthorController extends Controller implements HasMiddleware
         ];
     }
 
-     public function restore(string $id): RedirectResponse
+    public function restore(string $id): RedirectResponse
     {
         try {
             $this->authorService->restore($id);
@@ -242,5 +257,14 @@ class AuthorController extends Controller implements HasMiddleware
             throw $e;
         }
         return $this->redirectTrashed();
+    }
+
+
+    public function status(string $id)
+    {
+        $author = $this->authorService->getAuthor($id);
+        $this->authorService->toggleStatus($author);
+        session()->flash('success', 'Author status updated successfully!');
+        return redirect()->back();
     }
 }

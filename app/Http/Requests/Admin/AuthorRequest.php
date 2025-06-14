@@ -22,7 +22,12 @@ class AuthorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|min:3',
+            'nationality' => 'nullable|string|max:255',
+            'biography' => 'nullable|string|max:1000',
+            'birth_date' => 'nullable|date',
+            'death_date' => 'nullable|date',
+            'image' => 'nullable|image|max:2048',
         ] + ($this->isMethod('POST') ? $this->store() : $this->update());
     }
 
