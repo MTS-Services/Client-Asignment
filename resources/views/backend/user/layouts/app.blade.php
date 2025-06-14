@@ -471,7 +471,7 @@
         // Initialize Lucide icons after DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             // if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
+            lucide.createIcons();
             // }
         });
 

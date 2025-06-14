@@ -1,6 +1,6 @@
 <x-user::layout>
     <x-slot name="title">User Dashboard</x-slot>
-    <x-slot name="breadcrumb">Dashboard</x-slot>
+    <x-slot name="breadcrumb">{{ __('Dashboard') }}</x-slot>
     <x-slot name="page_slug">user-dashboard</x-slot>
 
     <section>
@@ -9,8 +9,7 @@
             x-transition:enter="transition-all duration-500" x-transition:enter-start="opacity-0 translate-y-8"
             x-transition:enter-end="opacity-100 translate-y-0">
 
-            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0s;"
-                @click="showDetails('users')">
+            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0s;">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
                         <i data-lucide="users" class="w-6 h-6 text-blue-400"></i>
@@ -30,8 +29,7 @@
                 </div>
             </div>
 
-            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.2s;"
-                @click="showDetails('revenue')">
+            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.2s;">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
                         <i data-lucide="trending-up" class="w-6 h-6 text-green-400"></i>
@@ -50,8 +48,7 @@
                 </div>
             </div>
 
-            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.4s;"
-                @click="showDetails('orders')">
+            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.4s;">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
                         <i data-lucide="shopping-bag" class="w-6 h-6 text-purple-400"></i>
@@ -71,8 +68,7 @@
                 </div>
             </div>
 
-            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.6s;"
-                @click="showDetails('active')">
+            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.6s;">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
                         <i data-lucide="activity" class="w-6 h-6 text-yellow-400"></i>
@@ -91,6 +87,39 @@
                 </div>
             </div>
         </div>
+
+        <div>
+            @php
+                $menuItems = [
+                    [
+                        'routeName' => 'javascript:void(0)',
+                        'data-id' => 1,
+                        'className' => 'view',
+                        'label' => 'Details',
+                    ],
+                    [
+                        'routeName' => 'am.admin.status',
+                        'params' => 1,
+                        'label' => 'Status',
+                    ],
+                    [
+                        'routeName' => 'am.admin.edit',
+                        'params' => 1,
+                        'label' => 'Edit',
+                    ],
+
+                    [
+                        'routeName' => 'am.admin.destroy',
+                        'params' => 1,
+                        'label' => 'Delete',
+                        'delete' => true,
+                    ],
+                ];
+            @endphp
+            <x-user.action-buttons :menuItems="$menuItems" />
+        </div>
+
+        <x-text-input name="search" placeholder="Search..." class="w-full"> </x-text-input>
 
         <!-- Charts Section -->
         {{-- <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" x-transition:enter="transition-all duration-500 delay-200"

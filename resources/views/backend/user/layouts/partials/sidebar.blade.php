@@ -31,13 +31,13 @@
         <nav class="p-2 space-y-2">
             <!-- Dashboard -->
             {{-- 1. SINGLE NAVLINK (replaces your original single-navlink) --}}
-            <x-admin.navlink type="single" icon="layout-dashboard" name="Dashboard" :route="route('user.dashboard')"
+            <x-user.navlink type="single" icon="layout-dashboard" name="Dashboard" :route="route('user.dashboard')"
                 active="user-dashboard" :page_slug="$active" />
 
             {{-- 2. SIMPLE DROPDOWN (multiple items under one parent) --}}
 
-            <x-admin.navlink type="single" icon="users" name="Members" :page_slug="$active"/>
-            <x-admin.navlink type="dropdown" icon="ratio" name="Actions" :page_slug="$active"
+            <x-user.navlink type="single" icon="users" name="Members" :page_slug="$active"/>
+            <x-user.navlink type="dropdown" icon="ratio" name="Actions" :page_slug="$active"
                 :items="[
                     [
                         'name' => 'action',
@@ -51,7 +51,7 @@
 
             @if (isset($not_use))
                 {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}
-                {{-- <x-admin.navlink type="dropdown" icon="shopping-cart" name="E-commerce" :page_slug="$active"
+                {{-- <x-user.navlink type="dropdown" icon="shopping-cart" name="E-commerce" :page_slug="$active"
                 :items="[
                     [
                         'type' => 'single',
@@ -119,7 +119,7 @@
                 ]" /> --}}
 
                 {{-- Mixed Dropdown (Single + Multi items in same dropdown) --}}
-                {{-- <x-admin.navlink icon="settings" name="Settings" :page_slug="$active" :items="[
+                {{-- <x-user.navlink icon="settings" name="Settings" :page_slug="$active" :items="[
                 [
                     'name' => 'General Settings',
                     'route' => '#',
@@ -153,7 +153,7 @@
                 ]" /> --}}
 
                 {{-- Using with Boxicons instead of Lucide --}}
-                {{-- <x-admin.navlink icon="monitor-cog" name="System" :page_slug="$active" :items="[
+                {{-- <x-user.navlink icon="monitor-cog" name="System" :page_slug="$active" :items="[
                     [
                         'name' => 'Cache Management',
                         'route' => '#',
@@ -170,7 +170,7 @@
                     ],
                 ]" /> --}}
 
-                {{-- <x-admin.navlink type="single" icon="help-circle" name="Help &
+                {{-- <x-user.navlink type="single" icon="help-circle" name="Help &
                     Support"
                 :page_slug="$active" /> --}}
             @endif

@@ -7,7 +7,8 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Update Admin') }}</h2>
-                <x-admin.primary-link href="{{ route('am.admin.index') }}">{{ __('Back') }} </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('am.admin.index') }}">{{ __('Back') }} <i data-lucide="undo-2"
+                        class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 
@@ -100,7 +101,7 @@
                                 @endforeach
                             </select>
                             <x-input-error class="mt-2" :messages="$errors->get('password_confirmation')" />
-                        </div>                        
+                        </div>
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Image') }}</p>
                             <input type="file" name="image" class="filepond" id="image"

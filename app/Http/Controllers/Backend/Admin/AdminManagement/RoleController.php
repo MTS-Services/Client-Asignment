@@ -74,7 +74,7 @@ class RoleController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($role) {
                     $menuItems = $this->menuItems($role);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['created_by', 'created_at', 'action'])
                 ->make(true);
@@ -224,7 +224,7 @@ class RoleController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($permission) {
                     $menuItems = $this->trashedMenuItems($permission);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['deleted_by', 'deleted_at', 'action'])
                 ->make(true);
