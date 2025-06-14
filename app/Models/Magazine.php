@@ -24,6 +24,8 @@ class Magazine extends BaseModel
             'status_color',
             'status_btn_label',
             'status_btn_color',
+            
+            'modified_image',
         ]);
     }
 
@@ -55,6 +57,10 @@ class Magazine extends BaseModel
     public function getStatusBtnColorAttribute()
     {
         return $this->status == self::STATUS_ACTIVE ? 'btn-error' : 'btn-success';
+    }
+     public function getModifiedImageAttribute()
+    {
+        return auth_storage_url($this->image);
     }
 
 }

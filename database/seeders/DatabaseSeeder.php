@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             PublisherSeeder::class,
             AuthorSeeder::class,
             RackSeeder::class,
+            MagazineSeeder::class,
         ]);
     }
 }

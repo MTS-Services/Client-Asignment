@@ -22,20 +22,22 @@ class MagazineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'cover_image' => 'nullable|image|max:2048',
         ] + ($this->isMethod('POST') ? $this->store() : $this->update());
     }
 
     protected function store(): array
     {
         return [
-            //
+            'slug' => 'required|string|max:255|unique:magazines,slug',
         ];
     }
     protected function update(): array
     {
         return [
-            //
+            'slug' => 'required|string|max:255|unique:magazines,slug,' . decrypt($this->route('magazine')),
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\MagazineRequest;
 use App\Http\Traits\AuditRelationTraits;
 use App\Services\Admin\MagazineService;
 use Illuminate\Contracts\View\View;
@@ -18,12 +19,12 @@ class MagazineController extends Controller implements HasMiddleware
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('index route');
+        return redirect()->route('magazine.index');
     }
 
     protected function redirectTrashed(): RedirectResponse
     {
-        return redirect()->route('trash route');
+        return redirect()->route('magazine.trash');
     }
 
     protected MagazineService $magazineService;
@@ -32,21 +33,21 @@ class MagazineController extends Controller implements HasMiddleware
     {
         $this->magazineService = $magazineService;
     }
-    
+
     public static function middleware(): array
     {
         return [
             'auth:admin', // Applies 'auth:admin' to all methods
 
             // Permission middlewares using the Middleware class
-            new Middleware('permission:permisison-list', only: ['index']),
-            new Middleware('permission:permisison-details', only: ['show']),
-            new Middleware('permission:permisison-create', only: ['create', 'store']),
-            new Middleware('permission:permisison-edit', only: ['edit', 'update']),
-            new Middleware('permission:permisison-delete', only: ['destroy']),
-            new Middleware('permission:permisison-trash', only: ['trash']),
-            new Middleware('permission:permisison-restore', only: ['restore']),
-            new Middleware('permission:permisison-permanent-delete', only: ['permanentDelete']),
+            new Middleware('permission:magazine-list', only: ['index']),
+            new Middleware('permission:magazine-details', only: ['show']),
+            new Middleware('permission:magazine-create', only: ['create', 'store']),
+            new Middleware('permission:magazine-edit', only: ['edit', 'update']),
+            new Middleware('permission:magazine-delete', only: ['destroy']),
+            new Middleware('permission:magazine-trash', only: ['trash']),
+            new Middleware('permission:magazine-restore', only: ['restore']),
+            new Middleware('permission:magazine-permanent-delete', only: ['permanentDelete']),
             //add more permissions if needed
         ];
     }
@@ -59,20 +60,23 @@ class MagazineController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->magazineService->getMagazines();
             return DataTables::eloquent($query)
-                 ->editColumn('created_by', function ($admin) {
-                    return $this->creater_name($admin);
+                ->editColumn('status', function ($magazine) {
+                    return "<span class='badge badge-soft " . $magazine->status_color . "'>" . $magazine->status_label . "</span>";
                 })
-                ->editColumn('created_at', function ($admin) {
-                    return $admin->created_at_formatted;
+                ->editColumn('created_by', function ($magazine) {
+                    return $this->creater_name($magazine);
+                })
+                ->editColumn('created_at', function ($magazine) {
+                    return $magazine->created_at_formatted;
                 })
                 ->editColumn('action', function ($service) {
                     $menuItems = $this->menuItems($service);
                     return view('components.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['created_by', 'created_at', 'action'])
+                ->rawColumns(['created_by', 'status', 'created_at', 'action'])
                 ->make(true);
         }
-        return view('view file url..');
+        return view('backend.admin.magazine.index');
     }
 
     protected function menuItems($model): array
@@ -86,14 +90,19 @@ class MagazineController extends Controller implements HasMiddleware
                 'permissions' => ['permission-list', 'permission-delete', 'permission-status']
             ],
             [
-                'routeName' => '',
+                'routeName' => 'magazine.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
                 'permissions' => ['permission-edit']
             ],
-
             [
-                'routeName' => '',
+                'routeName' => 'magazine.status',
+                'params' => [encrypt($model->id)],
+                'label' => $model->status_btn_label,
+                'permissions' => ['permission-status']
+            ],
+            [
+                'routeName' => 'magazine.destroy',
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
@@ -109,20 +118,21 @@ class MagazineController extends Controller implements HasMiddleware
     public function create(): View
     {
         //
-        return view('view file url ...');
+        return view('backend.admin.magazine.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MagazineRequest $request)
     {
-         try {
-            // $validated = $request->validated();
-            //
-            session()->flash('success', "Service created successfully");
+        try {
+            $validated = $request->validated();
+
+            $this->magazineService->createMagazine($validated, $request->file('cover_image'));
+            session()->flash('success', "Magazine created successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service creation failed');
+            session()->flash('error', "Magazine creation failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -142,23 +152,24 @@ class MagazineController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    // public function edit(string $id): View
-    // {
-    //     //$data['service'] = $this->magazineService->getService($id);
-    //     return view('view file url...', $data);
-    // }
+    public function edit(string $id): View
+    {
+        $data['magazine'] = $this->magazineService->getMagazine($id);
+        return view('backend.admin.magazine.edit', $data);
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(MagazineRequest $request, string $id)
     {
-         try {
-            // $validated = $request->validated();
-            //
-            session()->flash('success', "Service updated successfully");
+        try {
+            $validated = $request->validated();
+            $magazine = $this->magazineService->getMagazine($id);
+            $this->magazineService->updateMagazine($magazine, $validated, $request->file('cover_image'));
+            session()->flash('success', "Magazine updated successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service update failed');
+            session()->flash('error', "Magazine update failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -169,11 +180,12 @@ class MagazineController extends Controller implements HasMiddleware
      */
     public function destroy(string $id)
     {
-         try {
-            //
-            session()->flash('success', "Service deleted successfully");
+        try {
+            $magazine = $this->magazineService->getMagazine($id);
+            $this->magazineService->delete($magazine);
+            session()->flash('success', "Magazine deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service delete failed');
+            session()->flash('error', "Magazine delete failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -184,49 +196,52 @@ class MagazineController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->magazineService->getMagazines()->onlyTrashed();
             return DataTables::eloquent($query)
-                ->editColumn('deleted_by', function ($admin) {
-                    return $this->deleter_name($admin);
+             ->editColumn('status', function ($magazine) {
+                    return "<span class='badge badge-soft " . $magazine->status_color . "'>" . $magazine->status_label . "</span>";
                 })
-                ->editColumn('deleted_at', function ($admin) {
-                    return $admin->deleted_at_formatted;
+                ->editColumn('deleted_by', function ($magazine) {
+                    return $this->deleter_name($magazine);
                 })
-                ->editColumn('action', function ($permission) {
-                    $menuItems = $this->trashedMenuItems($permission);
+                ->editColumn('deleted_at', function ($magazine) {
+                    return $magazine->deleted_at_formatted;
+                })
+                ->editColumn('action', function ($magazine) {
+                    $menuItems = $this->trashedMenuItems($magazine);
                     return view('components.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['deleted_by', 'deleted_at', 'action'])
+                ->rawColumns(['deleted_by', 'status', 'deleted_at', 'action'])
                 ->make(true);
         }
-        return view('view blade file url...');
+        return view('backend.admin.magazine.trash');
     }
 
     protected function trashedMenuItems($model): array
     {
         return [
             [
-                'routeName' => '',
+                'routeName' => 'magazine.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
-                'permissions' => ['permission-restore']
+                'permissions' => ['magazine-restore']
             ],
             [
-                'routeName' => '',
+                'routeName' => 'magazine.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,
-                'permissions' => ['permission-permanent-delete']
+                'permissions' => ['magazine-permanent-delete']
             ]
 
         ];
     }
 
-     public function restore(string $id): RedirectResponse
+    public function restore(string $id): RedirectResponse
     {
         try {
             $this->magazineService->restore($id);
-            session()->flash('success', "Service restored successfully");
+            session()->flash('success', "Magazine restored successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service restore failed');
+            session()->flash('error', "Magazine restore failed");
             throw $e;
         }
         return $this->redirectTrashed();
@@ -236,11 +251,19 @@ class MagazineController extends Controller implements HasMiddleware
     {
         try {
             $this->magazineService->permanentDelete($id);
-            session()->flash('success', "Service permanently deleted successfully");
+            session()->flash('success', "Magazine permanently deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service permanent delete failed');
+            session()->flash('error', "Magazine permanent delete failed");
             throw $e;
         }
         return $this->redirectTrashed();
+    }
+      public function status(string $id)
+    {
+        $magazine = $this->magazineService->getMagazine($id);
+
+        $this->magazineService->toggleStatus($magazine);
+        session()->flash('success', 'Magazine status updated successfully!');
+        return redirect()->back();
     }
 }

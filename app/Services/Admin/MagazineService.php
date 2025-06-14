@@ -28,11 +28,10 @@ class MagazineService
     {
         return DB::transaction(function () use ($data, $file) {
             if ($file) {
-                $data['image'] = $this->handleFileUpload($file, 'magazines', $data['name']);
+                $data['image'] = $this->handleFileUpload($file, 'magazines', $data['cover_image']);
             }
             $data['created_by'] = admin()->id;
             $magazine = Magazine::create($data);
-            $magazine->assignRole($magazine->role->name);
             return $magazine;
         });
     }
@@ -41,13 +40,12 @@ class MagazineService
     {
         return DB::transaction(function () use ($magazine, $data, $file) {
             if ($file) {
-                $data['image'] = $this->handleFileUpload($file, 'magazines', $data['name']);
+                $data['image'] = $this->handleFileUpload($file, 'magazines', $data['cover_image']);
                 $this->fileDelete($magazine->image);
             }
             $data['password'] = $data['password'] ?? $magazine->password;
             $data['updated_by'] = admin()->id;
             $magazine->update($data);
-            $magazine->syncRoles($magazine->role->name);
             return $magazine;
         });
     }
