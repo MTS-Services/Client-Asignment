@@ -17,7 +17,7 @@
         class="flex items-center justify-center min-h-[80vh] bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
         <div
             class="max-w-md w-full space-y-8 p-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-            <form method="POST" action="{{ route('verify-otp') }}" class="space-y-6" id="otp-form">
+            <form method="POST" action="{{ route('verify-otp', ['email' => $email]) }}" class="space-y-6" id="otp-form">
                 @csrf
 
                 <h1 class="text-3xl font-extrabold text-center text-gray-900 dark:text-white">
@@ -71,7 +71,7 @@
                     class="flex flex-col sm:flex-row items-center justify-between mt-8 space-y-4 sm:space-y-0 sm:space-x-4">
                     <button type="button" id="resend-otp-button"
                         class="w-full sm:w-auto flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200 dark:bg-indigo-700 dark:text-indigo-100 dark:hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                        data-resend-route="{{ route('otp-resend', isset($isForgot) ? ['forgot' => $isForgot] : []) }}"
+                        data-resend-route="{{ route('otp-resend', isset($isForgot) ? ['forgot' => $isForgot , 'email' => $email] : ['email' => $email]) }}"
                         @if (isset($lastOtpSentAt)) data-last-sent-timestamp="{{ $lastOtpSentAt }}" @endif>
                         {{ __('Resend Code') }}
                     </button>

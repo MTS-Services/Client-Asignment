@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User; // Make sure your User model is imported
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OtpMail; // Make sure your OtpMail Mailable is imported
-use Illuminate\Support\Facades\Auth; // Import Auth facade
-use Illuminate\Support\Facades\RateLimiter; // Import RateLimiter facade
-use Illuminate\Validation\ValidationException; // Import for throwing validation exceptions
-use Carbon\Carbon; // Import Carbon for time operations
+use App\Mail\OtpMail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class OtpVerificationController extends Controller
 {
@@ -24,11 +25,12 @@ class OtpVerificationController extends Controller
     {
         $isForgot = $this->isForgot($request);
 
-        if (!user()) {
-            return redirect()->route('login');
-        }
+        $user = User::where('email', $request->email)->firstOrFail();
 
-        $user = User::findOrFail(user()->id);
+        if (!$user) {
+            session()->flash('error', 'Email not found.');
+            return redirect()->back();
+        }
 
         $lastOtpSentAt = $user->last_otp_sent_at ? $user->last_otp_sent_at->timestamp : null;
 
@@ -48,7 +50,11 @@ class OtpVerificationController extends Controller
             }
         }
 
-        return view('auth.otp-verification', compact('isForgot', 'lastOtpSentAt'));
+        $data['email'] = $user->email;
+        $data['isForgot'] = $isForgot;
+        $data['lastOtpSentAt'] = $lastOtpSentAt;
+
+        return view('auth.otp-verification', $data);
     }
 
     /**
@@ -62,13 +68,7 @@ class OtpVerificationController extends Controller
 
         $isForgot = $this->isForgot($request);
 
-        if (!user()) {
-            throw ValidationException::withMessages([
-                'otp' => 'Authentication error. Please log in again.'
-            ]);
-        }
-
-        $user = User::findOrFail(user()->id);
+        $user = User::where('email', $request->email)->firstOrFail();
 
         if ($user->email_otp != $request->otp) {
             throw ValidationException::withMessages([
@@ -90,7 +90,16 @@ class OtpVerificationController extends Controller
         $user->save();
 
         if ($isForgot) {
-            return redirect()->route('user.change-password')
+            // Create password reset token
+            $token = \Illuminate\Support\Str::random(60);
+            DB::table('password_reset_tokens')->updateOrInsert(
+                ['email' => $user->email],
+                [
+                    'token' => \Illuminate\Support\Facades\Hash::make($token),
+                    'created_at' => now()
+                ]
+            );
+            return redirect()->route('password.reset', ['token' => $token])
                 ->with('success', 'OTP verified. Please reset your password.');
         }
 
@@ -102,7 +111,7 @@ class OtpVerificationController extends Controller
      */
     public function resend(Request $request)
     {
-        $user = User::findOrFail(user()->id);
+        $user = User::where('email', $request->email)->firstOrFail();
 
         $throttleKey = 'resend_otp_for_' . $user->id;
 

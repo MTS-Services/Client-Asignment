@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            ]); 
+            ]);
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -49,7 +49,7 @@ class RegisteredUserController extends Controller
             event(new Registered($user));
             Auth::login($user);
             Mail::to($user->email)->send(new OtpMail($user, $user->email_otp));
-            return redirect()->route('otp-verification');
+            return redirect()->route('otp-verification', ['email' => $user->email]);
         });
         return $response;
     }

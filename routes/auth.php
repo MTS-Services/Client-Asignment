@@ -49,15 +49,16 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 });
 
+Route::controller(OtpVerificationController::class)->group(function () {
+    Route::get('/otp-verification', 'otp')->name('otp-verification');
+    Route::post('/verify-otp', 'verify')->name('verify-otp');
+    Route::post('/otp-resend', 'resend')->name('otp-resend')->middleware('throttle:6,1');
+});
+
+
 Route::middleware('auth:web')->group(function () {
     Route::get('verify-email', UserEmailVerificationPromptController::class)
         ->name('verification.notice');
-
-    Route::controller(OtpVerificationController::class)->group(function () {
-        Route::get('/otp-verification', 'otp')->name('otp-verification');
-        Route::post('/verify-otp', 'verify')->name('verify-otp');
-        Route::post('/otp-resend', 'resend')->name('otp-resend')->middleware('throttle:6,1');
-    });
 
     Route::get('verify-email/{id}/{hash}', UserVerifyEmailController::class)
         ->middleware(['signed', 'throttle:6,1'])
