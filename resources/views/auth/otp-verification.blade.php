@@ -161,10 +161,6 @@
                             // Using Axios to send the POST request
                             const response = await axios.post(resendRoute, {
                                 forgot: forgotValue
-                            }, {
-                                headers: {
-                                    'X-CSRF-TOKEN': csrfToken // Axios handles Content-Type for JSON automatically
-                                }
                             });
 
                             // Axios automatically parses JSON into response.data
@@ -172,14 +168,14 @@
 
                             // Axios throws an error for non-2xx status codes, so response.ok is not needed here
                             if (data.success) {
-                                alert(data.message || 'OTP sent successfully!');
+                                toastr.success(data.message || 'OTP sent successfully!');
                                 if (data.last_sent_at) {
                                     startResendCountdown(data.last_sent_at);
                                 } else {
                                     startResendCountdown(Math.floor(Date.now() / 1000));
                                 }
                             } else {
-                                alert(data.message || 'Failed to send OTP. Please try again.');
+                                toastr.error(data.message || 'Failed to send OTP. Please try again.');
                                 resendButton.disabled = false;
                                 resendButton.textContent = '{{ __('Resend Code') }}';
                             }
@@ -190,22 +186,22 @@
                                 // The request was made and the server responded with a status code
                                 // that falls out of the range of 2xx
                                 if (error.response.status === 401) {
-                                    alert('You are not authenticated. Please log in again.');
+                                    toastr.error('You are not authenticated. Please log in again.');
                                     window.location.href = '/login';
                                 } else if (error.response.status === 429) {
                                     // Specific handling for too many requests
-                                    alert(error.response.data.message ||
+                                    toastr.error(error.response.data.message ||
                                         'Too many requests. Please try again later.');
                                 } else {
-                                    alert(error.response.data.message ||
+                                    toastr.error(error.response.data.message ||
                                         'An error occurred while sending OTP. Please try again.');
                                 }
                             } else if (error.request) {
                                 // The request was made but no response was received
-                                alert('No response from server. Please check your network connection.');
+                                toastr.error('No response from server. Please check your network connection.');
                             } else {
                                 // Something happened in setting up the request that triggered an Error
-                                alert('An unexpected error occurred. Please try again.');
+                                toastr.error('An unexpected error occurred. Please try again.');
                             }
                             resendButton.disabled = false;
                             resendButton.textContent = '{{ __('Resend Code') }}';
