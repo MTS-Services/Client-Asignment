@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\AuthorController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
+use App\Http\Controllers\Backend\Admin\RackController;
 
 Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
@@ -58,5 +59,14 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () 
         Route::get('/trash/bin', 'trash')->name('trash');
         Route::get('/restore/{author}', 'restore')->name('restore');
         Route::delete('/permanent-delete/{author}', 'permanentDelete')->name('permanent-delete');
+    });
+
+    // Rack Management
+    Route::resource('rack', RackController::class);
+    Route::controller(RackController::class)->name('rack.')->prefix('rack')->group(function () {
+        Route::post('/show/{rack}', 'show')->name('show');
+        Route::get('/trash/bin', 'trash')->name('trash');
+        Route::get('/restore/{rack}', 'restore')->name('restore');
+        Route::delete('/permanent-delete/{rack}', 'permanentDelete')->name('permanent-delete');
     });
 });

@@ -11,7 +11,7 @@ class AuthorService
 {
     use FileManagementTrait;
 
-    public function getAuthors($orderBy = 'name', $order = 'asc')
+    public function getAuthors($orderBy = 'sort_order', $order = 'asc')
     {
         return Author::orderBy($orderBy, $order)->latest();
     }

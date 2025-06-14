@@ -22,20 +22,22 @@ class RackRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'location'=>'required|string|min:3',
+            'description'=>'nullable|string|max:255',
+            'capacity'=>'required|integer|min:1',
         ] + ($this->isMethod('POST') ? $this->store() : $this->update());
     }
 
     protected function store(): array
     {
         return [
-            //
+            'rack_number' => 'required|string|unique:racks,rack_number',
         ];
     }
     protected function update(): array
     {
         return [
-            //
+            'rack_number' => 'required|string|unique:racks,rack_number,' . decrypt($this->route('rack')) ,
         ];
     }
 }

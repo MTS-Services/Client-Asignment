@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Rack;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,6 +22,7 @@ class DatabaseSeeder extends Seeder
             RoleHasPermissionSeeder::class,
             PublisherSeeder::class,
             AuthorSeeder::class,
+            RackSeeder::class,
         ]);
     }
 }

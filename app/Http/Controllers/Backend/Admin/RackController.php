@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\RackRequest;
 use App\Http\Traits\AuditRelationTraits;
+use App\Services\Admin\RackService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,19 +19,19 @@ class RackController extends Controller implements HasMiddleware
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('index route');
+        return redirect()->route('rack.index');
     }
 
     protected function redirectTrashed(): RedirectResponse
     {
-        return redirect()->route('trash route');
+        return redirect()->route('rack.trash');
     }
 
-    protected ServiceName $serviceName;
+    protected RackService $rackService;
 
-    public function __construct(ServiceName $serviceName)
+    public function __construct(RackService $rackService)
     {
-        $this->serviceName = $serviceName;
+        $this->rackService = $rackService;
     }
     
     public static function middleware(): array
@@ -38,14 +40,14 @@ class RackController extends Controller implements HasMiddleware
             'auth:admin', // Applies 'auth:admin' to all methods
 
             // Permission middlewares using the Middleware class
-            new Middleware('permission:permisison-list', only: ['index']),
-            new Middleware('permission:permisison-details', only: ['show']),
-            new Middleware('permission:permisison-create', only: ['create', 'store']),
-            new Middleware('permission:permisison-edit', only: ['edit', 'update']),
-            new Middleware('permission:permisison-delete', only: ['destroy']),
-            new Middleware('permission:permisison-trash', only: ['trash']),
-            new Middleware('permission:permisison-restore', only: ['restore']),
-            new Middleware('permission:permisison-permanent-delete', only: ['permanentDelete']),
+            new Middleware('permission:rack-list', only: ['index']),
+            new Middleware('permission:rack-details', only: ['show']),
+            new Middleware('permission:rack-create', only: ['create', 'store']),
+            new Middleware('permission:rack-edit', only: ['edit', 'update']),
+            new Middleware('permission:rack-delete', only: ['destroy']),
+            new Middleware('permission:rack-trash', only: ['trash']),
+            new Middleware('permission:rack-restore', only: ['restore']),
+            new Middleware('permission:rack-permanent-delete', only: ['permanentDelete']),
             //add more permissions if needed
         ];
     }
@@ -56,22 +58,22 @@ class RackController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = $this->serviceName->getService();
+            $query = $this->rackService->getRacks();
             return DataTables::eloquent($query)
-                 ->editColumn('created_by', function ($admin) {
-                    return $this->creater_name($admin);
+                 ->editColumn('created_by', function ($rack) {
+                    return $this->creater_name($rack);
                 })
-                ->editColumn('created_at', function ($admin) {
-                    return $admin->created_at_formatted;
+                ->editColumn('created_at', function ($rack) {
+                    return $rack->created_at_formatted;
                 })
-                ->editColumn('action', function ($service) {
-                    $menuItems = $this->menuItems($service);
+                ->editColumn('action', function ($rack) {
+                    $menuItems = $this->menuItems($rack);
                     return view('components.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['created_by', 'created_at', 'action'])
                 ->make(true);
         }
-        return view('view file url..');
+        return view('backend.admin.rack.index');
     }
 
     protected function menuItems($model): array
@@ -82,21 +84,21 @@ class RackController extends Controller implements HasMiddleware
                 'data-id' => encrypt($model->id),
                 'className' => 'view',
                 'label' => 'Details',
-                'permissions' => ['permission-list', 'permission-delete', 'permission-status']
+                'permissions' => ['rack-list', 'rack-delete', 'rack-status']
             ],
             [
-                'routeName' => '',
+                'routeName' => 'rack.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
-                'permissions' => ['permission-edit']
+                'permissions' => ['rack-edit']
             ],
 
             [
-                'routeName' => '',
+                'routeName' => 'rack.destroy',
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
-                'permissions' => ['permission-delete']
+                'permissions' => ['rack-delete']
             ]
 
         ];
@@ -108,20 +110,20 @@ class RackController extends Controller implements HasMiddleware
     public function create(): View
     {
         //
-        return view('view file url ...');
+        return view('backend.admin.rack.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RackRequest $request)
     {
          try {
-            // $validated = $request->validated();
-            //
-            session()->flash('success', "Service created successfully");
+            $validated = $request->validated();
+            $this->rackService->createRack($validated);
+            session()->flash('success', "Rack created successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service creation failed');
+            session()->flash('error', "Rack creation failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -132,7 +134,7 @@ class RackController extends Controller implements HasMiddleware
      */
     public function show(Request $request, string $id)
     {
-        $data = $this->serviceName->getService($id);
+        $data = $this->rackService->getRack($id);
         $data['creater_name'] = $this->creater_name($data);
         $data['updater_name'] = $this->updater_name($data);
         return response()->json($data);
@@ -143,21 +145,22 @@ class RackController extends Controller implements HasMiddleware
      */
     public function edit(string $id): View
     {
-        //$data['service'] = $this->serviceName->getService($id);
-        return view('view file url...', $data);
+        $data['rack'] = $this->rackService->getRack($id);
+        return view('backend.admin.rack.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RackRequest $request, string $id)
     {
          try {
-            // $validated = $request->validated();
-            //
-            session()->flash('success', "Service updated successfully");
+            $rack = $this->rackService->getRack($id);
+            $validated = $request->validated();
+            $this->rackService->updateRack($rack, $validated);
+            session()->flash('success', "Rack updated successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service update failed');
+            session()->flash('error', "Rack update failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -169,10 +172,11 @@ class RackController extends Controller implements HasMiddleware
     public function destroy(string $id)
     {
          try {
-            //
-            session()->flash('success', "Service deleted successfully");
+            $rack = $this->rackService->getRack($id);
+            $this->rackService->delete($rack);
+            session()->flash('success', "Rack deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service delete failed');
+            session()->flash('error', "Rack delete failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -181,35 +185,35 @@ class RackController extends Controller implements HasMiddleware
     public function trash(Request $request)
     {
         if ($request->ajax()) {
-            $query = $this->serviceName->getPermissions()->onlyTrashed();
+            $query = $this->rackService->getRacks()->onlyTrashed();
             return DataTables::eloquent($query)
-                ->editColumn('deleted_by', function ($admin) {
-                    return $this->deleter_name($admin);
+                ->editColumn('deleted_by', function ($rack) {
+                    return $this->deleter_name($rack);
                 })
-                ->editColumn('deleted_at', function ($admin) {
-                    return $admin->deleted_at_formatted;
+                ->editColumn('deleted_at', function ($rack) {
+                    return $rack->deleted_at_formatted;
                 })
-                ->editColumn('action', function ($permission) {
-                    $menuItems = $this->trashedMenuItems($permission);
+                ->editColumn('action', function ($rack) {
+                    $menuItems = $this->trashedMenuItems($rack);
                     return view('components.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['deleted_by', 'deleted_at', 'action'])
                 ->make(true);
         }
-        return view('view blade file url...');
+        return view('backend.admin.rack.trash');
     }
 
     protected function trashedMenuItems($model): array
     {
         return [
             [
-                'routeName' => '',
+                'routeName' => 'rack.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
                 'permissions' => ['permission-restore']
             ],
             [
-                'routeName' => '',
+                'routeName' => 'rack.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,
@@ -222,10 +226,10 @@ class RackController extends Controller implements HasMiddleware
      public function restore(string $id): RedirectResponse
     {
         try {
-            $this->serviceName->restore($id);
-            session()->flash('success', "Service restored successfully");
+            $this->rackService->restore($id);
+            session()->flash('success', "Rack restored successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service restore failed');
+            session()->flash('error', "Rack restore failed");
             throw $e;
         }
         return $this->redirectTrashed();
@@ -234,10 +238,10 @@ class RackController extends Controller implements HasMiddleware
     public function permanentDelete(string $id): RedirectResponse
     {
         try {
-            $this->serviceName->permanentDelete($id);
-            session()->flash('success', "Service permanently deleted successfully");
+            $this->rackService->permanentDelete($id);
+            session()->flash('success', "Rack permanently deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service permanent delete failed');
+            session()->flash('error', "Rack permanent delete failed");
             throw $e;
         }
         return $this->redirectTrashed();
