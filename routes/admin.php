@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\AuthorController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Backend\Admin\MagazineController;
 use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
 use App\Http\Controllers\Backend\Admin\RackController;
 
@@ -69,4 +70,14 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () 
         Route::get('/restore/{rack}', 'restore')->name('restore');
         Route::delete('/permanent-delete/{rack}', 'permanentDelete')->name('permanent-delete');
     });
+
+    Route::resource('magazine', MagazineController::class);
+    Route::controller(MagazineController::class)->name('magazine.')->prefix('magazine')->group(function () {
+        Route::post('/show/{magazine}', 'show')->name('show');
+        Route::get('/status/{magazine}', 'status')->name('status');
+        Route::get('/trash/bin', 'trash')->name('trash');
+        Route::get('/restore/{magazine}', 'restore')->name('restore');
+        Route::delete('/permanent-delete/{magazine}', 'permanentDelete')->name('permanent-delete');
+    });
+      
 });
