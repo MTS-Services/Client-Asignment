@@ -13,12 +13,15 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Password;
 use Throwable;
+use Carbon\Carbon;
 
 class OtpVerificationController extends Controller
 {
     protected const OTP_EXPIRY_MINUTES = 2;
     protected const OTP_RESEND_THROTTLE = 1; // 1 request per minute
+    protected const MAX_OTP_ATTEMPTS = 5;
 
     /**
      * Determines if the request is part of a "forgot password" flow.
@@ -33,11 +36,39 @@ class OtpVerificationController extends Controller
      */
     protected function getVerificationUser(Request $request): ?User
     {
+        Log::debug('Session data in getVerificationUser', [
+            'session_id' => session()->getId(),
+            'session_user_id' => session('otp_verification_user_id'),
+            'all_session' => session()->all()
+        ]);
+
         if ($this->isForgotPasswordFlow($request)) {
-            // dd(session('otp_verification_user_id'));
-            $user =  User::findOrFail(session('otp_verification_user_id'));
-            // dd($user);
-            return $user;
+            $userId = session('otp_verification_user_id');
+            
+            if (!$userId) {
+                Log::error('Missing user ID in session');
+                return null;
+            }
+
+            try {
+                $user = User::withoutGlobalScopes()->find($userId);
+                
+                if (!$user) {
+                    Log::error('User not found in database', [
+                        'requested_id' => $userId,
+                        'database_record' => DB::table('users')->find($userId)
+                    ]);
+                    return null;
+                }
+                
+                return $user;
+            } catch (\Exception $e) {
+                Log::error('User retrieval failed', [
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+                return null;
+            }
         }
 
         return Auth::guard('web')->user();
@@ -59,15 +90,15 @@ class OtpVerificationController extends Controller
      */
     protected function sendOtpEmail(User $user): void
     {
-        Mail::to($user->email)->send(new UserOtpMail($user, $user->email_otp));
-    }
-
-    /**
-     * Gets the throttle key for rate limiting.
-     */
-    protected function getThrottleKey(User $user, string $type): string
-    {
-        return "otp_{$type}_{$user->id}";
+        try {
+            Mail::to($user->email)->send(new UserOtpMail($user, $user->email_otp));
+            Log::info('OTP email sent', ['user_id' => $user->id]);
+        } catch (\Exception $e) {
+            Log::error('Failed to send OTP email', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -93,8 +124,14 @@ class OtpVerificationController extends Controller
                 'isForgot' => $isForgot,
                 'lastOtpSentAt' => optional($user->last_otp_sent_at)->timestamp,
                 'email' => $user->email,
+                'otpExpiryMinutes' => self::OTP_EXPIRY_MINUTES
             ]);
+
         } catch (Throwable $e) {
+            Log::error('OTP form error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return redirect()->back()->with('error', 'An error occurred. Please try again.');
         }
     }
@@ -112,13 +149,29 @@ class OtpVerificationController extends Controller
             $isForgot = $this->isForgotPasswordFlow($request);
             $user = $this->getVerificationUser($request);
 
+            Log::debug('OTP verification attempt', [
+                'user_id' => $user ? $user->id : null,
+                'input_otp' => $request->otp,
+                'is_forgot' => $isForgot
+            ]);
+
             if (!$user) {
                 throw ValidationException::withMessages([
                     'otp' => $this->getUserNotFoundMessage($isForgot)
                 ]);
             }
 
+            // Check OTP attempt limit
+            $attemptsKey = 'otp_attempts_' . $user->id;
+            if (RateLimiter::tooManyAttempts($attemptsKey, self::MAX_OTP_ATTEMPTS)) {
+                $seconds = RateLimiter::availableIn($attemptsKey);
+                throw ValidationException::withMessages([
+                    'otp' => "Too many attempts. Please try again in {$seconds} seconds."
+                ]);
+            }
+
             $this->validateOtp($user, $request->otp);
+            RateLimiter::clear($attemptsKey);
 
             $this->clearOtpData($user);
 
@@ -126,7 +179,10 @@ class OtpVerificationController extends Controller
                 $user->email_verified_at = now();
                 $user->save();
                 DB::commit();
-                return redirect()->route('user.dashboard')->with('success', 'Email verified!');
+                
+                Auth::login($user);
+                return redirect()->route('user.dashboard')
+                    ->with('success', 'Email verified successfully!');
             }
 
             $token = $this->createPasswordResetToken($user);
@@ -134,13 +190,17 @@ class OtpVerificationController extends Controller
 
             return redirect()->route('password.reset', ['token' => $token])
                 ->with('success', 'OTP verified. Please reset your password.');
+
         } catch (ValidationException $e) {
-            Log::warning($e->getMessage());
             DB::rollBack();
+            RateLimiter::hit($attemptsKey ?? 'global_otp_attempts');
             throw $e;
         } catch (Throwable $e) {
-            Log::warning($e->getMessage());
             DB::rollBack();
+            Log::error('OTP verification failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return redirect()->back()->with('error', 'Verification failed. Please try again.');
         }
     }
@@ -180,9 +240,15 @@ class OtpVerificationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'New OTP sent to your email.',
-                'last_sent_at' => $user->last_otp_sent_at->timestamp
+                'last_sent_at' => $user->last_otp_sent_at->timestamp,
+                'expires_at' => $user->email_otp_expires_at
             ]);
+
         } catch (Throwable $e) {
+            Log::error('OTP resend failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to resend OTP. Please try again.'
@@ -191,7 +257,7 @@ class OtpVerificationController extends Controller
     }
 
     /**
-     * Helper methods below
+     * Helper methods
      */
 
     protected function sendOtpIfNeeded(User $user, bool $isForgot): void
@@ -201,7 +267,7 @@ class OtpVerificationController extends Controller
 
         if ($shouldSendOtp) {
             $throttleKey = $this->getThrottleKey($user, 'initial');
-
+            
             if (!RateLimiter::tooManyAttempts($throttleKey, self::OTP_RESEND_THROTTLE)) {
                 RateLimiter::hit($throttleKey);
                 $this->generateNewOtp($user);
@@ -216,12 +282,20 @@ class OtpVerificationController extends Controller
 
     protected function validateOtp(User $user, string $otp): void
     {
+        Log::debug('Validating OTP', [
+            'stored_otp' => $user->email_otp,
+            'input_otp' => $otp,
+            'expires_at' => $user->email_otp_expires_at,
+            'current_time' => now(),
+            'is_expired' => now()->gt($user->email_otp_expires_at)
+        ]);
+
         if ((string)$user->email_otp !== (string)$otp) {
-            throw ValidationException::withMessages(['otp' => 'Invalid OTP.']);
+            throw ValidationException::withMessages(['otp' => 'Invalid verification code.']);
         }
 
-        if (!now()->isBefore($user->email_otp_expires_at)) {
-            throw ValidationException::withMessages(['otp' => 'OTP has expired.']);
+        if (now()->gt($user->email_otp_expires_at)) {
+            throw ValidationException::withMessages(['otp' => 'Verification code has expired.']);
         }
     }
 
@@ -235,18 +309,14 @@ class OtpVerificationController extends Controller
 
     protected function createPasswordResetToken(User $user): string
     {
-        $token = Str::random(60);
-
-        DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => $user->email],
-            [
-                'token' => bcrypt($token),
-                'created_at' => now()
-            ]
-        );
-
+        $token = Password::createToken($user);
         session()->forget('otp_verification_user_id');
         return $token;
+    }
+
+    protected function getThrottleKey(User $user, string $type): string
+    {
+        return "otp_{$type}_{$user->id}";
     }
 
     protected function handleUserNotFound(bool $isForgot)
