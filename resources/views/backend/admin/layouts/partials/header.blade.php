@@ -24,7 +24,7 @@
                     </h1>
                     <p class="text-text-light-secondary dark:text-text-dark-primary text-sm">
                         {{ __("Here's what's happening
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                today") }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        today") }}
                     </p>
                 </div>
             </div>

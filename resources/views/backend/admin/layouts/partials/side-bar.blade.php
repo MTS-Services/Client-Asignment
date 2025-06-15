@@ -67,7 +67,35 @@
                         'active' => 'admin-users',
                     ],
                 ]" />
+            <x-admin.navlink type="dropdown" icon="app-window" name="Category Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Category',
+                        'route' => route('am.category.index'),
+                        'icon' => 'tags',
+                        'active' => 'admin-category',
+                    ],
+                ]" />
+            <x-admin.navlink type="dropdown" icon="users" name="Publish Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Publisher',
+                        'route' => route('pm.publisher.index'),
+                        'icon' => 'user',
+                        'active' => 'publisher-users',
+                    ],
+                ]" />
+            <x-admin.navlink type="single" icon="layout-dashboard" name="Author" :route="route('author.index')"
+                active="author-users" :page_slug="$active" />
 
+            <x-admin.navlink type="single" icon="layout-dashboard" name="Rack" :route="route('rack.index')"
+                active="admin-rack" :page_slug="$active" />
+                
+            <x-admin.navlink type="single" icon="layout-dashboard" name="Magazine" :route="route('magazine.index')"
+                active="admin-magazine" :page_slug="$active" />
+
+            <x-admin.navlink type="single" icon="layout-dashboard" name="Newspaper" :route="route('newspaper.index')"
+                active="admin-newspaper" :page_slug="$active" />
             @if (isset($not_use))
                 {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}
                 {{-- <x-admin.navlink type="dropdown" icon="shopping-cart" name="E-commerce" :page_slug="$active"
