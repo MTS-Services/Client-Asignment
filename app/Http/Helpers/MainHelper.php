@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 function timeFormat($time)
 {
-    return date(('d M, Y H:i A'), strtotime($time));
+    return $time ? date(('d M, Y H:i A'), strtotime($time)) : 'N/A';
 }
 function timeFormatHuman($time)
 {

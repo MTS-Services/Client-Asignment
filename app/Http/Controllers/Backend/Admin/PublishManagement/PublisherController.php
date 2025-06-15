@@ -17,6 +17,7 @@ use Yajra\DataTables\Facades\DataTables;
 class PublisherController extends Controller implements HasMiddleware
 {
     use AuditRelationTraits;
+    protected PublisherService $publisherService;
 
     protected function redirectIndex(): RedirectResponse
     {
@@ -28,7 +29,7 @@ class PublisherController extends Controller implements HasMiddleware
         return redirect()->route('pm.publisher.trash');
     }
 
-    protected PublisherService $publisherService;
+
 
     public function __construct(PublisherService $publisherService)
     {

@@ -21,14 +21,12 @@ class Publisher extends BaseModel
         'deleted_by',
     ];
 
-     protected $appends = [
+    protected $appends = [
         'status_label',
         'status_color',
         'status_btn_label',
         'status_btn_color',
     ];
-
-
     public const STATUS_ACTIVE = 1;
     public const STATUS_INACTIVE = 0;
 
