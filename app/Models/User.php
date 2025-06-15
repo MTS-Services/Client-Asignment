@@ -18,6 +18,7 @@ class User extends AuthBaseModel
      * @var list<string>
      */
     protected $fillable = [
+        'sort_order',
         'name',
         'username',
         'email',
@@ -26,6 +27,7 @@ class User extends AuthBaseModel
         'email_verified_at',
         'email_otp',
         'email_otp_expires_at',
+        'last_otp_sent_at',
         'image',
 
         'creater_id',
@@ -44,6 +46,8 @@ class User extends AuthBaseModel
     protected $hidden = [
         'password',
         'remember_token',
+        'email_otp', // Hide OTP from API responses/serialization
+        'email_otp_expires_at', // Hide OTP expiry
     ];
 
     /**
@@ -57,6 +61,7 @@ class User extends AuthBaseModel
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'email_otp_expires_at' => 'datetime',
+            'last_otp_sent_at' => 'datetime',
             'email_otp' => 'integer',
         ];
     }

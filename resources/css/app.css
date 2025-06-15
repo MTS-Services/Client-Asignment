@@ -19,6 +19,10 @@
   }
 }
 
+.input {
+  @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-emerald-500 focus-within:border-emerald-500 w-full;
+}
+
 /* Toggle Theme mode */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 

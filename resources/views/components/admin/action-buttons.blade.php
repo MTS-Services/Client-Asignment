@@ -22,22 +22,22 @@
                     $check = false;
 
                     // Permissions (if you want to re-enable)
-                    // if (
-                    //     (!isset($menuItem['permissions']) ||
-                    //         !is_array($menuItem['permissions']) ||
-                    //         count($menuItem['permissions']) == 0 ||
-                    //         !admin()->hasAnyPermission($menuItem['permissions'])) &&
-                    //     !isSuperAdmin()
-                    // ) {
-                    //     continue;
-                    // } elseif (
-                    //     (isset($menuItem['permissions']) &&
-                    //         is_array($menuItem['permissions']) &&
-                    //         admin()->hasAnyPermission($menuItem['permissions'])) ||
-                    //     isSuperAdmin()
-                    // ) {
-                    //     $check = true;
-                    // }
+                    if (
+                        (!isset($menuItem['permissions']) ||
+                            !is_array($menuItem['permissions']) ||
+                            count($menuItem['permissions']) == 0 ||
+                            !admin()->hasAnyPermission($menuItem['permissions'])) &&
+                        !isSuperAdmin()
+                    ) {
+                        continue;
+                    } elseif (
+                        (isset($menuItem['permissions']) &&
+                            is_array($menuItem['permissions']) &&
+                            admin()->hasAnyPermission($menuItem['permissions'])) ||
+                        isSuperAdmin()
+                    ) {
+                        $check = true;
+                    }
 
                     $parameterArray = $menuItem['params'] ?? [];
                     if (!isset($menuItem['routeName']) || $menuItem['routeName'] == '') {

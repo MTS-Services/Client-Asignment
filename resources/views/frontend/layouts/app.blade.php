@@ -35,6 +35,25 @@
     <script src="{{ asset('assets/frontend/js/jquery.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success'))
+                showAlert('success', '{{ session('success') }}');
+            @endif
+
+            @if (session('error'))
+                showAlert('error', '{{ session('error') }}');
+            @endif
+
+            @if (session('warning'))
+                showAlert('warning', '{{ session('warning') }}');
+            @endif
+        });
+
+        const content_image_upload_url = '{{ route('file.ci_upload') }}';
+    </script>
+
     @stack('css')
 </head>
 
@@ -45,7 +64,9 @@
 
     <x-frontend.theme-toggle />
 
-    {{ $slot }}
+    <main>
+        {{ $slot }}
+    </main>
 
     @stack('js')
 </body>
