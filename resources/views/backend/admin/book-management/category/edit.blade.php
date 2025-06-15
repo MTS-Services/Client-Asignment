@@ -7,7 +7,7 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Update Category') }}</h2>
-                <x-admin.primary-link href="{{ route('am.category.index') }}">{{ __('Back') }} </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.category.index') }}">{{ __('Back') }} </x-admin.primary-link>
             </div>
         </div>
 
@@ -15,7 +15,7 @@
             class="grid grid-cols-1 gap-4 sm:grid-cols-1  {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
-                <form action="{{ route('am.category.update', encrypt($category->id)) }}" method="POST"
+                <form action="{{ route('bm.category.update', encrypt($category->id)) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -39,10 +39,11 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Slug') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="text" placeholder="Slug" name="slug" value="{{ $category->slug }}" class="flex-1">
+                                <input type="text" placeholder="Slug" name="slug" value="{{ $category->slug }}"
+                                    class="flex-1">
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('slug')" />
-                        </div>                        
+                        </div>
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Description') }}</p>
                             <textarea name="description" id="description" cols="" rows="10" class="flex-1 input w-full h-24">{{ $category->description }}</textarea>

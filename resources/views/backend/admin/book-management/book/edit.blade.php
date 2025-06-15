@@ -7,14 +7,16 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Edit Book') }}</h2>
-                <x-admin.primary-link href="{{ route('book.index') }}">{{ __('Back') }}</x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.book.index') }}">{{ __('Back') }}</x-admin.primary-link>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-1 {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
+        <div
+            class="grid grid-cols-1 gap-4 sm:grid-cols-1 {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
-                <form action="{{ route('book.update', encrypt($book->id)) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('bm.book.update', encrypt($book->id)) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -23,7 +25,8 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Title') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="text" name="title" value="{{ old('title', $book->title) }}" class="flex-1" />
+                                <input type="text" name="title" value="{{ old('title', $book->title) }}"
+                                    class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('title')" />
                         </div>
@@ -32,7 +35,8 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Slug') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="text" name="slug" value="{{ old('slug', $book->slug) }}" class="flex-1" />
+                                <input type="text" name="slug" value="{{ old('slug', $book->slug) }}"
+                                    class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('slug')" />
                         </div>
@@ -41,7 +45,8 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Isbn') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="text" name="isbn" value="{{ old('isbn', $book->isbn) }}" class="flex-1" />
+                                <input type="text" name="isbn" value="{{ old('isbn', $book->isbn) }}"
+                                    class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('isbn')" />
                         </div>
@@ -50,7 +55,8 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Publication Date') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="date" name="publication_date" value="{{ old('publication_date', $book->publication_date) }}" class="flex-1" />
+                                <input type="date" name="publication_date"
+                                    value="{{ old('publication_date', $book->publication_date) }}" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('publication_date')" />
                         </div>
@@ -61,7 +67,8 @@
                             <select name="category_id" class="w-full border-gray-300 dark:border-gray-600">
                                 <option disabled>{{ __('Select Category') }}</option>
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id', $book->category_id) == $category->id ? 'selected' : '' }}>
+                                    <option value="{{ $category->id }}"
+                                        {{ old('category_id', $book->category_id) == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
@@ -75,7 +82,8 @@
                             <select name="publisher_id" class="w-full border-gray-300 dark:border-gray-600">
                                 <option disabled>{{ __('Select Publisher') }}</option>
                                 @foreach ($publishers as $publisher)
-                                    <option value="{{ $publisher->id }}" {{ old('publisher_id', $book->publisher_id) == $publisher->id ? 'selected' : '' }}>
+                                    <option value="{{ $publisher->id }}"
+                                        {{ old('publisher_id', $book->publisher_id) == $publisher->id ? 'selected' : '' }}>
                                         {{ $publisher->name }}
                                     </option>
                                 @endforeach
@@ -89,7 +97,8 @@
                             <select name="rack_id" class="w-full border-gray-300 dark:border-gray-600">
                                 <option disabled>{{ __('Select Rack') }}</option>
                                 @foreach ($racks as $rack)
-                                    <option value="{{ $rack->id }}" {{ old('rack_id', $book->rack_id) == $rack->id ? 'selected' : '' }}>
+                                    <option value="{{ $rack->id }}"
+                                        {{ old('rack_id', $book->rack_id) == $rack->id ? 'selected' : '' }}>
                                         {{ $rack->rack_number }}
                                     </option>
                                 @endforeach
@@ -114,7 +123,8 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Language') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="text" name="language" value="{{ old('language', $book->language) }}" class="flex-1" />
+                                <input type="text" name="language" value="{{ old('language', $book->language) }}"
+                                    class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('language')" />
                         </div>
@@ -123,7 +133,8 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Price') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="text" name="price" value="{{ old('price', $book->price) }}" class="flex-1" />
+                                <input type="text" name="price" value="{{ old('price', $book->price) }}"
+                                    class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('price')" />
                         </div>
@@ -132,7 +143,8 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Total Copies') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="text" name="total_copies" value="{{ old('total_copies', $book->total_copies) }}" class="flex-1" />
+                                <input type="text" name="total_copies"
+                                    value="{{ old('total_copies', $book->total_copies) }}" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('total_copies')" />
                         </div>
@@ -141,7 +153,8 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Available Copies') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="text" name="available_copies" value="{{ old('available_copies', $book->available_copies) }}" class="flex-1" />
+                                <input type="text" name="available_copies"
+                                    value="{{ old('available_copies', $book->available_copies) }}" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('available_copies')" />
                         </div>
@@ -165,8 +178,8 @@
     @push('js')
         <script src="{{ asset('assets/js/filepond.js') }}"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                 file_upload(["#cover_image"], ["image/jpeg", "image/png", "image/jpg, image/webp, image/svg"], {
+            document.addEventListener('DOMContentLoaded', function() {
+                file_upload(["#cover_image"], ["image/jpeg", "image/png", "image/jpg, image/webp, image/svg"], {
                     "#cover_image": "{{ $book->modified_image }}",
                 });
             });

@@ -8,7 +8,7 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Create Book') }}</h2>
-                <x-admin.primary-link href="{{ route('book.index') }}">{{ __('Back') }} </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.book.index') }}">{{ __('Back') }} </x-admin.primary-link>
             </div>
         </div>
 
@@ -16,7 +16,7 @@
             class="grid grid-cols-1 gap-4 sm:grid-cols-1  {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
-                <form action="{{ route('book.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('bm.book.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                         <!-- Title -->
@@ -135,15 +135,16 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Language') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
+                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24">
+                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5"
+                                        fill="none" stroke="currentColor">
                                         <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                                     </g>
                                 </svg>
-                                <input type="text" name="language" value="{{ old('language') }}" placeholder="Language"
-                                    class="flex-1" />
+                                <input type="text" name="language" value="{{ old('language') }}"
+                                    placeholder="Language" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('language')" />
                         </div>
@@ -151,15 +152,16 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Price') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
+                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24">
+                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5"
+                                        fill="none" stroke="currentColor">
                                         <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                                     </g>
                                 </svg>
-                                <input type="text" name="price" value="{{ old('price') }}" placeholder="Price"
-                                    class="flex-1" />
+                                <input type="text" name="price" value="{{ old('price') }}"
+                                    placeholder="Price" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('price')" />
                         </div>
@@ -167,15 +169,16 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Total Copies') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
+                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24">
+                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5"
+                                        fill="none" stroke="currentColor">
                                         <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                                     </g>
                                 </svg>
-                                <input type="text" name="total_copies" value="{{ old('total_copies') }}" placeholder="Total copies"
-                                    class="flex-1" />
+                                <input type="text" name="total_copies" value="{{ old('total_copies') }}"
+                                    placeholder="Total copies" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('total_copies')" />
                         </div>
@@ -183,15 +186,16 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Available Copies') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
+                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24">
+                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5"
+                                        fill="none" stroke="currentColor">
                                         <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                                     </g>
                                 </svg>
-                                <input type="text" name="available_copies" value="{{ old('available_copies') }}" placeholder="Available Copies"
-                                    class="flex-1" />
+                                <input type="text" name="available_copies" value="{{ old('available_copies') }}"
+                                    placeholder="Available Copies" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('available_copies')" />
                         </div>

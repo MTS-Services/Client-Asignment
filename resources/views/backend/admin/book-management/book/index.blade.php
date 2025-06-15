@@ -8,10 +8,10 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Book List') }}</h2>
                 <div class="flex items-center gap-2">
-                    <x-admin.primary-link secondary="true" href="{{ route('book.trash') }}">{{ __('Trash') }} <i
+                    <x-admin.primary-link secondary="true" href="{{ route('bm.book.trash') }}">{{ __('Trash') }} <i
                             data-lucide="trash-2" class="w-4 h-4"></i>
                     </x-admin.primary-link>
-                    <x-admin.primary-link href="{{ route('book.create') }}">{{ __('Add') }} <i
+                    <x-admin.primary-link href="{{ route('bm.book.create') }}">{{ __('Add') }} <i
                             data-lucide="user-round-plus" class="w-4 h-4"></i>
                     </x-admin.primary-link>
                 </div>
@@ -62,7 +62,7 @@
                     table_columns: table_columns,
                     main_class: '.datatable',
                     displayLength: 10,
-                    main_route: "{{ route('book.index') }}",
+                    main_route: "{{ route('bm.book.index') }}",
                     order_route: "{{ route('update.sort.order') }}",
                     export_columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                     model: 'Book',

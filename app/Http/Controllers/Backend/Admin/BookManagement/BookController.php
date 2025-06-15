@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Admin;
+namespace App\Http\Controllers\Backend\Admin\BookManagement;
 
 use Illuminate\Http\Request;
 use App\Services\Admin\BookService;
@@ -24,12 +24,12 @@ class BookController extends Controller implements HasMiddleware
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('book.index');
+        return redirect()->route('bm.book.index');
     }
 
     protected function redirectTrashed(): RedirectResponse
     {
-        return redirect()->route('book.trash');
+        return redirect()->route('bm.book.trash');
     }
 
     protected BookService $bookService;
@@ -96,7 +96,7 @@ class BookController extends Controller implements HasMiddleware
                 ->rawColumns(['created_by', 'status', 'rack_id', 'publisher_id', 'category_id', 'created_at', 'action'])
                 ->make(true);
         }
-        return view('backend.admin.book.index');
+        return view('backend.admin.book-management.book.index');
     }
 
     protected function menuItems($model): array
@@ -110,19 +110,19 @@ class BookController extends Controller implements HasMiddleware
                 'permissions' => ['book-list', 'book-delete', 'book-status']
             ],
             [
-                'routeName' => 'book.edit',
+                'routeName' => 'bm.book.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
                 'permissions' => ['book-edit']
             ],
             [
-                'routeName' => 'book.status',
+                'routeName' => 'bm.book.status',
                 'params' => [encrypt($model->id)],
                 'label' => $model->status_label,
                 'permissions' => ['book-status']
             ],
             [
-                'routeName' => 'book.destroy',
+                'routeName' => 'bm.book.destroy',
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
@@ -140,7 +140,7 @@ class BookController extends Controller implements HasMiddleware
         $data['categories'] = $this->categoryService->getCategories()->select(['id', 'name'])->get();
         $data['publishers'] = $this->publisherService->getPublishers()->select(['id', 'name'])->get();
         $data['racks'] = $this->rackService->getRacks()->select(['id', 'rack_number'])->get();
-        return view('backend.admin.book.create', $data);
+        return view('backend.admin.book-management.book.create', $data);
     }
 
     /**
@@ -179,7 +179,7 @@ class BookController extends Controller implements HasMiddleware
         $data['categories'] = $this->categoryService->getCategories()->select(['id', 'name'])->get();
         $data['publishers'] = $this->publisherService->getPublishers()->select(['id', 'name'])->get();
         $data['racks'] = $this->rackService->getRacks()->select(['id', 'rack_number'])->get();
-        return view('backend.admin.book.edit', $data);
+        return view('backend.admin.book-management.book.edit', $data);
     }
 
     /**
@@ -187,11 +187,11 @@ class BookController extends Controller implements HasMiddleware
      */
     public function update(BookRequest $request, string $id)
     {
-        
+
         try {
             $validated = $request->validated();
             $book = $this->bookService->getBook($id);
-    
+
             $this->bookService->updateBook($book, $validated, $request->file('cover_image'));
 
             session()->flash('success', "Book updated successfully");
@@ -223,7 +223,7 @@ class BookController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->bookService->getBooks()->onlyTrashed();
             return DataTables::eloquent($query)
-             ->editColumn('category_id', function ($book) {
+                ->editColumn('category_id', function ($book) {
                     return $book->category?->name;
                 })
                 ->editColumn('publisher_id', function ($book) {
@@ -248,20 +248,20 @@ class BookController extends Controller implements HasMiddleware
                 ->rawColumns(['deleted_by', 'status', 'category_id', 'publisher_id', 'rack_id', 'deleted_at', 'action'])
                 ->make(true);
         }
-        return view('backend.admin.book.trash');
+        return view('backend.admin.book-management.book.trash');
     }
 
     protected function trashedMenuItems($model): array
     {
         return [
             [
-                'routeName' => 'book.restore',
+                'routeName' => 'bm.book.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
                 'permissions' => ['book-restore']
             ],
             [
-                'routeName' => 'book.permanent-delete',
+                'routeName' => 'bm.book.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,
