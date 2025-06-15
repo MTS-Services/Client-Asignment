@@ -33,7 +33,7 @@ class RackController extends Controller implements HasMiddleware
     {
         $this->rackService = $rackService;
     }
-    
+
     public static function middleware(): array
     {
         return [
@@ -60,21 +60,17 @@ class RackController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->rackService->getRacks();
             return DataTables::eloquent($query)
-                 ->editColumn('created_by', function ($rack) {
-                    return $this->creater_name($rack);
-                })
-                ->editColumn('created_at', function ($rack) {
-                    return $rack->created_at_formatted;
-                })
-                ->editColumn('action', function ($rack) {
-                    $menuItems = $this->menuItems($rack);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('created_by', fn($rack) => $this->creater_name($rack))
+                ->editColumn('created_at', fn($rack) => $rack->created_at_formatted)
+                ->editColumn('action', fn($rack) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->menuItems($rack)
+                ])->render())
                 ->rawColumns(['created_by', 'created_at', 'action'])
                 ->make(true);
         }
         return view('backend.admin.rack.index');
     }
+
 
     protected function menuItems($model): array
     {
@@ -118,7 +114,7 @@ class RackController extends Controller implements HasMiddleware
      */
     public function store(RackRequest $request)
     {
-         try {
+        try {
             $validated = $request->validated();
             $this->rackService->createRack($validated);
             session()->flash('success', "Rack created successfully");
@@ -154,7 +150,7 @@ class RackController extends Controller implements HasMiddleware
      */
     public function update(RackRequest $request, string $id)
     {
-         try {
+        try {
             $rack = $this->rackService->getRack($id);
             $validated = $request->validated();
             $this->rackService->updateRack($rack, $validated);
@@ -171,7 +167,7 @@ class RackController extends Controller implements HasMiddleware
      */
     public function destroy(string $id)
     {
-         try {
+        try {
             $rack = $this->rackService->getRack($id);
             $this->rackService->delete($rack);
             session()->flash('success', "Rack deleted successfully");
@@ -187,21 +183,17 @@ class RackController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->rackService->getRacks()->onlyTrashed();
             return DataTables::eloquent($query)
-                ->editColumn('deleted_by', function ($rack) {
-                    return $this->deleter_name($rack);
-                })
-                ->editColumn('deleted_at', function ($rack) {
-                    return $rack->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($rack) {
-                    $menuItems = $this->trashedMenuItems($rack);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('deleted_by', fn($rack) => $this->deleter_name($rack))
+                ->editColumn('deleted_at', fn($rack) => $rack->deleted_at_formatted)
+                ->editColumn('action', fn($rack) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($rack)
+                ])->render())
                 ->rawColumns(['deleted_by', 'deleted_at', 'action'])
                 ->make(true);
         }
         return view('backend.admin.rack.trash');
     }
+
 
     protected function trashedMenuItems($model): array
     {
@@ -223,7 +215,7 @@ class RackController extends Controller implements HasMiddleware
         ];
     }
 
-     public function restore(string $id): RedirectResponse
+    public function restore(string $id): RedirectResponse
     {
         try {
             $this->rackService->restore($id);

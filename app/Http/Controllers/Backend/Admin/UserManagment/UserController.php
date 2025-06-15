@@ -59,28 +59,22 @@ class UserController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->userService->getUsers();
+
             return DataTables::eloquent($query)
-                ->editColumn('email_verified_at', function ($user) {
-                    return "<span class='badge badge-soft " . $user->verify_color . "'>" . $user->verify_label . "</span>";
-                })
-                ->editColumn('status', function ($user) {
-                    return "<span class='badge badge-soft " . $user->status_color . "'>" . $user->status_label . "</span>";
-                })
-                ->editColumn('creater_id', function ($user) {
-                    return $this->creater_name($user);
-                })
-                ->editColumn('created_at', function ($user) {
-                    return $user->created_at_formatted;
-                })
-                ->editColumn('action', function ($user) {
-                    $menuItems = $this->menuItems($user);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('email_verified_at', fn($user) => "<span class='badge badge-soft {$user->verify_color}'>{$user->verify_label}</span>")
+                ->editColumn('status', fn($user) => "<span class='badge badge-soft {$user->status_color}'>{$user->status_label}</span>")
+                ->editColumn('creater_id', fn($user) => $this->creater_name($user))
+                ->editColumn('created_at', fn($user) => $user->created_at_formatted)
+                ->editColumn('action', fn($user) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->menuItems($user),
+                ])->render())
                 ->rawColumns(['email_verified_at', 'status', 'creater_id', 'created_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.user-management.user.index');
     }
+
 
     protected function menuItems($model): array
     {
@@ -98,7 +92,7 @@ class UserController extends Controller implements HasMiddleware
                 'label' => 'Edit',
                 'permissions' => ['user-edit']
             ],
-             [
+            [
                 'routeName' => 'um.user.status',
                 'params' => [encrypt($model->id)],
                 'label' => $model->status_btn_label,
@@ -114,7 +108,7 @@ class UserController extends Controller implements HasMiddleware
 
         ];
     }
-    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -128,7 +122,7 @@ class UserController extends Controller implements HasMiddleware
      * Store a newly created resource in storage.
      */
     public function store(UserRequest $request)
-    { 
+    {
         try {
             $validated = $request->validated();
             $this->userService->createUser($validated, $request->file('image'));
@@ -150,7 +144,7 @@ class UserController extends Controller implements HasMiddleware
         $data['updater_name'] = $this->updater_name($data);
         return response()->json($data);
     }
-     public function status(string $id)
+    public function status(string $id)
     {
         $user = $this->userService->getUser($id);
         $this->userService->toggleStatus($user);
@@ -203,22 +197,20 @@ class UserController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->userService->getUsers()->onlyTrashed();
+
             return DataTables::eloquent($query)
-                ->editColumn('deleter_id', function ($user) {
-                    return $this->deleter_name($user);
-                })
-                ->editColumn('deleted_at', function ($user) {
-                    return $user->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($user) {
-                    $menuItems = $this->trashedMenuItems($user);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
-                ->rawColumns(['deleted_by', 'deleted_at', 'action'])
+                ->editColumn('deleter_id', fn($user) => $this->deleter_name($user))
+                ->editColumn('deleted_at', fn($user) => $user->deleted_at_formatted)
+                ->editColumn('action', fn($user) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($user),
+                ])->render())
+                ->rawColumns(['deleter_id', 'deleted_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.user-management.user.trash');
     }
+
 
     protected function trashedMenuItems($model): array
     {

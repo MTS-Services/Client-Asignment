@@ -65,17 +65,11 @@ class RoleController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->roleService->getRoles();
             return DataTables::eloquent($query)
-                ->editColumn('created_by', function ($role) {
-                    // return $role->creater_name;
-                    return $this->creater_name($role);
-                })
-                ->editColumn('created_at', function ($role) {
-                    return $role->created_at_formatted;
-                })
-                ->editColumn('action', function ($role) {
-                    $menuItems = $this->menuItems($role);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('created_by', fn($role) => $this->creater_name($role))
+                ->editColumn('created_at', fn($role) => $role->created_at_formatted)
+                ->editColumn('action', fn($role) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->menuItems($role),
+                ])->render())
                 ->rawColumns(['created_by', 'created_at', 'action'])
                 ->make(true);
         }
@@ -215,20 +209,17 @@ class RoleController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->roleService->getRoles()->onlyTrashed();
+
             return DataTables::eloquent($query)
-                ->editColumn('deleted_by', function ($role) {
-                    return $this->deleter_name($role);
-                })
-                ->editColumn('deleted_at', function ($role) {
-                    return $role->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($permission) {
-                    $menuItems = $this->trashedMenuItems($permission);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('deleted_by', fn($role) => $this->deleter_name($role))
+                ->editColumn('deleted_at', fn($role) => $role->deleted_at_formatted)
+                ->editColumn('action', fn($role) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($role),
+                ])->render())
                 ->rawColumns(['deleted_by', 'deleted_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.admin-management.role.trash');
     }
 

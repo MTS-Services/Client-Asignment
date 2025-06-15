@@ -18,4 +18,9 @@ class Category extends AuthBaseModel
         'updated_by',
         'deleted_by',
     ];
+
+    public function book()
+    {
+        return $this->hasMany(Book::class);
+    }
 }

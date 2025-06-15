@@ -19,4 +19,9 @@ class Rack extends BaseModel
         'deleted_by',
     ];
 
+    public function book()
+    {
+        return $this->hasMany(Book::class);
+    }
+
 }

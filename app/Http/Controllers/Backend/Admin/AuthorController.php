@@ -60,25 +60,21 @@ class AuthorController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->authorService->getAuthors();
+
             return DataTables::eloquent($query)
-                ->editColumn('status', function ($author) {
-                    return "<span class='badge badge-soft " . $author->status_color . "'>" . $author->status_label . "</span>";
-                })
-                ->editColumn('created_by', function ($author) {
-                    return $this->creater_name($author);
-                })
-                ->editColumn('created_at', function ($author) {
-                    return $author->created_at_formatted;
-                })
-                ->editColumn('action', function ($author) {
-                    $menuItems = $this->menuItems($author);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('status', fn($author) => "<span class='badge badge-soft {$author->status_color}'>{$author->status_label}</span>")
+                ->editColumn('created_by', fn($author) => $this->creater_name($author))
+                ->editColumn('created_at', fn($author) => $author->created_at_formatted)
+                ->editColumn('action', fn($author) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->menuItems($author),
+                ])->render())
                 ->rawColumns(['created_by', 'status', 'created_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.author.index');
     }
+
 
     protected function menuItems($model): array
     {
@@ -195,25 +191,21 @@ class AuthorController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->authorService->getAuthors()->onlyTrashed();
+
             return DataTables::eloquent($query)
-                ->editColumn('status', function ($author) {
-                    return "<span class='badge badge-soft " . $author->status_color . "'>" . $author->status_label . "</span>";
-                })
-                ->editColumn('deleted_by', function ($author) {
-                    return $this->deleter_name($author);
-                })
-                ->editColumn('deleted_at', function ($author) {
-                    return $author->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($permission) {
-                    $menuItems = $this->trashedMenuItems($permission);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('status', fn($author) => "<span class='badge badge-soft {$author->status_color}'>{$author->status_label}</span>")
+                ->editColumn('deleted_by', fn($author) => $this->deleter_name($author))
+                ->editColumn('deleted_at', fn($author) => $author->deleted_at_formatted)
+                ->editColumn('action', fn($author) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($author),
+                ])->render())
                 ->rawColumns(['deleted_by', 'status', 'deleted_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.author.trash');
     }
+
 
     protected function trashedMenuItems($model): array
     {

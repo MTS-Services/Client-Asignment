@@ -61,23 +61,18 @@ class PublisherController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->publisherService->getPublishers();
+
             return DataTables::eloquent($query)
-                ->editColumn('status', function ($admin) {
-                    return "<span class='badge badge-soft " . $admin->status_color . "'>" . $admin->status_label . "</span>";
-                })
-                ->editColumn('created_at', function ($publisher) {
-                    return $publisher->created_at_formatted;
-                })
-                ->editColumn('action', function ($publisher) {
-                    $menuItems = $this->menuItems($publisher);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
-                ->editColumn('created_by', function ($publisher) {
-                    return $this->creater_name($publisher);
-                })
-                ->rawColumns(['status', 'created_by', 'created_at', 'action'])
+                ->editColumn('created_by', fn($publisher) => $this->creater_name($publisher))
+                ->editColumn('status', fn($publisher) => "<span class='badge badge-soft {$publisher->status_color}'>{$publisher->status_label}</span>")
+                ->editColumn('created_at', fn($publisher) => $publisher->created_at_formatted)
+                ->editColumn('action', fn($publisher) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->menuItems($publisher),
+                ])->render())
+                ->rawColumns(['created_by', 'created_at', 'status', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.publish-management.publisher.index');
     }
 
@@ -205,20 +200,17 @@ class PublisherController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->publisherService->getPublishers()->onlyTrashed();
+
             return DataTables::eloquent($query)
-                ->editColumn('deleted_by', function ($publisher) {
-                    return $this->deleter_name($publisher);
-                })
-                ->editColumn('deleted_at', function ($publisher) {
-                    return $publisher->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($publisher) {
-                    $menuItems = $this->trashedMenuItems($publisher);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('deleted_by', fn($publisher) => $this->deleter_name($publisher))
+                ->editColumn('deleted_at', fn($publisher) => $publisher->deleted_at_formatted)
+                ->editColumn('action', fn($publisher) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($publisher),
+                ])->render())
                 ->rawColumns(['deleted_by', 'deleted_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.publish-management.publisher.trash');
     }
 
