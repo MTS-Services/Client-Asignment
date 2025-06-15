@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\DB; // Make sure DB is imported if used elsewhere in your controller
 use Illuminate\Support\Facades\Password; // Make sure Password facade is imported if used for reset tokens
 
@@ -38,7 +39,7 @@ class OtpVerificationController extends Controller
             // This session variable should be set by your ForgotPasswordController after email submission.
             $userId = session('otp_verification_user_id');
             if ($userId) {
-                return User::find($userId);
+                return User::find($userId);                
             }
         } else {
             // For authenticated users (e.g., after registration, or general unverified access)
@@ -159,6 +160,8 @@ class OtpVerificationController extends Controller
             $user->save();
             return redirect()->route('user.dashboard')->with('success', 'Email verified successfully!');
         } else {
+            session()->forget('otp_verification_user_id');
+            
             // Create password reset token
             $token = \Illuminate\Support\Str::random(60);
             DB::table('password_reset_tokens')->updateOrInsert(

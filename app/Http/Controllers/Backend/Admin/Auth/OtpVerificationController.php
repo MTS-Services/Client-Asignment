@@ -159,6 +159,7 @@ class OtpVerificationController extends Controller
             $admin->save();
             return redirect()->route('admin.dashboard')->with('success', 'Email verified successfully!');
         } else {
+            session()->forget('otp_verification_admin_id');
             // Create password reset token
             $token = \Illuminate\Support\Str::random(60);
             DB::table('password_reset_tokens')->updateOrInsert(

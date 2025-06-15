@@ -86,7 +86,6 @@
         </div>
 
         @push('js')
-            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> {{-- Axios CDN added here --}}
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     const otpInputs = document.querySelectorAll('.otp-digit');
@@ -153,8 +152,6 @@
                         resendButton.textContent = '{{ __('Sending...') }}';
 
                         try {
-                            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                'content');
                             const resendRoute = resendButton.dataset.resendRoute;
                             const forgotValue = document.getElementById('forgot')?.value;
 
