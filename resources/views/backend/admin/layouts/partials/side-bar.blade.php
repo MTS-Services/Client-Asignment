@@ -77,6 +77,15 @@
                         'active' => 'admin-category',
                     ],
                 ]" />
+            <x-admin.navlink type="dropdown" icon="users" name="Publish Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Publisher',
+                        'route' => route('pm.publisher.index'),
+                        'icon' => 'user',
+                        'active' => 'publisher-users',
+                    ],
+                ]" />
 
             @if (isset($not_use))
                 {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}
