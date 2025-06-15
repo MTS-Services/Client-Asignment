@@ -4,7 +4,7 @@ use App\Http\Controllers\Backend\User\DashboardController as UserDashboardContro
 use App\Http\Controllers\Backend\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['as' => 'user.', 'middleware' => ['auth:web', 'otp.verified']], function () {
+Route::group(['as' => 'user.', 'middleware' => ['auth:web', 'user.verified']], function () {
     Route::get('/dashboard', [UserDashboardController::class, 'dashboard'])->name('dashboard');
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'showProfile')->name('profile');

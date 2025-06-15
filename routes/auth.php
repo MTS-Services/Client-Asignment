@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController as UserConfirmablePa
 use App\Http\Controllers\Auth\EmailVerificationNotificationController as UserEmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController as UserEmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController as UserNewPasswordController;
-use App\Http\Controllers\Auth\OtpVerificationController;
+use App\Http\Controllers\Auth\OtpVerificationController as UserOtpVerificationController;
 use App\Http\Controllers\Auth\PasswordController as UserPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController as UserPasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController as UserRegisteredUserController;
@@ -19,6 +19,7 @@ use App\Http\Controllers\Backend\Admin\Auth\NewPasswordController as AdminNewPas
 use App\Http\Controllers\Backend\Admin\Auth\PasswordController as AdminPasswordController;
 use App\Http\Controllers\Backend\Admin\Auth\PasswordResetLinkController as AdminPasswordResetLinkController;
 use App\Http\Controllers\Backend\Admin\Auth\VerifyEmailController as AdminVerifyEmailController;
+use App\Http\Controllers\Backend\Admin\Auth\OtpVerificationController as AdminOtpVerificationController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -49,7 +50,8 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 });
 
-Route::controller(OtpVerificationController::class)->group(function () {
+// User Otp Verification Routes
+Route::controller(UserOtpVerificationController::class)->group(function () {
     Route::get('/otp-verification', 'otp')->name('otp-verification');
     Route::post('/verify-otp', 'verify')->name('verify-otp');
     Route::post('/otp-resend', 'resend')->name('otp-resend')->middleware('throttle:6,1');
@@ -82,6 +84,14 @@ Route::middleware('auth:web')->group(function () {
 
 // Admin Auth Rotues
 Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
+
+    // Admin Otp Verification Routes
+    Route::controller(AdminOtpVerificationController::class)->group(function () {
+        Route::get('/otp-verification', 'otp')->name('otp-verification');
+        Route::post('/verify-otp', 'verify')->name('verify-otp');
+        Route::post('/otp-resend', 'resend')->name('otp-resend')->middleware('throttle:6,1');
+    });
+
     Route::middleware('guest:admin')->group(function () {
         Route::get('login', [AdminAuthenticatedSessionController::class, 'create'])
             ->name('login');
