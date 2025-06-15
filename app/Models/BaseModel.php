@@ -10,7 +10,7 @@ class BaseModel extends Model
 {
     use HasFactory, SoftDeletes;
     protected $appends = [
-        
+
 
         'created_at_formatted',
         'updated_at_formatted',
@@ -53,7 +53,7 @@ class BaseModel extends Model
 
 
 
-   
+
 
     // Accessor for created time
     public function getCreatedAtFormattedAttribute()
