@@ -18,6 +18,7 @@ class User extends AuthBaseModel
      * @var list<string>
      */
     protected $fillable = [
+        'sort_order',
         'name',
         'username',
         'email',

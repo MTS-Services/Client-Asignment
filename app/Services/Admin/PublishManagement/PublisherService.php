@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class PublisherService
 {
     
-    public function getPublishers($orderBy = 'name', $order = 'asc')
+    public function getPublishers($orderBy = 'sort_order', $order = 'asc')
     {
         return Publisher::orderBy($orderBy, $order)->latest();
     }
