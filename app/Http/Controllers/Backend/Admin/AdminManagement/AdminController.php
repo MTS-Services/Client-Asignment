@@ -81,7 +81,7 @@ class AdminController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($admin) {
                     $menuItems = $this->menuItems($admin);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['role_id', 'status', 'email_verified_at', 'created_by', 'created_at', 'action'])
                 ->make(true);
@@ -244,7 +244,7 @@ class AdminController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($admin) {
                     $menuItems = $this->trashedMenuItems($admin);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['deleted_by', 'deleted_at', 'action'])
                 ->make(true);

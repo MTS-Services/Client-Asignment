@@ -8,7 +8,8 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Trashed Role List') }}
                 </h2>
-                <x-admin.primary-link href="{{ route('am.role.index') }}">{{ __('Back') }}
+                <x-admin.primary-link href="{{ route('am.role.index') }}">{{ __('Back') }} <i data-lucide="undo-2"
+                        class="w-4 h-4"></i>
                 </x-admin.primary-link>
             </div>
         </div>

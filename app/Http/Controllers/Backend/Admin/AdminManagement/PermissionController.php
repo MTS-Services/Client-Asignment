@@ -65,7 +65,7 @@ class PermissionController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($permission) {
                     $menuItems = $this->menuItems($permission);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['created_by', 'created_at', 'action'])
                 ->make(true);
@@ -185,7 +185,7 @@ class PermissionController extends Controller implements HasMiddleware
             return DataTables::eloquent($query)
                 ->editColumn('action', function ($permission) {
                     $menuItems = $this->trashedMenuItems($permission);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['action'])
                 ->make(true);

@@ -13,18 +13,11 @@
                 <div class="hidden sm:block">
 
                     <h1 class="text-xl lg:text-2xl font-bold dark:text-text-white text-text-light-primary">
-                        @if (Carbon\Carbon::now()->hour < 12)
-                            {{ __('Good morning') }}
-                        @elseif (Carbon\Carbon::now()->hour < 17)
-                            {{ __('Good afternoon') }}
-                        @else
-                            {{ __('Good evening') }}
-                        @endif,
+                        {{ __('Good day,') }}
                         {{ admin()->name }}
                     </h1>
                     <p class="text-text-light-secondary dark:text-text-dark-primary text-sm">
-                        {{ __("Here's what's happening
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        today") }}
+                        {{ __("Here's what's happening today") }}
                     </p>
                 </div>
             </div>

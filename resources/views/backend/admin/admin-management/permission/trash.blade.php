@@ -8,8 +8,8 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Trashed Permission List') }}
                 </h2>
-                <x-admin.primary-link href="{{ route('am.permission.index') }}">{{ __('Back') }}
-                </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('am.permission.index') }}">{{ __('Back') }} <i
+                        data-lucide="undo-2" class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 
@@ -49,7 +49,7 @@
                     displayLength: 10,
                     main_route: "{{ route('am.permission.trash') }}",
                     order_route: "{{ route('update.sort.order') }}",
-                     export_columns: [0, 1, 2, 3, 4],
+                    export_columns: [0, 1, 2, 3, 4],
                     model: 'Permission',
                 };
                 initializeDataTable(details);
