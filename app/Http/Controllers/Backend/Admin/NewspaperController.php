@@ -71,7 +71,7 @@ class NewspaperController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($newspaper) {
                     $menuItems = $this->menuItems($newspaper);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['created_by', 'status', 'created_at', 'action'])
                 ->make(true);
@@ -208,7 +208,7 @@ class NewspaperController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($newspaper) {
                     $menuItems = $this->trashedMenuItems($newspaper);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['deleted_by', 'status', 'deleted_at', 'action'])
                 ->make(true);

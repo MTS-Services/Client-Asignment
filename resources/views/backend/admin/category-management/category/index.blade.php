@@ -8,8 +8,8 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Category List') }}</h2>
                 <div class="flex items-center gap-2">
-                    <x-admin.secondary-link error="true" href="{{ route('am.category.trash') }}">{{ __('Trash') }}
-                    </x-admin.secondary-link>
+                    <x-admin.primary-link error="true" href="{{ route('am.category.trash') }}">{{ __('Trash') }}
+                    </x-admin.primary-link>
                     <x-admin.primary-link href="{{ route('am.category.create') }}">{{ __('Add') }}
                     </x-admin.primary-link>
                 </div>
@@ -56,7 +56,7 @@
                     displayLength: 10,
                     main_route: "{{ route('am.category.index') }}",
                     order_route: "{{ route('update.sort.order') }}",
-                    export_columns: [0, 1, 2, 3, 4],
+                    export_columns: [0, 1, 2, 3, 4, 5],
                     model: 'Category',
                 };
                 // initializeDataTable(details);
@@ -71,7 +71,7 @@
 
                 $(document).on('click', '.view', function() {
                     const id = $(this).data('id');
-                    const route = "{{ route('am.admin.show', ':id') }}";
+                    const route = "{{ route('am.category.show', ':id') }}";
 
                     const details = [{
                             label: '{{ __('Name') }}',

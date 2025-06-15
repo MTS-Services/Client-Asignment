@@ -13,6 +13,10 @@ class Newspaper extends BaseModel
         'description',
         'cover_image',
         'status',
+
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
     public function __construct(array $attributes = [])

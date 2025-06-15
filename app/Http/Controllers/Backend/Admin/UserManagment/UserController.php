@@ -74,7 +74,7 @@ class UserController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($user) {
                     $menuItems = $this->menuItems($user);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['email_verified_at', 'status', 'creater_id', 'created_at', 'action'])
                 ->make(true);
@@ -212,7 +212,7 @@ class UserController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($user) {
                     $menuItems = $this->trashedMenuItems($user);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['deleted_by', 'deleted_at', 'action'])
                 ->make(true);

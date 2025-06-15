@@ -72,7 +72,7 @@ class CategoryController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($service) {
                     $menuItems = $this->menuItems($service);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['status', 'created_by', 'created_at', 'action'])
                 ->make(true);
@@ -207,7 +207,7 @@ class CategoryController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($permission) {
                     $menuItems = $this->trashedMenuItems($permission);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['status', 'deleted_by', 'deleted_at', 'action'])
                 ->make(true);
