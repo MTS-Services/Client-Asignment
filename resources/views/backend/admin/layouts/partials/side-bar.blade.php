@@ -86,7 +86,17 @@
                         'active' => 'publisher-users',
                     ],
                 ]" />
+            <x-admin.navlink type="single" icon="layout-dashboard" name="Author" :route="route('author.index')"
+                active="author-users" :page_slug="$active" />
 
+            <x-admin.navlink type="single" icon="layout-dashboard" name="Rack" :route="route('rack.index')"
+                active="admin-rack" :page_slug="$active" />
+                
+            <x-admin.navlink type="single" icon="layout-dashboard" name="Magazine" :route="route('magazine.index')"
+                active="admin-magazine" :page_slug="$active" />
+
+            <x-admin.navlink type="single" icon="layout-dashboard" name="Newspaper" :route="route('newspaper.index')"
+                active="admin-newspaper" :page_slug="$active" />
             @if (isset($not_use))
                 {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}
                 {{-- <x-admin.navlink type="dropdown" icon="shopping-cart" name="E-commerce" :page_slug="$active"

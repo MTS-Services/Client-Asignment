@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Publisher;
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Rack;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,6 +22,10 @@ class DatabaseSeeder extends Seeder
             RoleHasPermissionSeeder::class,
             CategorySeeder::class,
             PublisherSeeder::class,
+            AuthorSeeder::class,
+            RackSeeder::class,
+            MagazineSeeder::class,
+            NewspaperSeeder::class,
         ]);
     }
 }

@@ -10,7 +10,7 @@ class BaseModel extends Model
 {
     use HasFactory, SoftDeletes;
     protected $appends = [
-        'modified_image',
+        
 
         'created_at_formatted',
         'updated_at_formatted',
@@ -53,10 +53,7 @@ class BaseModel extends Model
 
 
 
-    public function getModifiedImageAttribute()
-    {
-        return auth_storage_url($this->image);
-    }
+   
 
     // Accessor for created time
     public function getCreatedAtFormattedAttribute()

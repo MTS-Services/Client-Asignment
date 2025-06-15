@@ -4,9 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
+use App\Http\Controllers\Backend\Admin\AuthorController;
 use App\Http\Controllers\Backend\Admin\CategoryManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Backend\Admin\MagazineController;
+use App\Http\Controllers\Backend\Admin\NewspaperController;
 use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
+use App\Http\Controllers\Backend\Admin\RackController;
 
 Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
@@ -58,4 +62,40 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () 
             Route::delete('/permanent-delete/{publisher}', 'permanentDelete')->name('permanent-delete');
         });
     });
+    // Author Management
+    Route::resource('author', AuthorController::class);
+    Route::controller(AuthorController::class)->name('author.')->prefix('author')->group(function () {
+        Route::post('/show/{author}', 'show')->name('show');
+        Route::get('/status/{author}', 'status')->name('status');
+        Route::get('/trash/bin', 'trash')->name('trash');
+        Route::get('/restore/{author}', 'restore')->name('restore');
+        Route::delete('/permanent-delete/{author}', 'permanentDelete')->name('permanent-delete');
+    });
+
+    // Rack Management
+    Route::resource('rack', RackController::class);
+    Route::controller(RackController::class)->name('rack.')->prefix('rack')->group(function () {
+        Route::post('/show/{rack}', 'show')->name('show');
+        Route::get('/trash/bin', 'trash')->name('trash');
+        Route::get('/restore/{rack}', 'restore')->name('restore');
+        Route::delete('/permanent-delete/{rack}', 'permanentDelete')->name('permanent-delete');
+    });
+
+    Route::resource('magazine', MagazineController::class);
+    Route::controller(MagazineController::class)->name('magazine.')->prefix('magazine')->group(function () {
+        Route::post('/show/{magazine}', 'show')->name('show');
+        Route::get('/status/{magazine}', 'status')->name('status');
+        Route::get('/trash/bin', 'trash')->name('trash');
+        Route::get('/restore/{magazine}', 'restore')->name('restore');
+        Route::delete('/permanent-delete/{magazine}', 'permanentDelete')->name('permanent-delete');
+    });
+    Route::resource('newspaper', NewspaperController::class);
+    Route::controller(NewspaperController::class)->name('newspaper.')->prefix('newspaper')->group(function () {
+        Route::post('/show/{newspaper}', 'show')->name('show');
+        Route::get('/status/{newspaper}', 'status')->name('status');
+        Route::get('/trash/bin', 'trash')->name('trash');
+        Route::get('/restore/{newspaper}', 'restore')->name('restore');
+        Route::delete('/permanent-delete/{newspaper}', 'permanentDelete')->name('permanent-delete');
+    });
+
 });
