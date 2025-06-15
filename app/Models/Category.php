@@ -11,4 +11,9 @@ class Category extends AuthBaseModel
         'slug',
         'description',
     ];
+
+    public function book()
+    {
+        return $this->hasMany(Book::class);
+    }
 }

@@ -58,4 +58,9 @@ class Publisher extends BaseModel
     {
         return $this->status == self::STATUS_ACTIVE ? 'btn-error' : 'btn-success';
     }
+
+    public function book()
+    {
+        return $this->hasMany(Book::class);
+    }
 }
