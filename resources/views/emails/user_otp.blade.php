@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+Name: {{ $user->name }}
+Otp is : {{ $otp }}
+
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -173,4 +176,4 @@
     </table>
 
 </body>
-</html>
+</html> --}}
