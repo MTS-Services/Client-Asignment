@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Backend\Admin\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\UserOtpMail;
+use App\Mail\AdminOtpMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\DB; // Make sure DB is imported if used elsewhere in your controller
 use Illuminate\Support\Facades\Password; // Make sure Password facade is imported if used for reset tokens
 
@@ -27,26 +26,26 @@ class OtpVerificationController extends Controller
     }
 
     /**
-     * Helper to retrieve the user for OTP verification based on the context.
+     * Helper to retrieve the admin for OTP verification based on the context.
      *
      * @param Request $request
-     * @return User|null
+     * @return Admin|null
      */
-    protected function getVerificationUser(Request $request): ?User
+    protected function getVerificationAdmin(Request $request): ?Admin
     {
         if ($this->isForgot($request)) {
-            // For forgot password, try to get user ID from session
+            // For forgot password, try to get admin ID from session
             // This session variable should be set by your ForgotPasswordController after email submission.
-            $userId = session('otp_verification_user_id');
-            if ($userId) {
-                return User::find($userId);                
+            $adminId = session('otp_verification_admin_id');
+            if ($adminId) {
+                return Admin::find($adminId);
             }
         } else {
-            // For authenticated users (e.g., after registration, or general unverified access)
-            return Auth::guard('web')->user();
+            // For authenticated admins (e.g., after registration, or general unverified access)
+            return Auth::guard('admin')->user();
         }
 
-        return null; // User not found in either scenario
+        return null; // Admin not found in either scenario
     }
 
     /**
@@ -56,28 +55,28 @@ class OtpVerificationController extends Controller
     public function otp(Request $request)
     {
         $isForgot = $this->isForgot($request);
-        $user = $this->getVerificationUser($request);
+        $admin = $this->getVerificationAdmin($request);
 
-        // If no user is found for verification (e.g., session expired, or didn't initiate forgot flow)
-        if (!$user) {
+        // If no admin is found for verification (e.g., session expired, or didn't initiate forgot flow)
+        if (!$admin) {
             if ($isForgot) {
-                return redirect()->route('password.request')->withErrors([
+                return redirect()->route('admin.password.request')->withErrors([
                     'email' => 'Please initiate the password reset process first.'
                 ]);
             } else {
-                return redirect()->route('login'); // Redirect to login for general unauthenticated access
+                return redirect()->route('admin.login'); // Redirect to login for general unauthenticated access
             }
         }
 
-        // Check if the user's email is already verified. If so, they shouldn't be here.
+        // Check if the admin's email is already verified. If so, they shouldn't be here.
         // This is a safeguard if they directly access /otp-verification after being verified.
-        if (!is_null($user->email_verified_at) && !$isForgot) {
+        if (!is_null($admin->email_verified_at) && !$isForgot) {
             // If already verified and not a forgot password flow, redirect them away.
-            return redirect()->route('user.dashboard')->with('info', 'Your email is already verified.');
+            return redirect()->route('admin.dashboard')->with('info', 'Your email is already verified.');
         }
 
-        $lastOtpSentAt = $user->last_otp_sent_at ? $user->last_otp_sent_at->timestamp : null;
-        $otpExpired = $user->email_otp_expires_at ? $user->email_otp_expires_at->isPast() : true; // Assume expired if null
+        $lastOtpSentAt = $admin->last_otp_sent_at ? $admin->last_otp_sent_at : null;
+        $otpExpired = $admin->email_otp_expires_at ? $admin->email_otp_expires_at->isPast() : true; // Assume expired if null
 
         // Determine if an OTP needs to be sent:
         // 1. If no OTP was ever sent, OR
@@ -85,7 +84,7 @@ class OtpVerificationController extends Controller
         // 3. If it's a forgot password flow and no OTP has been sent yet (initial landing).
         if (!$lastOtpSentAt || $otpExpired || ($isForgot && !$lastOtpSentAt)) {
 
-            $throttleKey = ($isForgot ? 'initial_otp_forgot_' : 'initial_otp_') . $user->id;
+            $throttleKey = ($isForgot ? 'initial_otp_forgot_' : 'initial_otp_') . $admin->id;
 
             if (RateLimiter::tooManyAttempts($throttleKey, $perMinute = 1)) {
                 $secondsRemaining = RateLimiter::availableIn($throttleKey);
@@ -93,23 +92,23 @@ class OtpVerificationController extends Controller
             } else {
                 RateLimiter::hit($throttleKey, $decayMinutes = 1);
 
-                $user->email_otp = random_int(100000, 999999);
-                $user->email_otp_expires_at = now()->addMinutes(2); // Set OTP validity (e.g., 2 minutes)
-                $user->last_otp_sent_at = now(); // Update the last sent timestamp
-                $user->save();
+                $admin->email_otp = random_int(100000, 999999);
+                $admin->email_otp_expires_at = now()->addMinutes(2); // Set OTP validity (e.g., 2 minutes)
+                $admin->last_otp_sent_at = now(); // Update the last sent timestamp
+                $admin->save();
 
-                Mail::to($user->email)->send(new UserOtpMail($user, $user->email_otp));
+                Mail::to($admin->email)->send(new AdminOtpMail($admin, $admin->email_otp));
                 session()->flash('success', 'A new verification code has been sent to your email.');
-                $lastOtpSentAt = $user->last_otp_sent_at->timestamp; // Update for view
+                $lastOtpSentAt = $admin->last_otp_sent_at->timestamp; // Update for view
             }
         }
 
         // Pass data to the view
         $data['isForgot'] = $isForgot;
         $data['lastOtpSentAt'] = $lastOtpSentAt; // Used by frontend for cooldown
-        $data['email'] = $user->email; // Useful to display the email being verified
+        $data['email'] = $admin->email; // Useful to display the email being verified
 
-        return view('auth.otp-verification', $data);
+        return view('frontend.auth.admin.otp-verification', $data);
     }
 
     /**
@@ -122,11 +121,11 @@ class OtpVerificationController extends Controller
         ]);
 
         $isForgot = $this->isForgot($request);
-        $user = $this->getVerificationUser($request);
+        $admin = $this->getVerificationAdmin($request);
 
-        if (!$user) {
+        if (!$admin) {
             $message = $isForgot
-                ? 'Your session has expired or user not found. Please re-initiate password reset.'
+                ? 'Your session has expired or admin not found. Please re-initiate password reset.'
                 : 'Authentication error. Please log in again.';
             throw ValidationException::withMessages([
                 'otp' => $message
@@ -136,42 +135,41 @@ class OtpVerificationController extends Controller
         // OTP comparison (ensure it's string vs string or integer vs integer if using integer column)
         // Given 'digits:6' validation, it's safer to cast one or ensure types match.
         // If email_otp column is string, compare directly. If it's integer, cast request->otp to int.
-        if ((string)$user->email_otp !== (string)$request->otp) {
+        if ((string)$admin->email_otp !== (string)$request->otp) {
             throw ValidationException::withMessages([
                 'otp' => 'Invalid OTP. Please try again.'
             ]);
         }
 
         // Check OTP expiry
-        if (!now()->isBefore($user->email_otp_expires_at)) {
+        if (!now()->isBefore($admin->email_otp_expires_at)) {
             throw ValidationException::withMessages([
                 'otp' => 'OTP has expired. Please try again.'
             ]);
         }
 
         // OTP is valid: Clear OTP data
-        $user->email_otp = null;
-        $user->email_otp_expires_at = null;
-        $user->last_otp_sent_at = null;
-        $user->save();
+        $admin->email_otp = null;
+        $admin->email_otp_expires_at = null;
+        $admin->last_otp_sent_at = null;
+        $admin->save();
 
         if (!$isForgot) {
-            $user->email_verified_at = now();
-            $user->save();
-            return redirect()->route('user.dashboard')->with('success', 'Email verified successfully!');
+            $admin->email_verified_at = now();
+            $admin->save();
+            return redirect()->route('admin.dashboard')->with('success', 'Email verified successfully!');
         } else {
-            session()->forget('otp_verification_user_id');
-            
+            session()->forget('otp_verification_admin_id');
             // Create password reset token
             $token = \Illuminate\Support\Str::random(60);
             DB::table('password_reset_tokens')->updateOrInsert(
-                ['email' => $user->email],
+                ['email' => $admin->email],
                 [
                     'token' => \Illuminate\Support\Facades\Hash::make($token),
                     'created_at' => now()
                 ]
             );
-            return redirect()->route('password.reset', ['token' => $token])
+            return redirect()->route('admin.password.reset', ['token' => $token])
                 ->with('success', 'OTP verified. Please reset your password.');
         }
     }
@@ -182,9 +180,9 @@ class OtpVerificationController extends Controller
     public function resend(Request $request)
     {
         $isForgot = $this->isForgot($request);
-        $user = $this->getVerificationUser($request);
+        $admin = $this->getVerificationAdmin($request);
 
-        if (!$user) {
+        if (!$admin) {
             if ($isForgot) {
                 return response()->json([
                     'success' => false,
@@ -198,8 +196,8 @@ class OtpVerificationController extends Controller
             }
         }
 
-        // Use a specific throttle key based on user and flow
-        $throttleKey = ($isForgot ? 'resend_otp_forgot_' : 'resend_otp_') . $user->id;
+        // Use a specific throttle key based on admin and flow
+        $throttleKey = ($isForgot ? 'resend_otp_forgot_' : 'resend_otp_') . $admin->id;
 
         if (RateLimiter::tooManyAttempts($throttleKey, $perMinute = 1)) {
             $secondsRemaining = RateLimiter::availableIn($throttleKey);
@@ -212,17 +210,17 @@ class OtpVerificationController extends Controller
 
         RateLimiter::hit($throttleKey, $decayMinutes = 1);
 
-        $user->email_otp = random_int(100000, 999999);
-        $user->email_otp_expires_at = now()->addMinutes(2); // Same expiry as initial send
-        $user->last_otp_sent_at = now();
-        $user->save();
+        $admin->email_otp = random_int(100000, 999999);
+        $admin->email_otp_expires_at = now()->addMinutes(2); // Same expiry as initial send
+        $admin->last_otp_sent_at = now();
+        $admin->save();
 
-        Mail::to($user->email)->send(new UserOtpMail($user, $user->email_otp));
+        Mail::to($admin->email)->send(new AdminOtpMail($admin, $admin->email_otp));
 
         return response()->json([
             'success' => true,
             'message' => 'A new OTP has been sent to your email.',
-            'last_sent_at' => $user->last_otp_sent_at->timestamp
+            'last_sent_at' => $admin->last_otp_sent_at->timestamp
         ]);
     }
 }

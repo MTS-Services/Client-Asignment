@@ -19,6 +19,7 @@ class Admin extends AuthBaseModel
         'email_verified_at',
         'email_otp',
         'email_otp_expires_at',
+        'last_otp_sent_at',
         'image',
 
         'created_by',
@@ -35,6 +36,7 @@ class Admin extends AuthBaseModel
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'email_otp_expires_at' => 'datetime',
+            'last_otp_sent_at' => 'datetime',
             'email_otp' => 'integer',
         ];
     }

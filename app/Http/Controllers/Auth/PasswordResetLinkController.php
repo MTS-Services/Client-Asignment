@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\OtpMail;
+use App\Mail\UserOtpMail;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -59,11 +59,23 @@ class PasswordResetLinkController extends Controller
         $user->save();
 
         // Send OTP email
-        Mail::to($user->email)->send(new OtpMail($user, $user->email_otp));
+        Mail::to($user->email)->send(new UserOtpMail($user, $user->email_otp));
 
         // Store the user's ID in the session for OtpVerificationController
         Session::put('otp_verification_user_id', $user->id);
         // Redirect to OTP verification page for forgot password flow
         return redirect()->route('otp-verification', ['forgot' => true]);
+
+        // // We will send the password reset link to this user. Once we have attempted
+        // // to send the link, we will examine the response then see the message we
+        // // need to show to the user. Finally, we'll send out a proper response.
+        // $status = Password::sendResetLink(
+        //     $request->only('email')
+        // );
+
+        // return $status == Password::RESET_LINK_SENT
+        //     ? back()->with('status', __($status))
+        //     : back()->withInput($request->only('email'))
+        //     ->withErrors(['email' => __($status)]);
     }
 }
