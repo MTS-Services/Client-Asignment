@@ -11,48 +11,102 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB; // Make sure DB is imported if used elsewhere in your controller
+use Illuminate\Support\Facades\Password; // Make sure Password facade is imported if used for reset tokens
 
 class OtpVerificationController extends Controller
 {
+    /**
+     * Determines if the request is part of a "forgot password" flow.
+     * This relies on a 'forgot' input being present and true.
+     */
     protected function isForgot(Request $request): bool
     {
         return (bool) $request->input('forgot', false);
     }
 
+    /**
+     * Helper to retrieve the user for OTP verification based on the context.
+     *
+     * @param Request $request
+     * @return User|null
+     */
+    protected function getVerificationUser(Request $request): ?User
+    {
+        if ($this->isForgot($request)) {
+            // For forgot password, try to get user ID from session
+            // This session variable should be set by your ForgotPasswordController after email submission.
+            $userId = session('otp_verification_user_id');
+            if ($userId) {
+                return User::find($userId);
+            }
+        } else {
+            // For authenticated users (e.g., after registration, or general unverified access)
+            return Auth::user();
+        }
 
+        return null; // User not found in either scenario
+    }
+
+    /**
+     * Displays the OTP verification view and handles initial OTP sending.
+     * This method is responsible for ensuring an OTP is sent if needed.
+     */
     public function otp(Request $request)
     {
         $isForgot = $this->isForgot($request);
+        $user = $this->getVerificationUser($request);
 
-        $user = User::where('email', $request->email)->firstOrFail();
-
+        // If no user is found for verification (e.g., session expired, or didn't initiate forgot flow)
         if (!$user) {
-            session()->flash('error', 'Email not found.');
-            return redirect()->back();
-        }
-
-        $lastOtpSentAt = $user->last_otp_sent_at ? $user->last_otp_sent_at->timestamp : null;
-
-        if ($isForgot && !$lastOtpSentAt) {
-            $throttleKey = 'resend_otp_for_' . $user->id;
-
-            if (!RateLimiter::tooManyAttempts($throttleKey, $perMinute = 1)) {
-                RateLimiter::hit($throttleKey, $decayMinutes = 1);
-
-                $user->email_otp = random_int(100000, 999999);
-                $user->email_otp_expires_at = now()->addMinutes(2);
-                $user->last_otp_sent_at = now();
-                $user->save();
-                Mail::to($user->email)->send(new OtpMail($user, $user->email_otp));
-                session()->flash('success', 'A new OTP has been sent to your email.');
-                $lastOtpSentAt = $user->last_otp_sent_at->timestamp;
+            if ($isForgot) {
+                return redirect()->route('password.request')->withErrors([
+                    'email' => 'Please initiate the password reset process first.'
+                ]);
+            } else {
+                return redirect()->route('login'); // Redirect to login for general unauthenticated access
             }
         }
 
-        $data['email'] = $user->email;
+        // Check if the user's email is already verified. If so, they shouldn't be here.
+        // This is a safeguard if they directly access /otp-verification after being verified.
+        if (!is_null($user->email_verified_at) && !$isForgot) {
+            // If already verified and not a forgot password flow, redirect them away.
+            return redirect()->route('user.dashboard')->with('info', 'Your email is already verified.');
+        }
+
+        $lastOtpSentAt = $user->last_otp_sent_at ? $user->last_otp_sent_at->timestamp : null;
+        $otpExpired = $user->email_otp_expires_at ? $user->email_otp_expires_at->isPast() : true; // Assume expired if null
+
+        // Determine if an OTP needs to be sent:
+        // 1. If no OTP was ever sent, OR
+        // 2. If the last sent OTP has expired, OR
+        // 3. If it's a forgot password flow and no OTP has been sent yet (initial landing).
+        if (!$lastOtpSentAt || $otpExpired || ($isForgot && !$lastOtpSentAt)) {
+
+            $throttleKey = ($isForgot ? 'initial_otp_forgot_' : 'initial_otp_') . $user->id;
+
+            if (RateLimiter::tooManyAttempts($throttleKey, $perMinute = 1)) {
+                $secondsRemaining = RateLimiter::availableIn($throttleKey);
+                session()->flash('error', 'Please wait before resending. Try again in ' . $secondsRemaining . ' seconds.');
+            } else {
+                RateLimiter::hit($throttleKey, $decayMinutes = 1);
+
+                $user->email_otp = random_int(100000, 999999);
+                $user->email_otp_expires_at = now()->addMinutes(2); // Set OTP validity (e.g., 2 minutes)
+                $user->last_otp_sent_at = now(); // Update the last sent timestamp
+                $user->save();
+
+                Mail::to($user->email)->send(new OtpMail($user, $user->email_otp));
+                session()->flash('success', 'A new verification code has been sent to your email.');
+                $lastOtpSentAt = $user->last_otp_sent_at->timestamp; // Update for view
+            }
+        }
+
+        // Pass data to the view
         $data['isForgot'] = $isForgot;
-        $data['lastOtpSentAt'] = $lastOtpSentAt;
+        $data['lastOtpSentAt'] = $lastOtpSentAt; // Used by frontend for cooldown
+        $data['email'] = $user->email; // Useful to display the email being verified
 
         return view('auth.otp-verification', $data);
     }
@@ -67,29 +121,44 @@ class OtpVerificationController extends Controller
         ]);
 
         $isForgot = $this->isForgot($request);
+        $user = $this->getVerificationUser($request);
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        if (!$user) {
+            $message = $isForgot
+                ? 'Your session has expired or user not found. Please re-initiate password reset.'
+                : 'Authentication error. Please log in again.';
+            throw ValidationException::withMessages([
+                'otp' => $message
+            ]);
+        }
 
-        if ($user->email_otp != $request->otp) {
+        // OTP comparison (ensure it's string vs string or integer vs integer if using integer column)
+        // Given 'digits:6' validation, it's safer to cast one or ensure types match.
+        // If email_otp column is string, compare directly. If it's integer, cast request->otp to int.
+        if ((string)$user->email_otp !== (string)$request->otp) {
             throw ValidationException::withMessages([
                 'otp' => 'Invalid OTP. Please try again.'
             ]);
         }
+
+        // Check OTP expiry
         if (!now()->isBefore($user->email_otp_expires_at)) {
             throw ValidationException::withMessages([
                 'otp' => 'OTP has expired. Please try again.'
             ]);
         }
 
+        // OTP is valid: Clear OTP data
         $user->email_otp = null;
         $user->email_otp_expires_at = null;
+        $user->last_otp_sent_at = null;
+        $user->save();
 
         if (!$isForgot) {
             $user->email_verified_at = now();
-        }
-        $user->save();
-
-        if ($isForgot) {
+            $user->save();
+            return redirect()->route('user.dashboard')->with('success', 'Email verified successfully!');
+        } else {
             // Create password reset token
             $token = \Illuminate\Support\Str::random(60);
             DB::table('password_reset_tokens')->updateOrInsert(
@@ -102,18 +171,32 @@ class OtpVerificationController extends Controller
             return redirect()->route('password.reset', ['token' => $token])
                 ->with('success', 'OTP verified. Please reset your password.');
         }
-
-        return redirect()->route('user.dashboard')->with('success', 'Email verified successfully!');
     }
 
     /**
-     * Handles resending of OTP. This method is designed to be called via AJAX.
+     * Handles resending of OTP. This method is designed to be called via Axios.
      */
     public function resend(Request $request)
     {
-        $user = User::where('email', $request->email)->firstOrFail();
+        $isForgot = $this->isForgot($request);
+        $user = $this->getVerificationUser($request);
 
-        $throttleKey = 'resend_otp_for_' . $user->id;
+        if (!$user) {
+            if ($isForgot) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Please re-initiate the password reset process.'
+                ], 401);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Authentication required. Please log in.'
+                ], 401);
+            }
+        }
+
+        // Use a specific throttle key based on user and flow
+        $throttleKey = ($isForgot ? 'resend_otp_forgot_' : 'resend_otp_') . $user->id;
 
         if (RateLimiter::tooManyAttempts($throttleKey, $perMinute = 1)) {
             $secondsRemaining = RateLimiter::availableIn($throttleKey);
@@ -126,9 +209,8 @@ class OtpVerificationController extends Controller
 
         RateLimiter::hit($throttleKey, $decayMinutes = 1);
 
-        // Generate a new OTP and expiry
         $user->email_otp = random_int(100000, 999999);
-        $user->email_otp_expires_at = now()->addMinutes(2);
+        $user->email_otp_expires_at = now()->addMinutes(2); // Same expiry as initial send
         $user->last_otp_sent_at = now();
         $user->save();
 
