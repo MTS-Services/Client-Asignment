@@ -16,7 +16,7 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->bigInteger('sort_order')->default(0)->index();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('username')->unique()->nullable();

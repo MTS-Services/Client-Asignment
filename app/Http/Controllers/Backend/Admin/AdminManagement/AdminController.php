@@ -8,6 +8,7 @@ use App\Http\Traits\AuditRelationTraits;
 use App\Models\Admin;
 use App\Services\Admin\AdminManagement\AdminService;
 use App\Services\Admin\AdminManagement\RoleService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -124,7 +125,7 @@ class AdminController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $data['roles'] = $this->roleService->getRoles()->select(['id', 'name'])->get();
         return view('backend.admin.admin-management.admin.create', $data);
