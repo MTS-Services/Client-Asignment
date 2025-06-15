@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OtpMail;
+use App\Mail\UserOtpMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
@@ -97,7 +97,7 @@ class OtpVerificationController extends Controller
                 $user->last_otp_sent_at = now(); // Update the last sent timestamp
                 $user->save();
 
-                Mail::to($user->email)->send(new OtpMail($user, $user->email_otp));
+                Mail::to($user->email)->send(new UserOtpMail($user, $user->email_otp));
                 session()->flash('success', 'A new verification code has been sent to your email.');
                 $lastOtpSentAt = $user->last_otp_sent_at->timestamp; // Update for view
             }
@@ -214,7 +214,7 @@ class OtpVerificationController extends Controller
         $user->last_otp_sent_at = now();
         $user->save();
 
-        Mail::to($user->email)->send(new OtpMail($user, $user->email_otp));
+        Mail::to($user->email)->send(new UserOtpMail($user, $user->email_otp));
 
         return response()->json([
             'success' => true,

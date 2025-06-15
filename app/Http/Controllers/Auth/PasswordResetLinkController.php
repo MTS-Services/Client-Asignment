@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\OtpMail;
+use App\Mail\UserOtpMail;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -59,7 +59,7 @@ class PasswordResetLinkController extends Controller
         $user->save();
 
         // Send OTP email
-        Mail::to($user->email)->send(new OtpMail($user, $user->email_otp));
+        Mail::to($user->email)->send(new UserOtpMail($user, $user->email_otp));
 
         // Store the user's ID in the session for OtpVerificationController
         Session::put('otp_verification_user_id', $user->id);
