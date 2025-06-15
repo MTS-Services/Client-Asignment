@@ -104,10 +104,10 @@
                                 accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
                             @if ($book->cover_image)
                                 <div class="mt-2">
-                                    <img src="{{ asset('storage/' . $book->cover_image) }}" class="h-24 rounded" alt="Current Cover Image">
+                                    <img src="{{ $book->cover_image }}" class="h-24 rounded" alt="Current Cover Image">
                                 </div>
                             @endif
-                            <x-input-error class="mt-2" :messages="$errors->get('image')" />
+                            <x-input-error class="mt-2" :messages="$errors->get('cover_image')" />
                         </div>
 
                         <!-- Language -->
@@ -166,7 +166,9 @@
         <script src="{{ asset('assets/js/filepond.js') }}"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                file_upload(["#image"], ["image/jpeg", "image/png", "image/jpg", "image/webp", "image/svg"]);
+                 file_upload(["#cover_image"], ["image/jpeg", "image/png", "image/jpg, image/webp, image/svg"], {
+                    "#cover_image": "{{ $book->modified_image }}",
+                });
             });
         </script>
     @endpush
