@@ -13,7 +13,7 @@ use App\Http\Controllers\Backend\Admin\NewspaperController;
 use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
 use App\Http\Controllers\Backend\Admin\RackController;
 
-Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () {
+Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
 
     // Admin Management

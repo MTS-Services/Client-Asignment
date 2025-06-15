@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OtpMail;
+use App\Mail\UserOtpMail;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            Mail::to($user->email)->send(new OtpMail($user, $user->email_otp));
+            Mail::to($user->email)->send(new UserOtpMail($user, $user->email_otp));
             // Redirect to the OTP verification page.
             // Since the user is now authenticated, OtpVerificationController@otp
             return redirect()->route('otp-verification');
