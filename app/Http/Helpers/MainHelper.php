@@ -184,8 +184,3 @@ function isImage($path)
     $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
     return in_array($extension, $imageExtensions);
 }
-
-function generateOTP()
-{
-    return random_int(100000, 999999);
-}
