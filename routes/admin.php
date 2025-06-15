@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\AuthorController;
+use App\Http\Controllers\Backend\Admin\BookController;
 use App\Http\Controllers\Backend\Admin\CategoryManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\UserManagment\UserController;
@@ -107,6 +108,14 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
         Route::get('/trash/bin', 'trash')->name('trash');
         Route::get('/restore/{newspaper}', 'restore')->name('restore');
         Route::delete('/permanent-delete/{newspaper}', 'permanentDelete')->name('permanent-delete');
+    });
+    Route::resource('book', BookController::class);
+    Route::controller(BookController::class)->name('book.')->prefix('book')->group(function () {
+        Route::post('/show/{book}', 'show')->name('show');
+        Route::get('/status/{book}', 'status')->name('status');
+        Route::get('/trash/bin', 'trash')->name('trash');
+        Route::get('/restore/{book}', 'restore')->name('restore');
+        Route::delete('/permanent-delete/{book}', 'permanentDelete')->name('permanent-delete');
     });
 
 });
