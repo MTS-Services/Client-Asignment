@@ -56,22 +56,20 @@ class PermissionController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->permissionService->getPermissions();
+
             return DataTables::eloquent($query)
-                ->editColumn('created_by', function ($permission) {
-                    return $this->creater_name($permission);
-                })
-                ->editColumn('created_at', function ($permission) {
-                    return $permission->created_at_formatted;
-                })
-                ->editColumn('action', function ($permission) {
-                    $menuItems = $this->menuItems($permission);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('created_by', fn($permission) => $this->creater_name($permission))
+                ->editColumn('created_at', fn($permission) => $permission->created_at_formatted)
+                ->editColumn('action', fn($permission) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->menuItems($permission),
+                ])->render())
                 ->rawColumns(['created_by', 'created_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.admin-management.permission.index');
     }
+
 
     protected function menuItems($model): array
     {

@@ -218,26 +218,24 @@ class AdminController extends Controller implements HasMiddleware
         return $this->redirectIndex();
     }
 
-    public function trash(Request $request)
-    {
-        if ($request->ajax()) {
-            $query = $this->adminService->getAdmins()->onlyTrashed();
-            return DataTables::eloquent($query)
-                ->editColumn('deleted_by', function ($admin) {
-                    return $this->deleter_name($admin);
-                })
-                ->editColumn('deleted_at', function ($admin) {
-                    return $admin->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($admin) {
-                    $menuItems = $this->trashedMenuItems($admin);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
-                ->rawColumns(['deleted_by', 'deleted_at', 'action'])
-                ->make(true);
-        }
-        return view('backend.admin.admin-management.admin.trash');
+public function trash(Request $request)
+{
+    if ($request->ajax()) {
+        $query = $this->adminService->getAdmins()->onlyTrashed();
+
+        return DataTables::eloquent($query)
+            ->editColumn('deleted_by', fn($admin) => $this->deleter_name($admin))
+            ->editColumn('deleted_at', fn($admin) => $admin->deleted_at_formatted)
+            ->editColumn('action', fn($admin) => view('components.admin.action-buttons', [
+                'menuItems' => $this->trashedMenuItems($admin),
+            ])->render())
+            ->rawColumns(['deleted_by', 'deleted_at', 'action'])
+            ->make(true);
     }
+
+    return view('backend.admin.admin-management.admin.trash');
+}
+
 
     protected function trashedMenuItems($model): array
     {
