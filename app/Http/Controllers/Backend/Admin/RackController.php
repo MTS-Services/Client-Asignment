@@ -68,7 +68,7 @@ class RackController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($rack) {
                     $menuItems = $this->menuItems($rack);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['created_by', 'created_at', 'action'])
                 ->make(true);
@@ -195,7 +195,7 @@ class RackController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($rack) {
                     $menuItems = $this->trashedMenuItems($rack);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['deleted_by', 'deleted_at', 'action'])
                 ->make(true);

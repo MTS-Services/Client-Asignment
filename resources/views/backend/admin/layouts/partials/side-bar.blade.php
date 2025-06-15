@@ -73,7 +73,7 @@
                         'name' => 'Category',
                         'route' => route('am.category.index'),
                         'icon' => 'tags',
-                        'active' => 'admin-category',
+                        'active' => 'category',
                     ],
                 ]" />
             <x-admin.navlink type="dropdown" icon="users" name="Publish Management" :page_slug="$active"

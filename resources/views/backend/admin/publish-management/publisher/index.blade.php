@@ -8,8 +8,8 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Publisher List') }}</h2>
                 <div class="flex items-center gap-2">
-                    <x-admin.secondary-link error="true" href="{{ route('pm.publisher.trash') }}">{{ __('Trash') }}
-                    </x-admin.secondary-link>
+                    <x-admin.primary-link error="true" href="{{ route('pm.publisher.trash') }}">{{ __('Trash') }}
+                    </x-admin.primary-link>
                     <x-admin.primary-link href="{{ route('pm.publisher.create') }}">{{ __('Add') }}
                     </x-admin.primary-link>
                 </div>
