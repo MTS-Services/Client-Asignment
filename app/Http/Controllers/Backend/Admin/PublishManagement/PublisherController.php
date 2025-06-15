@@ -17,6 +17,7 @@ use Yajra\DataTables\Facades\DataTables;
 class PublisherController extends Controller implements HasMiddleware
 {
     use AuditRelationTraits;
+    protected PublisherService $publisherService;
 
     protected function redirectIndex(): RedirectResponse
     {
@@ -28,7 +29,7 @@ class PublisherController extends Controller implements HasMiddleware
         return redirect()->route('pm.publisher.trash');
     }
 
-    protected PublisherService $publisherService;
+
 
     public function __construct(PublisherService $publisherService)
     {
@@ -61,9 +62,6 @@ class PublisherController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->publisherService->getPublishers();
             return DataTables::eloquent($query)
-                ->editColumn('created_by', function ($publisher) {
-                    return $this->creater_name($publisher);
-                })
                 ->editColumn('status', function ($admin) {
                     return "<span class='badge badge-soft " . $admin->status_color . "'>" . $admin->status_label . "</span>";
                 })
@@ -74,7 +72,10 @@ class PublisherController extends Controller implements HasMiddleware
                     $menuItems = $this->menuItems($publisher);
                     return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['created_by', 'created_at', 'status', 'action'])
+                ->editColumn('created_by', function ($publisher) {
+                    return $this->creater_name($publisher);
+                })
+                ->rawColumns(['status', 'created_by', 'created_at', 'action'])
                 ->make(true);
         }
         return view('backend.admin.publish-management.publisher.index');

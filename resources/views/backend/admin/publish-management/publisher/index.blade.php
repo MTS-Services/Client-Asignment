@@ -48,8 +48,8 @@
                     ['email', true, true],
                     ['address', true, true],
                     ['status', true, true],
-                    ['created_by', true, true],
-                    ['created_at', true, true],
+                    ['created_by', false, false],
+                    ['created_at', false, false],
                     ['action', false, false],
                 ];
                 const details = {
