@@ -14,8 +14,8 @@ class Newspaper extends BaseModel
         'cover_image',
         'status',
     ];
-    
-        public function __construct(array $attributes = [])
+
+    public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         $this->appends = array_merge(parent::getAppends(), [
@@ -24,7 +24,7 @@ class Newspaper extends BaseModel
             'status_color',
             'status_btn_label',
             'status_btn_color',
-            
+
             'modified_image',
         ]);
     }
@@ -58,9 +58,8 @@ class Newspaper extends BaseModel
     {
         return $this->status == self::STATUS_ACTIVE ? 'btn-error' : 'btn-success';
     }
-     public function getModifiedImageAttribute()
+    public function getModifiedImageAttribute()
     {
-        return auth_storage_url($this->image);
+        return storage_url($this->cover_image);
     }
-
 }

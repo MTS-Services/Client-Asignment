@@ -43,7 +43,6 @@ class MagazineService
                 $data['image'] = $this->handleFileUpload($file, 'magazines', $data['cover_image']);
                 $this->fileDelete($magazine->image);
             }
-            $data['password'] = $data['password'] ?? $magazine->password;
             $data['updated_by'] = admin()->id;
             $magazine->update($data);
             return $magazine;

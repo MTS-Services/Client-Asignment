@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\NewspaperRequest;
 use App\Http\Traits\AuditRelationTraits;
+use App\Services\Admin\NewspaperService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,35 +19,35 @@ class NewspaperController extends Controller implements HasMiddleware
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('index route');
+        return redirect()->route('newspaper.index');
     }
 
     protected function redirectTrashed(): RedirectResponse
     {
-        return redirect()->route('trash route');
+        return redirect()->route('newspaper.trash');
     }
 
-    protected ServiceName $serviceName;
+    protected NewspaperService $newspaperService;
 
-    public function __construct(ServiceName $serviceName)
+    public function __construct(NewspaperService $newspaperService)
     {
-        $this->serviceName = $serviceName;
+        $this->newspaperService = $newspaperService;
     }
-    
+
     public static function middleware(): array
     {
         return [
             'auth:admin', // Applies 'auth:admin' to all methods
 
             // Permission middlewares using the Middleware class
-            new Middleware('permission:permisison-list', only: ['index']),
-            new Middleware('permission:permisison-details', only: ['show']),
-            new Middleware('permission:permisison-create', only: ['create', 'store']),
-            new Middleware('permission:permisison-edit', only: ['edit', 'update']),
-            new Middleware('permission:permisison-delete', only: ['destroy']),
-            new Middleware('permission:permisison-trash', only: ['trash']),
-            new Middleware('permission:permisison-restore', only: ['restore']),
-            new Middleware('permission:permisison-permanent-delete', only: ['permanentDelete']),
+            new Middleware('permission:newspaper-list', only: ['index']),
+            new Middleware('permission:newspaper-details', only: ['show']),
+            new Middleware('permission:newspaper-create', only: ['create', 'store']),
+            new Middleware('permission:newspaper-edit', only: ['edit', 'update']),
+            new Middleware('permission:newspaper-delete', only: ['destroy']),
+            new Middleware('permission:newspaper-trash', only: ['trash']),
+            new Middleware('permission:newspaper-restore', only: ['restore']),
+            new Middleware('permission:newspaper-permanent-delete', only: ['permanentDelete']),
             //add more permissions if needed
         ];
     }
@@ -56,22 +58,25 @@ class NewspaperController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = $this->serviceName->getService();
+            $query = $this->newspaperService->getNewspapers();
             return DataTables::eloquent($query)
-                 ->editColumn('created_by', function ($admin) {
-                    return $this->creater_name($admin);
+                ->editColumn('status', function ($newspaper) {
+                    return "<span class='badge badge-soft " . $newspaper->status_color . "'>" . $newspaper->status_label . "</span>";
                 })
-                ->editColumn('created_at', function ($admin) {
-                    return $admin->created_at_formatted;
+                ->editColumn('created_by', function ($newspaper) {
+                    return $this->creater_name($newspaper);
                 })
-                ->editColumn('action', function ($service) {
-                    $menuItems = $this->menuItems($service);
+                ->editColumn('created_at', function ($newspaper) {
+                    return $newspaper->created_at_formatted;
+                })
+                ->editColumn('action', function ($newspaper) {
+                    $menuItems = $this->menuItems($newspaper);
                     return view('components.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['created_by', 'created_at', 'action'])
+                ->rawColumns(['created_by', 'status', 'created_at', 'action'])
                 ->make(true);
         }
-        return view('view file url..');
+        return view('backend.admin.newspaper.index');
     }
 
     protected function menuItems($model): array
@@ -85,14 +90,19 @@ class NewspaperController extends Controller implements HasMiddleware
                 'permissions' => ['permission-list', 'permission-delete', 'permission-status']
             ],
             [
-                'routeName' => '',
+                'routeName' => 'newspaper.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
                 'permissions' => ['permission-edit']
             ],
-
             [
-                'routeName' => '',
+                'routeName' => 'newspaper.status',
+                'params' => [encrypt($model->id)],
+                'label' => $model->status_btn_label,
+                'permissions' => ['permission-status']
+            ],
+            [
+                'routeName' => 'newspaper.destroy',
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
@@ -108,20 +118,21 @@ class NewspaperController extends Controller implements HasMiddleware
     public function create(): View
     {
         //
-        return view('view file url ...');
+        return view('backend.admin.newspaper.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(NewspaperRequest $request)
     {
-         try {
-            // $validated = $request->validated();
-            //
-            session()->flash('success', "Service created successfully");
+        try {
+            $validated = $request->validated();
+
+            $this->newspaperService->createNewspaper($validated, $request->file('cover_image'));
+            session()->flash('success', "Newspaper created successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service creation failed');
+            session()->flash('error', "Newspaper creation failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -132,7 +143,7 @@ class NewspaperController extends Controller implements HasMiddleware
      */
     public function show(Request $request, string $id)
     {
-        $data = $this->serviceName->getService($id);
+        $data = $this->newspaperService->getNewspaper($id);
         $data['creater_name'] = $this->creater_name($data);
         $data['updater_name'] = $this->updater_name($data);
         return response()->json($data);
@@ -143,21 +154,23 @@ class NewspaperController extends Controller implements HasMiddleware
      */
     public function edit(string $id): View
     {
-        //$data['service'] = $this->serviceName->getService($id);
-        return view('view file url...', $data);
+        $data['newspaper'] = $this->newspaperService->getNewspaper($id);
+        return view('backend.admin.newspaper.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(NewspaperRequest $request, string $id)
     {
-         try {
-            // $validated = $request->validated();
-            //
-            session()->flash('success', "Service updated successfully");
+        
+        try {
+            $validated = $request->validated();
+            $newspaper = $this->newspaperService->getNewspaper($id);
+            $this->newspaperService->updateNewspaper($newspaper, $validated, $request->file('cover_image'));
+            session()->flash('success', "Newspaper updated successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service update failed');
+            session()->flash('error', "Newspaper update failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -168,11 +181,12 @@ class NewspaperController extends Controller implements HasMiddleware
      */
     public function destroy(string $id)
     {
-         try {
-            //
-            session()->flash('success', "Service deleted successfully");
+        try {
+            $newspaper = $this->newspaperService->getNewspaper($id);
+            $this->newspaperService->delete($newspaper);
+            session()->flash('success', "Newspaper deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service delete failed');
+            session()->flash('error', "Newspaper delete failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -181,51 +195,54 @@ class NewspaperController extends Controller implements HasMiddleware
     public function trash(Request $request)
     {
         if ($request->ajax()) {
-            $query = $this->serviceName->getPermissions()->onlyTrashed();
+            $query = $this->newspaperService->getNewspapers()->onlyTrashed();
             return DataTables::eloquent($query)
-                ->editColumn('deleted_by', function ($admin) {
-                    return $this->deleter_name($admin);
+             ->editColumn('status', function ($newspaper) {
+                    return "<span class='badge badge-soft " . $newspaper->status_color . "'>" . $newspaper->status_label . "</span>";
                 })
-                ->editColumn('deleted_at', function ($admin) {
-                    return $admin->deleted_at_formatted;
+                ->editColumn('deleted_by', function ($newspaper) {
+                    return $this->deleter_name($newspaper);
                 })
-                ->editColumn('action', function ($permission) {
-                    $menuItems = $this->trashedMenuItems($permission);
+                ->editColumn('deleted_at', function ($newspaper) {
+                    return $newspaper->deleted_at_formatted;
+                })
+                ->editColumn('action', function ($newspaper) {
+                    $menuItems = $this->trashedMenuItems($newspaper);
                     return view('components.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['deleted_by', 'deleted_at', 'action'])
+                ->rawColumns(['deleted_by', 'status', 'deleted_at', 'action'])
                 ->make(true);
         }
-        return view('view blade file url...');
+        return view('backend.admin.newspaper.trash');
     }
 
     protected function trashedMenuItems($model): array
     {
         return [
             [
-                'routeName' => '',
+                'routeName' => 'newspaper.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
-                'permissions' => ['permission-restore']
+                'permissions' => ['newspaper-restore']
             ],
             [
-                'routeName' => '',
+                'routeName' => 'newspaper.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,
-                'permissions' => ['permission-permanent-delete']
+                'permissions' => ['newspaper-permanent-delete']
             ]
 
         ];
     }
 
-     public function restore(string $id): RedirectResponse
+    public function restore(string $id): RedirectResponse
     {
         try {
-            $this->serviceName->restore($id);
-            session()->flash('success', "Service restored successfully");
+            $this->newspaperService->restore($id);
+            session()->flash('success', "Newspaper restored successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service restore failed');
+            session()->flash('error', "Newspaper restore failed");
             throw $e;
         }
         return $this->redirectTrashed();
@@ -234,12 +251,20 @@ class NewspaperController extends Controller implements HasMiddleware
     public function permanentDelete(string $id): RedirectResponse
     {
         try {
-            $this->serviceName->permanentDelete($id);
-            session()->flash('success', "Service permanently deleted successfully");
+            $this->newspaperService->permanentDelete($id);
+            session()->flash('success', "Newspaper permanently deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service permanent delete failed');
+            session()->flash('error', "Newspaper permanent delete failed");
             throw $e;
         }
         return $this->redirectTrashed();
+    }
+      public function status(string $id)
+    {
+        $newspaper = $this->newspaperService->getNewspaper($id);
+
+        $this->newspaperService->toggleStatus($newspaper);
+        session()->flash('success', 'Newspaper status updated successfully!');
+        return redirect()->back();
     }
 }
