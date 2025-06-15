@@ -59,20 +59,14 @@ class NewspaperController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->newspaperService->getNewspapers();
+
             return DataTables::eloquent($query)
-                ->editColumn('status', function ($newspaper) {
-                    return "<span class='badge badge-soft " . $newspaper->status_color . "'>" . $newspaper->status_label . "</span>";
-                })
-                ->editColumn('created_by', function ($newspaper) {
-                    return $this->creater_name($newspaper);
-                })
-                ->editColumn('created_at', function ($newspaper) {
-                    return $newspaper->created_at_formatted;
-                })
-                ->editColumn('action', function ($newspaper) {
-                    $menuItems = $this->menuItems($newspaper);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('status', fn($newspaper) => "<span class='badge badge-soft {$newspaper->status_color}'>{$newspaper->status_label}</span>")
+                ->editColumn('created_by', fn($newspaper) => $this->creater_name($newspaper))
+                ->editColumn('created_at', fn($newspaper) => $newspaper->created_at_formatted)
+                ->editColumn('action', fn($newspaper) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->menuItems($newspaper),
+                ])->render())
                 ->rawColumns(['created_by', 'status', 'created_at', 'action'])
                 ->make(true);
         }
@@ -163,7 +157,7 @@ class NewspaperController extends Controller implements HasMiddleware
      */
     public function update(NewspaperRequest $request, string $id)
     {
-        
+
         try {
             $validated = $request->validated();
             $newspaper = $this->newspaperService->getNewspaper($id);
@@ -196,20 +190,14 @@ class NewspaperController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->newspaperService->getNewspapers()->onlyTrashed();
+
             return DataTables::eloquent($query)
-             ->editColumn('status', function ($newspaper) {
-                    return "<span class='badge badge-soft " . $newspaper->status_color . "'>" . $newspaper->status_label . "</span>";
-                })
-                ->editColumn('deleted_by', function ($newspaper) {
-                    return $this->deleter_name($newspaper);
-                })
-                ->editColumn('deleted_at', function ($newspaper) {
-                    return $newspaper->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($newspaper) {
-                    $menuItems = $this->trashedMenuItems($newspaper);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('status', fn($newspaper) => "<span class='badge badge-soft {$newspaper->status_color}'>{$newspaper->status_label}</span>")
+                ->editColumn('deleted_by', fn($newspaper) => $this->deleter_name($newspaper))
+                ->editColumn('deleted_at', fn($newspaper) => $newspaper->deleted_at_formatted)
+                ->editColumn('action', fn($newspaper) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($newspaper),
+                ])->render())
                 ->rawColumns(['deleted_by', 'status', 'deleted_at', 'action'])
                 ->make(true);
         }
@@ -259,7 +247,7 @@ class NewspaperController extends Controller implements HasMiddleware
         }
         return $this->redirectTrashed();
     }
-      public function status(string $id)
+    public function status(string $id)
     {
         $newspaper = $this->newspaperService->getNewspaper($id);
 

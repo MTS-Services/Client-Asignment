@@ -59,25 +59,20 @@ class MagazineController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->magazineService->getMagazines();
+
             return DataTables::eloquent($query)
-                ->editColumn('status', function ($magazine) {
-                    return "<span class='badge badge-soft " . $magazine->status_color . "'>" . $magazine->status_label . "</span>";
-                })
-                ->editColumn('created_by', function ($magazine) {
-                    return $this->creater_name($magazine);
-                })
-                ->editColumn('created_at', function ($magazine) {
-                    return $magazine->created_at_formatted;
-                })
-                ->editColumn('action', function ($service) {
-                    $menuItems = $this->menuItems($service);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('status', fn($magazine) => "<span class='badge badge-soft {$magazine->status_color}'>{$magazine->status_label}</span>")
+                ->editColumn('created_by', fn($magazine) => $this->creater_name($magazine))
+                ->editColumn('created_at', fn($magazine) => $magazine->created_at_formatted)
+                ->editColumn('action', fn($magazine) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->menuItems($magazine),
+                ])->render())
                 ->rawColumns(['created_by', 'status', 'created_at', 'action'])
                 ->make(true);
         }
         return view('backend.admin.magazine.index');
     }
+
 
     protected function menuItems($model): array
     {
@@ -195,25 +190,20 @@ class MagazineController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->magazineService->getMagazines()->onlyTrashed();
+
             return DataTables::eloquent($query)
-             ->editColumn('status', function ($magazine) {
-                    return "<span class='badge badge-soft " . $magazine->status_color . "'>" . $magazine->status_label . "</span>";
-                })
-                ->editColumn('deleted_by', function ($magazine) {
-                    return $this->deleter_name($magazine);
-                })
-                ->editColumn('deleted_at', function ($magazine) {
-                    return $magazine->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($magazine) {
-                    $menuItems = $this->trashedMenuItems($magazine);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('status', fn($magazine) => "<span class='badge badge-soft {$magazine->status_color}'>{$magazine->status_label}</span>")
+                ->editColumn('deleted_by', fn($magazine) => $this->deleter_name($magazine))
+                ->editColumn('deleted_at', fn($magazine) => $magazine->deleted_at_formatted)
+                ->editColumn('action', fn($magazine) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($magazine),
+                ])->render())
                 ->rawColumns(['deleted_by', 'status', 'deleted_at', 'action'])
                 ->make(true);
         }
         return view('backend.admin.magazine.trash');
     }
+
 
     protected function trashedMenuItems($model): array
     {
@@ -258,7 +248,7 @@ class MagazineController extends Controller implements HasMiddleware
         }
         return $this->redirectTrashed();
     }
-      public function status(string $id)
+    public function status(string $id)
     {
         $magazine = $this->magazineService->getMagazine($id);
 

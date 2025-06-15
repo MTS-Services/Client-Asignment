@@ -180,14 +180,15 @@ class PermissionController extends Controller implements HasMiddleware
 
         if ($request->ajax()) {
             $query = $this->permissionService->getPermissions()->onlyTrashed();
+
             return DataTables::eloquent($query)
-                ->editColumn('action', function ($permission) {
-                    $menuItems = $this->trashedMenuItems($permission);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('action', fn($permission) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($permission),
+                ])->render())
                 ->rawColumns(['action'])
                 ->make(true);
         }
+
         return view('backend.admin.admin-management.permission.trash');
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backend\Admin\BookManagement;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryManagement\CategoryRequest;
 use App\Http\Traits\AuditRelationTraits;
@@ -59,23 +60,18 @@ class CategoryController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->categoryService->getCategories();
+
             return DataTables::eloquent($query)
-                ->editColumn('status', function ($category) {
-                    return "<span class='badge badge-soft " . $category->status_color . "'>" . $category->status_label . "</span>";
-                })
-                ->editColumn('created_by', function ($category) {
-                    return $this->creater_name($category);
-                })
-                ->editColumn('created_at', function ($category) {
-                    return $category->created_at_formatted;
-                })
-                ->editColumn('action', function ($service) {
-                    $menuItems = $this->menuItems($service);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('status', fn($category) => "<span class='badge badge-soft {$category->status_color}'>{$category->status_label}</span>")
+                ->editColumn('created_by', fn($category) => $this->creater_name($category))
+                ->editColumn('created_at', fn($category) => $category->created_at_formatted)
+                ->editColumn('action', fn($category) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->menuItems($category),
+                ])->render())
                 ->rawColumns(['status', 'created_by', 'created_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.book-management.category.index');
     }
 
@@ -194,25 +190,21 @@ class CategoryController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->categoryService->getCategories()->onlyTrashed();
+
             return DataTables::eloquent($query)
-                ->editColumn('status', function ($category) {
-                    return "<span class='badge badge-soft " . $category->status_color . "'>" . $category->status_label . "</span>";
-                })
-                ->editColumn('deleted_by', function ($admin) {
-                    return $this->deleter_name($admin);
-                })
-                ->editColumn('deleted_at', function ($admin) {
-                    return $admin->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($permission) {
-                    $menuItems = $this->trashedMenuItems($permission);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('status', fn($category) => "<span class='badge badge-soft {$category->status_color}'>{$category->status_label}</span>")
+                ->editColumn('deleted_by', fn($category) => $this->deleter_name($category))
+                ->editColumn('deleted_at', fn($category) => $category->deleted_at_formatted)
+                ->editColumn('action', fn($category) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($category),
+                ])->render())
                 ->rawColumns(['status', 'deleted_by', 'deleted_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.book-management.category.trash');
     }
+
 
     protected function trashedMenuItems($model): array
     {

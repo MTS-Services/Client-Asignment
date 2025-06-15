@@ -9,8 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BookRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Traits\AuditRelationTraits;
-use App\Models\Book;
-use App\Models\Category;
 use App\Services\Admin\CategoryManagement\CategoryService;
 use App\Services\Admin\PublishManagement\PublisherService;
 use App\Services\Admin\RackService;
@@ -70,34 +68,24 @@ class BookController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->bookService->getBooks();
+
             return DataTables::eloquent($query)
-                ->editColumn('category_id', function ($book) {
-                    return $book->category?->name;
-                })
-                ->editColumn('publisher_id', function ($book) {
-                    return $book->publisher?->name;
-                })
-                ->editColumn('rack_id', function ($book) {
-                    return $book->rack?->rack_number;
-                })
-                ->editColumn('status', function ($book) {
-                    return "<span class='badge badge-soft " . $book->status_color . "'>" . $book->status_label . "</span>";
-                })
-                ->editColumn('created_by', function ($book) {
-                    return $this->creater_name($book);
-                })
-                ->editColumn('created_at', function ($book) {
-                    return $book->created_at_formatted;
-                })
-                ->editColumn('action', function ($book) {
-                    $menuItems = $this->menuItems($book);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('category_id', fn($book) => $book->category?->name)
+                ->editColumn('publisher_id', fn($book) => $book->publisher?->name)
+                ->editColumn('rack_id', fn($book) => $book->rack?->rack_number)
+                ->editColumn('status', fn($book) => "<span class='badge badge-soft {$book->status_color}'>{$book->status_label}</span>")
+                ->editColumn('created_by', fn($book) => $this->creater_name($book))
+                ->editColumn('created_at', fn($book) => $book->created_at_formatted)
+                ->editColumn('action', fn($book) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->menuItems($book),
+                ])->render())
                 ->rawColumns(['created_by', 'status', 'rack_id', 'publisher_id', 'category_id', 'created_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.book-management.book.index');
     }
+
 
     protected function menuItems($model): array
     {
@@ -222,34 +210,24 @@ class BookController extends Controller implements HasMiddleware
     {
         if ($request->ajax()) {
             $query = $this->bookService->getBooks()->onlyTrashed();
+
             return DataTables::eloquent($query)
-                ->editColumn('category_id', function ($book) {
-                    return $book->category?->name;
-                })
-                ->editColumn('publisher_id', function ($book) {
-                    return $book->publisher?->name;
-                })
-                ->editColumn('rack_id', function ($book) {
-                    return $book->rack?->rack_number;
-                })
-                ->editColumn('status', function ($book) {
-                    return "<span class='badge badge-soft " . $book->status_color . "'>" . $book->status_label . "</span>";
-                })
-                ->editColumn('deleted_by', function ($book) {
-                    return $this->deleter_name($book);
-                })
-                ->editColumn('deleted_at', function ($book) {
-                    return $book->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($permission) {
-                    $menuItems = $this->trashedMenuItems($permission);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
+                ->editColumn('category_id', fn($book) => $book->category?->name)
+                ->editColumn('publisher_id', fn($book) => $book->publisher?->name)
+                ->editColumn('rack_id', fn($book) => $book->rack?->rack_number)
+                ->editColumn('status', fn($book) => "<span class='badge badge-soft {$book->status_color}'>{$book->status_label}</span>")
+                ->editColumn('deleted_by', fn($book) => $this->deleter_name($book))
+                ->editColumn('deleted_at', fn($book) => $book->deleted_at_formatted)
+                ->editColumn('action', fn($book) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($book),
+                ])->render())
                 ->rawColumns(['deleted_by', 'status', 'category_id', 'publisher_id', 'rack_id', 'deleted_at', 'action'])
                 ->make(true);
         }
+
         return view('backend.admin.book-management.book.trash');
     }
+
 
     protected function trashedMenuItems($model): array
     {
