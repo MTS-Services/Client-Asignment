@@ -68,6 +68,15 @@
                         'active' => 'admin-users',
                     ],
                 ]" />
+            <x-admin.navlink type="dropdown" icon="app-window" name="Category Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Category',
+                        'route' => route('am.category.index'),
+                        'icon' => 'tags',
+                        'active' => 'admin-category',
+                    ],
+                ]" />
             <x-admin.navlink type="dropdown" icon="users" name="Publish Management" :page_slug="$active"
                 :items="[
                     [

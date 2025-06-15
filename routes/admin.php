@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
+use App\Http\Controllers\Backend\Admin\CategoryManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
 
@@ -36,6 +37,14 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () 
             Route::get('/trash/bin', 'trash')->name('trash');
             Route::get('/restore/{permission}', 'restore')->name('restore');
             Route::delete('/permanent-delete/{permission}', 'permanentDelete')->name('permanent-delete');
+        });
+        // Category Management Routes
+        Route::resource('category', CategoryController::class);
+        Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
+            Route::post('/show/{category}', 'show')->name('show');
+            Route::get('/trash/bin', 'trash')->name('trash');
+            Route::get('/restore/{category}', 'restore')->name('restore');
+            Route::delete('/permanent-delete/{category}', 'permanentDelete')->name('permanent-delete');
         });
     });
     Route::group(['as' => 'pm.', 'prefix' => 'publish-management'], function () {
