@@ -71,7 +71,7 @@ class MagazineController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($service) {
                     $menuItems = $this->menuItems($service);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['created_by', 'status', 'created_at', 'action'])
                 ->make(true);
@@ -207,7 +207,7 @@ class MagazineController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($magazine) {
                     $menuItems = $this->trashedMenuItems($magazine);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['deleted_by', 'status', 'deleted_at', 'action'])
                 ->make(true);

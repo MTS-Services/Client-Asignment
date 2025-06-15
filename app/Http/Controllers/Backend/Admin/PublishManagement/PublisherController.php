@@ -72,7 +72,7 @@ class PublisherController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($publisher) {
                     $menuItems = $this->menuItems($publisher);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['created_by', 'created_at', 'status', 'action'])
                 ->make(true);
@@ -213,7 +213,7 @@ class PublisherController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($publisher) {
                     $menuItems = $this->trashedMenuItems($publisher);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['deleted_by', 'deleted_at', 'action'])
                 ->make(true);
