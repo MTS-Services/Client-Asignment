@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\AuthorController;
 use App\Http\Controllers\Backend\Admin\CategoryManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Backend\Admin\UserManagment\UserController;
 use App\Http\Controllers\Backend\Admin\MagazineController;
 use App\Http\Controllers\Backend\Admin\NewspaperController;
 use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
@@ -49,6 +50,16 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () 
             Route::get('/trash/bin', 'trash')->name('trash');
             Route::get('/restore/{category}', 'restore')->name('restore');
             Route::delete('/permanent-delete/{category}', 'permanentDelete')->name('permanent-delete');
+        });
+    });
+    Route::group(['as' => 'um.', 'prefix' => 'user-management'], function () {
+        Route::resource('user', UserController::class);
+        Route::controller(UserController::class)->name('user.')->prefix('user')->group(function () {
+            Route::get('/status/{user}', 'status')->name('status');
+            Route::get('/trash/bin', 'trash')->name('trash');
+            Route::post('/show/{user}', 'show')->name('show');
+            Route::get('/restore/{user}', 'restore')->name('restore');
+            Route::delete('/permanent-delete/{user}', 'permanentDelete')->name('permanent-delete');
         });
     });
     Route::group(['as' => 'pm.', 'prefix' => 'publish-management'], function () {
