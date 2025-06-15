@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Backend\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Traits\AuditRelationTraits;
+use Illuminate\Http\Request;
 use App\Services\Admin\BookService;
 use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\BookRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
+use App\Http\Traits\AuditRelationTraits;
+use App\Models\Book;
+use App\Models\Category;
+use App\Services\Admin\CategoryManagement\CategoryService;
+use App\Services\Admin\PublishManagement\PublisherService;
+use App\Services\Admin\RackService;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
 class BookController extends Controller implements HasMiddleware
 {
@@ -27,10 +33,16 @@ class BookController extends Controller implements HasMiddleware
     }
 
     protected BookService $bookService;
+    protected CategoryService $categoryService;
+    protected PublisherService $publisherService;
+    protected RackService $rackService;
 
-    public function __construct(BookService $bookService)
+    public function __construct(BookService $bookService, CategoryService $categoryService, PublisherService $publisherService, RackService $rackService)
     {
         $this->bookService = $bookService;
+        $this->categoryService = $categoryService;
+        $this->publisherService = $publisherService;
+        $this->rackService = $rackService;
     }
 
     public static function middleware(): array
@@ -66,7 +78,7 @@ class BookController extends Controller implements HasMiddleware
                     return $book->publisher?->name;
                 })
                 ->editColumn('rack_id', function ($book) {
-                    return $book->rack?->name;
+                    return $book->rack?->rack_number;
                 })
                 ->editColumn('status', function ($book) {
                     return "<span class='badge badge-soft " . $book->status_color . "'>" . $book->status_label . "</span>";
@@ -106,7 +118,7 @@ class BookController extends Controller implements HasMiddleware
             [
                 'routeName' => 'book.status',
                 'params' => [encrypt($model->id)],
-                'label' => $model->status_btn_label,
+                'label' => $model->status_label,
                 'permissions' => ['book-status']
             ],
             [
@@ -125,21 +137,23 @@ class BookController extends Controller implements HasMiddleware
      */
     public function create(): View
     {
-        //
-        return view('view file url ...');
+        $data['categories'] = $this->categoryService->getCategories()->select(['id', 'name'])->get();
+        $data['publishers'] = $this->publisherService->getPublishers()->select(['id', 'name'])->get();
+        $data['racks'] = $this->rackService->getRacks()->select(['id', 'rack_number'])->get();
+        return view('backend.admin.book.create', $data);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
         try {
-            // $validated = $request->validated();
-            //
-            session()->flash('success', "Service created successfully");
+            $validated = $request->validated();
+            $this->bookService->createBook($validated,  $request->file('cover_image'));
+            session()->flash('success', "Book created successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service creation failed');
+            session()->flash('error', "Book creation failed");
             throw $e;
         }
         return $this->redirectIndex();
@@ -159,23 +173,30 @@ class BookController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    // public function edit(string $id): View
-    // {
-    //     //$data['service'] = $this->bookService->getService($id);
-    //     return view('view file url...', $data);
-    // }
+    public function edit(string $id): View
+    {
+        $data['book'] = $this->bookService->getBook($id);
+        $data['categories'] = $this->categoryService->getCategories()->select(['id', 'name'])->get();
+        $data['publishers'] = $this->publisherService->getPublishers()->select(['id', 'name'])->get();
+        $data['racks'] = $this->rackService->getRacks()->select(['id', 'rack_number'])->get();
+        return view('backend.admin.book.edit', $data);
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BookRequest $request, string $id)
     {
+        
         try {
-            // $validated = $request->validated();
-            //
-            session()->flash('success', "Service updated successfully");
+            $validated = $request->validated();
+            $book = $this->bookService->getBook($id);
+    
+            $this->bookService->updateBook($book, $validated, $request->file('cover_image'));
+
+            session()->flash('success', "Book updated successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service update failed');
+            session()->flash('Book update failed');
             throw $e;
         }
         return $this->redirectIndex();
@@ -187,10 +208,11 @@ class BookController extends Controller implements HasMiddleware
     public function destroy(string $id)
     {
         try {
-            //
-            session()->flash('success', "Service deleted successfully");
+            $book = $this->bookService->getBook($id);
+            $this->bookService->delete($book);
+            session()->flash('success', "Book deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service delete failed');
+            session()->flash('Book delete failed');
             throw $e;
         }
         return $this->redirectIndex();
@@ -201,6 +223,18 @@ class BookController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->bookService->getBooks()->onlyTrashed();
             return DataTables::eloquent($query)
+             ->editColumn('category_id', function ($book) {
+                    return $book->category?->name;
+                })
+                ->editColumn('publisher_id', function ($book) {
+                    return $book->publisher?->name;
+                })
+                ->editColumn('rack_id', function ($book) {
+                    return $book->rack?->rack_number;
+                })
+                ->editColumn('status', function ($book) {
+                    return "<span class='badge badge-soft " . $book->status_color . "'>" . $book->status_label . "</span>";
+                })
                 ->editColumn('deleted_by', function ($book) {
                     return $this->deleter_name($book);
                 })
@@ -209,25 +243,25 @@ class BookController extends Controller implements HasMiddleware
                 })
                 ->editColumn('action', function ($permission) {
                     $menuItems = $this->trashedMenuItems($permission);
-                    return view('components.action-buttons', compact('menuItems'))->render();
+                    return view('components.admin.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['deleted_by', 'deleted_at', 'action'])
+                ->rawColumns(['deleted_by', 'status', 'category_id', 'publisher_id', 'rack_id', 'deleted_at', 'action'])
                 ->make(true);
         }
-        return view('view blade file url...');
+        return view('backend.admin.book.trash');
     }
 
     protected function trashedMenuItems($model): array
     {
         return [
             [
-                'routeName' => '',
+                'routeName' => 'book.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
                 'permissions' => ['book-restore']
             ],
             [
-                'routeName' => '',
+                'routeName' => 'book.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,

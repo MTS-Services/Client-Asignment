@@ -64,7 +64,7 @@
                     displayLength: 10,
                     main_route: "{{ route('book.index') }}",
                     order_route: "{{ route('update.sort.order') }}",
-                    export_columns: [0, 1, 2, 3, 4, 5],
+                    export_columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                     model: 'Book',
                 };
                 // initializeDataTable(details);
@@ -108,15 +108,15 @@
                         },
                         {
                             label: '{{ __('Category') }}',
-                            key: 'category_id',
+                            key: 'category.name',
                         },
                         {
                             label: '{{ __('Publisher') }}',
-                            key: 'publisher_id',
+                            key: 'publisher.name',
                         },
                         {
                             label: '{{ __('Rack') }}',
-                            key: 'rack_id',
+                            key: 'rack.rack_number',
                         },
                         {
                             label: '{{ __('Language') }}',

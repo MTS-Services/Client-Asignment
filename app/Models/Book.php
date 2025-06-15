@@ -56,15 +56,16 @@ class Book extends BaseModel
         return self::statusList()[$this->status];
     }
 
-    public function getStatusColorAttribute()
-    {
-        return match ($this->status) {
-            self::STATUS_AVAILABLE => 'text-success',
-            self::STATUS_MAINTENANCE => 'text-warning',
-            self::STATUS_RETIRED => 'text-danger',
-            default => 'text-secondary',
-        };
-    }
+   public function getStatusColorAttribute()
+{
+    return match ($this->status) {
+        self::STATUS_AVAILABLE => 'badge-success',
+        self::STATUS_MAINTENANCE => 'badge-warning',
+        self::STATUS_RETIRED => 'badge-danger',
+        default => 'badge-secondary',
+    };
+}
+
     public function getModifiedImageAttribute()
     {
         return storage_url($this->cover_image);
