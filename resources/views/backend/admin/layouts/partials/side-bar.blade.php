@@ -82,6 +82,16 @@
                         'active' => 'category',
                     ],
                 ]" />
+            <x-admin.navlink type="dropdown" icon="app-window" name="Book Issue Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Book Issue',
+                        'route' => route('im.book-issues.index'),
+                        'icon' => 'tags',
+                        'active' => 'book_issues',
+                    ],
+                   
+                ]" />
             <x-admin.navlink type="dropdown" icon="users" name="Publisher Management" :page_slug="$active"
                 :items="[
                     [
