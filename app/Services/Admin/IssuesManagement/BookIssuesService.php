@@ -78,4 +78,16 @@ class BookIssuesService
             'updater_type' => get_class(admin())
         ]);
     }
+
+    public function updateReturnBookIssue(string $encryptedId,  array $data): BookIssues
+    {
+        $bookIssue = $this->getBookIssues($encryptedId);
+
+        $data['status'] = BookIssues::STATUS_RETURNED;
+        $data['return_date'] = now();
+        $data['updater_id'] = admin()->id;
+        $data['updater_type'] = get_class(admin());
+        $bookIssue->update($data);
+        return $bookIssue;
+    }
 }

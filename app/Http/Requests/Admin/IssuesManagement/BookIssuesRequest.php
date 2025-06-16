@@ -26,8 +26,7 @@ class BookIssuesRequest extends FormRequest
         'book_id'      => 'required|exists:books,id', // ✅ fixed typo
         'notes'        => 'nullable|string',
         'issue_date'   => 'required|date',
-        'return_date'  => 'required|date',
-    ] + ($this->isMethod('POST') ? $this->store() : $this->update());
+    ] + ($this->isMethod('POST') ? $this->store() :( $this->isMethod('PUT') ? $this->update() : $this->returnUpdate()));
 }
 
 
@@ -40,7 +39,17 @@ class BookIssuesRequest extends FormRequest
     protected function update(): array
     {
         return [
-          'returned_by' => 'required|exists:users,id',
+            'due_date' => 'nullable|date',
+            'fine_amount' => 'nullable|numeric|min:0',
+            'fine_paid' => 'nullable|boolean',
+
+        //   'returned_by' => 'required|exists:users,id',
+        ];
+    }
+    protected function returnUpdate(): array
+    {
+        return [
+            'returned_by' => 'required|exists:users,id',
         ];
     }
 }

@@ -84,7 +84,7 @@
                             <x-input-error class="mt-2" :messages="$errors->get('due_date')" />
                         </div> --}}
                         {{-- Retun  Date --}}
-                        <div class="space-y-2">
+                        {{-- <div class="space-y-2">
                             <p class="label">{{ __('Return Date') }}</p>
                             <label class="input flex items-center gap-2">
                                 <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -98,7 +98,7 @@
                                     placeholder="Death Date" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('return_date')" />
-                        </div>
+                        </div> --}}
 
                         {{-- Notes --}}
                         <div class="space-y-2 col-span-2">

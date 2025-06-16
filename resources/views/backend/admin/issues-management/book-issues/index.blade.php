@@ -52,7 +52,7 @@
                     ['issued_by', true, true],
                     ['returned_by', true, true],
                     ['status', true, true],
-                    ['created_by', true, true],
+                    ['creater_id', true, true],
                     ['created_at', true, true],
                     ['action', false, false],
                 ];
@@ -62,8 +62,8 @@
                     displayLength: 10,
                     main_route: "{{ route('im.book-issues.index') }}",
                     order_route: "{{ route('update.sort.order') }}",
-                    export_columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-                    model: 'Book',
+                    export_columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                    model: 'BookIssue',
                 };
                 // initializeDataTable(details);
 
@@ -79,17 +79,34 @@
                     const id = $(this).data('id');
                     const route = "{{ route('author.show', ':id') }}";
 
-                    const details = [{
-                            label: '{{ __('Title') }}',
-                            key: 'title',
+                    const details = [
+                        {
+                            label: '{{ __('User') }}',
+                            key: 'username',
                         },
                         {
-                            label: '{{ __('Slug') }}',
-                            key: 'slug',
+                            label: '{{ __('Book') }}',
+                            key: 'book.title',
                         },
                         {
-                            label: '{{ __('Isbn') }}',
-                            key: 'isbn',
+                            label: '{{ __('Issued By') }}',
+                            key: 'issued_by_admin.name',
+                        },
+                        {
+                            label: '{{ __('Issue Date') }}',
+                            key: 'issue_date',
+                        },
+                        {
+                            label: '{{ __('Due Date') }}',
+                            key: 'due_date',
+                        },
+                        {
+                            label: '{{ __('Return Date') }}',
+                            key: 'return_date',
+                        },
+                        {
+                            label: '{{ __('Returned By') }}',
+                            key: 'returned_by_user.name',
                         },
                         {
                             label: '{{ __('Status') }}',
@@ -97,53 +114,16 @@
                             type: 'status',
                         },
                         {
-                            label: '{{ __('Publisher Date') }}',
-                            key: 'publisher_date',
+                            label: '{{ __('Fine Amount') }}',
+                            key: 'fine_amount',
                         },
                         {
-                            label: '{{ __('Language') }}',
-                            key: 'language',
+                            label: '{{ __('Fine Paid') }}',
+                            key: 'fine_paid',
                         },
                         {
-                            label: '{{ __('Category') }}',
-                            key: 'category.name',
-                        },
-                        {
-                            label: '{{ __('Publisher') }}',
-                            key: 'publisher.name',
-                        },
-                        {
-                            label: '{{ __('Rack') }}',
-                            key: 'rack.rack_number',
-                        },
-                        {
-                            label: '{{ __('Language') }}',
-                            key: 'language',
-                        },
-                        {
-                            label: '{{ __('Price') }}',
-                            key: 'price',
-                        },
-                        {
-                            label: '{{ __('Total Copies') }}',
-                            key: 'total_copies',
-                        },
-                        {
-                            label: '{{ __('Available Copies') }}',
-                            key: 'available_copies',
-                        },
-                        {
-                            label: '{{ __('Description') }}',
-                            key: 'description',
-                        },
-                        {
-                            label: '{{ __('Status') }}',
-                            key: 'status',
-                        },
-                        {
-                            label: '{{ __('Image') }}',
-                            key: 'modified_image',
-                            type: 'image',
+                            label: '{{ __('Notes') }}',
+                            key: 'notes',
                         },
                     ];
 

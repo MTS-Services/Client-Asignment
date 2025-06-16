@@ -79,12 +79,12 @@ class BookIssuesController extends Controller implements HasMiddleware
                 ->editColumn('issued_by', fn($bookIssues) => $bookIssues->issuedBy?->name)
                 ->editColumn('returned_by', fn($bookIssues) => $bookIssues->returnedBy?->name)
                 ->editColumn('status', fn($bookIssues) => "<span class='badge badge-soft {$bookIssues->status_color}'>{$bookIssues->status_label}</span>")
-                ->editColumn('created_by', fn($bookIssues) => $this->creater_name($bookIssues))
+                ->editColumn('creater_id', fn($bookIssues) => $this->creater_name($bookIssues))
                 ->editColumn('created_at', fn($bookIssues) => $bookIssues->created_at_formatted)
                 ->editColumn('action', fn($bookIssues) => view('components.admin.action-buttons', [
                     'menuItems' => $this->menuItems($bookIssues)
                 ])->render())
-                ->rawColumns(['created_by', 'issued_by', 'returned_by', 'user_id', 'book_id', 'status', 'created_at', 'action'])
+                ->rawColumns(['created_by', 'issued_by', 'returned_by', 'user_id', 'book_id', 'status', 'creater_id', 'action'])
                 ->make(true);
         }
 
@@ -100,32 +100,32 @@ class BookIssuesController extends Controller implements HasMiddleware
                 'data-id' => encrypt($model->id),
                 'className' => 'view',
                 'label' => 'Details',
-                'permissions' => ['permission-list', 'permission-delete', 'permission-status']
+                'permissions' => ['book-issues-list', 'book-issues-delete', 'book-issues-status']
             ],
             [
                 'routeName' => 'im.book-issues.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
-                'permissions' => ['permission-edit']
+                'permissions' => ['book-issues-edit']
             ],
             [
                 'routeName' => 'im.book-issues.status',
                 'params' => [encrypt($model->id)],
                 'label' => $model->status_label,
-                'permissions' => ['permission-status']
+                'permissions' => ['book-issues-status']
             ],
             [
                 'routeName' => 'im.book-issues.return',
                 'params' => [encrypt($model->id)],
                 'label' => 'Return',
-                'permissions' => ['permission-restore']
+                'permissions' => ['book-issues-restore']
             ],
             [
                 'routeName' => 'im.book-issues.destroy',
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
-                'permissions' => ['permission-delete']
+                'permissions' => ['book-issues-delete']
             ]
 
         ];
@@ -133,11 +133,26 @@ class BookIssuesController extends Controller implements HasMiddleware
 
     public function return($id)
     {
-        $data['issue'] = BookIssues::findOrFail($id);
+        $data['issue'] = BookIssues::findOrFail(decrypt($id));
         return view('backend.admin.issues-management.book-issues.returned', $data);
     }
 
 
+    public function updateReturn(Request $request, string $id): RedirectResponse
+    {
+
+        try {
+            $validated = $request->validate([
+                'returned_by' => 'required|exists:users,id',
+            ]);
+            $this->bookIssuesService->updateReturnBookIssue($id, $validated);
+            session()->flash('success', "Book return updated successfully");
+        } catch (\Throwable $e) {
+            session()->flash('Book return update failed');
+            throw $e;
+        }
+        return $this->redirectIndex();
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -154,12 +169,13 @@ class BookIssuesController extends Controller implements HasMiddleware
      */
     public function store(BookIssuesRequest $request)
     {
+
         try {
             $validated = $request->validated();
             $this->bookIssuesService->createBookIssues($validated);
             session()->flash('success', "Book issues created successfully");
         } catch (\Throwable $e) {
-            session()->flash('Book issues creation failed');
+            session()->flash('Book Issues creation failed');
             throw $e;
         }
         return $this->redirectIndex();
@@ -179,23 +195,27 @@ class BookIssuesController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    // public function edit(string $id): View
-    // {
-    //     //$data['service'] = $this->bookIssuesService->getService($id);
-    //     return view('view file url...', $data);
-    // }
+    public function edit(string $id): View
+    {
+        $data['issue'] = $this->bookIssuesService->getBookIssues($id);
+        $data['users'] = $this->userService->getUsers()->select(['id', 'name'])->get();
+        $data['issueds'] = $this->adminService->getAdmins()->select(['id', 'name'])->get();
+        $data['books'] = $this->bookService->getBooks()->select(['id', 'title'])->get();
+        return view('backend.admin.issues-management.book-issues.edit', $data);
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BookIssuesRequest $request, string $id)
     {
         try {
-            // $validated = $request->validated();
-            //
-            session()->flash('success', "Service updated successfully");
+            $validated = $request->validated();
+            $issue = $this->bookIssuesService->getBookIssues($id);
+            $this->bookIssuesService->updateBookIssues($issue, $validated);
+            session()->flash('success', "Book Issues updated successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service update failed');
+            session()->flash('Book Issues update failed');
             throw $e;
         }
         return $this->redirectIndex();
@@ -207,10 +227,11 @@ class BookIssuesController extends Controller implements HasMiddleware
     public function destroy(string $id)
     {
         try {
-            //
-            session()->flash('success', "Service deleted successfully");
+            $book = $this->bookIssuesService->getBookIssues($id);
+            $this->bookIssuesService->delete($book);
+            session()->flash('success', "Book Issues deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service delete failed');
+            session()->flash('Book Issues delete failed');
             throw $e;
         }
         return $this->redirectIndex();
@@ -221,37 +242,37 @@ class BookIssuesController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             $query = $this->bookIssuesService->getBookIssuess()->onlyTrashed();
             return DataTables::eloquent($query)
-                ->editColumn('deleted_by', function ($bookIssues) {
-                    return $this->deleter_name($bookIssues);
-                })
-                ->editColumn('deleted_at', function ($bookIssues) {
-                    return $bookIssues->deleted_at_formatted;
-                })
-                ->editColumn('action', function ($permission) {
-                    $menuItems = $this->trashedMenuItems($permission);
-                    return view('components.admin.action-buttons', compact('menuItems'))->render();
-                })
-                ->rawColumns(['deleted_by', 'deleted_at', 'action'])
+                ->editColumn('user_id', fn($bookIssues) => $bookIssues->user?->name)
+                ->editColumn('book_id', fn($bookIssues) => $bookIssues->book?->title)
+                ->editColumn('issued_by', fn($bookIssues) => $bookIssues->issuedBy?->name)
+                ->editColumn('returned_by', fn($bookIssues) => $bookIssues->returnedBy?->name)
+                ->editColumn('status', fn($bookIssues) => "<span class='badge badge-soft {$bookIssues->status_color}'>{$bookIssues->status_label}</span>")
+                ->editColumn('deleted_by', fn($bookIssues) => $this->deleter_name($bookIssues))
+                ->editColumn('deleted_at', fn($bookIssues) => $bookIssues->deleted_at_formatted)
+                ->editColumn('action', fn($bookIssues) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($bookIssues),
+                ])->render())
+                ->rawColumns(['created_by', 'issued_by', 'returned_by', 'user_id', 'book_id', 'status', 'deleter_id', 'action'])
                 ->make(true);
         }
-        return view('view blade file url...');
+        return view('backend.admin.issues-management.book-issues.trash');
     }
 
     protected function trashedMenuItems($model): array
     {
         return [
             [
-                'routeName' => '',
+                'routeName' => 'im.book-issues.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
-                'permissions' => ['permission-restore']
+                'permissions' => ['book-issues-restore']
             ],
             [
-                'routeName' => '',
+                'routeName' => 'im.book-issues.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,
-                'permissions' => ['permission-permanent-delete']
+                'permissions' => ['book-issues-permanent-delete']
             ]
 
         ];
@@ -261,9 +282,9 @@ class BookIssuesController extends Controller implements HasMiddleware
     {
         try {
             $this->bookIssuesService->restore($id);
-            session()->flash('success', "Service restored successfully");
+            session()->flash('success', "Book Issues restored successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service restore failed');
+            session()->flash('Book Issues restore failed');
             throw $e;
         }
         return $this->redirectTrashed();
@@ -271,31 +292,25 @@ class BookIssuesController extends Controller implements HasMiddleware
 
     public function permanentDelete(string $id): RedirectResponse
     {
+
         try {
             $this->bookIssuesService->permanentDelete($id);
-            session()->flash('success', "Service permanently deleted successfully");
+            session()->flash('success', "Book Issues permanently deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service permanent delete failed');
+            session()->flash('Book Issues permanent delete failed');
             throw $e;
         }
         return $this->redirectTrashed();
     }
-
-    public function updateReturn(Request $request, string $id): RedirectResponse
+      public function status(string $id)
     {
-        try {
-            $validated = $request->validate([
-                'return_date' => 'required|date',
-                'returned_by' => 'required|exists:users,id',
-            ]);
-            $validated['status'] = BookIssues::STATUS_RETURNED;
-            $issue = BookIssues::findOrFail(decrypt($id));
-            $issue->update($validated);
-            session()->flash('success', "Book return updated successfully");
-        } catch (\Throwable $e) {
-            session()->flash('Book return update failed');
-            throw $e;
+        $bookIssues = $this->bookIssuesService->getBookIssues($id);
+        if ($bookIssues->role_id == 1 && admin()->role_id != 1) {
+            session()->flash('error', 'Only a Super Admin can change status of another Super Admin!');
+            return redirect()->back();
         }
-        return $this->redirectIndex();
+        $this->bookIssuesService->toggleStatus($bookIssues);
+        session()->flash('success', 'Admin status updated successfully!');
+        return redirect()->back();
     }
 }
