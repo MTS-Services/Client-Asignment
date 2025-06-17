@@ -82,9 +82,10 @@
                             icon: 'shield-check',
                         },
                         {
-                                label: '{{ __('Status') }}',
-                                key: 'status_label',
-                                type:'status',
+                            label: '{{ __('Status') }}',
+                            key: 'status_label',
+                            label_color: 'status_color',
+                            type: 'status',
                         },
                         {
                             label: '{{ __('Description') }}',

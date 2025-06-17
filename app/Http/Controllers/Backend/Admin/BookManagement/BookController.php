@@ -154,6 +154,9 @@ class BookController extends Controller implements HasMiddleware
     public function show(Request $request, string $id)
     {
         $data = $this->bookService->getBook($id);
+        $data['category_name'] = $data->category?->name;
+        $data['publisher_name'] = $data->publisher?->name;
+        $data['rack_number'] = $data->rack?->rack_number;
         $data['creater_name'] = $this->creater_name($data);
         $data['updater_name'] = $this->updater_name($data);
         return response()->json($data);
@@ -274,7 +277,7 @@ class BookController extends Controller implements HasMiddleware
         return $this->redirectTrashed();
     }
 
-     public function status(string $id)
+    public function status(string $id)
     {
         $book = $this->bookService->getBook($id);
 
