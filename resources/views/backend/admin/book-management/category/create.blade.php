@@ -42,9 +42,9 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('slug')" />
                         </div>
-                        <div class="space-y-2">
+                        <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Description') }}</p>
-                            <textarea name="description" id="description" cols="" rows="10" class="flex-1 input w-full h-24"></textarea>
+                            <textarea name="description" id="description" cols="" rows="10" class="textarea"></textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
                     </div>
@@ -59,12 +59,6 @@
         </div>
     </section>
     @push('js')
-        <script src="{{ asset('assets/js/filepond.js') }}"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-
-                file_upload(["#image"], ["image/jpeg", "image/png", "image/jpg, image/webp, image/svg"]);
-            });
-        </script>
+        <script src="{{ asset('assets/js/ckEditor.js') }}"></script>       
     @endpush
 </x-admin::layout>

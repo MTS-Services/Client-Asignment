@@ -56,7 +56,7 @@
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Description') }}</p>
                             <textarea name="description" rows="4" placeholder="Description"
-                                class="w-full border-gray-300 dark:border-gray-600 dark:bg-slate-900">{{ $magazine->description }}</textarea>
+                                class="textarea">{{ $magazine->description }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
                     </div>
@@ -71,6 +71,7 @@
         </div>
     </section>
     @push('js')
+        <script src="{{ asset('assets/js/ckEditor.js') }}"></script>
         <script src="{{ asset('assets/js/filepond.js') }}"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {

@@ -81,7 +81,7 @@
                         x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                         x-transition:leave="transition ease-in duration-75"
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                        class="hidden absolute right-0 mt-2 w-fit min-w-40 glass-card bg-bg-white dark:bg-bg-dark-tertiary rounded-xl shadow-lg py-2 z-50"
+                        class="hidden absolute right-0 mt-2 w-fit min-w-40 glass-card bg-bg-dark-primary/40   dark:bg-bg-dark-tertiary rounded-xl shadow-lg py-2 z-50"
                         :class="open ? '!block' : '!hidden'">
                         {{-- @if (isset($not_use)) --}}
                         <x-user.profile-navlink route="#" name="{{ __('Profile') }}" />

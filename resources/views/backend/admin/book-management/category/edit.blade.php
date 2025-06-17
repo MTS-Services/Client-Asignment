@@ -41,7 +41,7 @@
                         </div>
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Description') }}</p>
-                            <textarea name="description" id="description" cols="" rows="10" class="flex-1 input w-full h-24">{{ $category->description }}</textarea>
+                            <textarea name="description" id="description" cols="" rows="10" class="textarea">{{ $category->description }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
                     </div>
@@ -55,4 +55,7 @@
 
         </div>
     </section>
+    @push('js')
+        <script src="{{ asset('assets/js/ckEditor.js') }}"></script>
+    @endpush
 </x-admin::layout>

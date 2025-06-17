@@ -63,19 +63,19 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('death_date')" />
                         </div>
-                    </div>
-                    {{-- Image --}}
-                    <div class="space-y-2 col-span-2">
-                        <p class="label">{{ __('Image') }}</p>
-                        <input type="file" name="image" class="filepond" id="image"
-                            accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
-                        <x-input-error class="mt-2" :messages="$errors->get('image')" />
-                    </div>
-                    {{-- Biography --}}
-                    <div class="space-y-2 col-span-2">
-                        <p class="label">{{ __('Biography') }}</p>
-                        <textarea name="biography" rows="4" placeholder="Biography" class="w-full border-gray-300 dark:border-gray-600 dark:bg-slate-900">{{ $author->biography }}</textarea>
-                        <x-input-error class="mt-2" :messages="$errors->get('biography')" />
+                        {{-- Image --}}
+                        <div class="space-y-2 col-span-2">
+                            <p class="label">{{ __('Image') }}</p>
+                            <input type="file" name="image" class="filepond" id="image"
+                                accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
+                            <x-input-error class="mt-2" :messages="$errors->get('image')" />
+                        </div>
+                        {{-- Biography --}}
+                        <div class="space-y-2 col-span-2">
+                            <p class="label">{{ __('Biography') }}</p>
+                            <textarea name="biography" rows="4" placeholder="Biography" class="textarea">{{ $author->biography }}</textarea>
+                            <x-input-error class="mt-2" :messages="$errors->get('biography')" />
+                        </div>
                     </div>
                     <div class="flex justify-end mt-5">
                         <x-admin.primary-button>{{ __('Update') }}</x-admin.primary-button>

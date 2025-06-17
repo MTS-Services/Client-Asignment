@@ -66,12 +66,12 @@
         <a href="{{ $route }}"
             class="sidebar-item flex items-center gap-4 p-3 rounded-xl hover:bg-bg-black/10 dark:hover:bg-bg-white/10 text-text-white transition-all duration-200 group {{ $isMainActive ? 'active' : '' }}">
             <div
-                class="w-8 h-8 bg-bg-black/10 dark:bg-bg-white/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                class="w-8 h-8 bg-bg-black/10 dark:bg-transparent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                 @if ($boxicon)
                     <i class="{{ $defaultParentIcon }} text-blue"></i>
                 @else
                     <i data-lucide="{{ $defaultParentIcon }}"
-                        class="w-5 h-5 stroke-bg-black dark:stroke-bg-white flex-shrink-0"></i>
+                        class="w-5 h-5 stroke-bg-black dark:stroke-bg-light-primary flex-shrink-0"></i>
                 @endif
             </div>
             <span x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
@@ -91,12 +91,12 @@
             @click="((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) ? (open = !open) : toggleCollapsedDropdown()"
             class="sidebar-item flex items-center gap-4 p-3 rounded-xl hover:bg-bg-black/10 dark:hover:bg-bg-white/10 text-text-white transition-all duration-200 group w-full {{ $isAnyActive ? 'active' : '' }}"> {{-- relative --}}
             <div
-                class="w-8 h-8 bg-bg-black/10 dark:bg-bg-white/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform"> {{-- relative --}}
+                class="w-8 h-8 bg-bg-black/10 dark:bg-transparent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform"> {{-- relative --}}
                 @if ($boxicon)
                     <i class="{{ $defaultParentIcon }} text-blue"></i>
                 @else
                     <i data-lucide="{{ $defaultParentIcon }}"
-                        class="w-5 h-5 stroke-bg-black dark:stroke-bg-white flex-shrink-0"></i>
+                        class="w-5 h-5 stroke-bg-black dark:stroke-bg-primary flex-shrink-0"></i>
                 @endif
 
                 <!-- Active indicator for collapsed state -->
