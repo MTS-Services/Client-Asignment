@@ -12,7 +12,7 @@
 @php
     // Default icons for different levels
     $defaultParentIcon = $icon ?: 'folder';
-    $defaultSubitemIcon = 'file';
+    $defaultSubitemIcon = 'tags';
     $defaultMultiSubitemIcon = 'circle';
 
     // Check if main item or any sub-item is active
