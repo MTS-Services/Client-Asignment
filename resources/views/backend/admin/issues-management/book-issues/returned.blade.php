@@ -57,8 +57,22 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('return_date')" />
                         </div>
+                        {{-- Fine --}}
+                        <div id="fine-field" class="space-y-2 hidden">
+                            <p class="label">{{ __('Fine') }}</p>
+                            <label class="input flex items-center gap-2">
+                                <input type="number" name="fine_amount" value="{{ old('fine_amount') }}" step="0.01" min="0" class="flex-1"
+                                    placeholder="Enter fine amount" />
+                                    <x-input-error class="mt-2" :messages="$errors->get('fine_amount')" />
+                            </label>
+                        </div>
                     </div>
-
+                      {{-- Notes --}}
+                        <div class="space-y-2 ">
+                            <p class="label pt-2.5">{{ __('Notes') }}</p>
+                            <textarea name="notes" rows="4" placeholder="Notes" class="textarea !px-3">{{ old('notes') }}</textarea>
+                            <x-input-error class="mt-2" :messages="$errors->get('notes')" />
+                        </div>
                     <div class="flex justify-end mt-5">
                         <x-admin.primary-button>{{ __('Submit') }}</x-admin.primary-button>
                     </div>
@@ -71,5 +85,20 @@
     </section>
     @push('js')
         <script src="{{ asset('assets/js/filepond.js') }}"></script>
+        @push('js')
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+            <script>
+                const input = document.querySelector('input[name="return_date"]');
+                const fine = document.getElementById('fine-field');
+                const due = new Date("{{ $issue->due_date }}").toISOString().split('T')[0];
+
+                input.addEventListener('change', e => {
+                    const ret = new Date(e.target.value).toISOString().split('T')[0];
+                    fine.classList.toggle('hidden', ret <= due || isNaN(new Date(e.target.value)));
+                }); 
+            </script>
+        @endpush
+
     @endpush
 </x-admin::layout>

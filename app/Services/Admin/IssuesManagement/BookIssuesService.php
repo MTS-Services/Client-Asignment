@@ -85,6 +85,7 @@ class BookIssuesService
 
         $data['status'] = BookIssues::STATUS_RETURNED;
         $data['return_date'] = now();
+        $data['fine_amount'] = $data['fine_amount'];
         $data['updater_id'] = admin()->id;
         $data['updater_type'] = get_class(admin());
         $bookIssue->update($data);
