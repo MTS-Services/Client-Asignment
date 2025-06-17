@@ -18,11 +18,11 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web', 'user.verified']], f
     // Magazine
     Route::controller(UserMagazineController::class)->group(function () {
         Route::get('/magazine-list', 'magazineList')->name('magazine-list');
-        Route::get('/show/{magazine}', 'magazineShow')->name('magazine-show');
+        Route::get('/magazine-details/{slug}', 'magazineShow')->name('magazine-show');
     });
     // Newspaper
     Route::controller(UserNewspaperController::class)->group(function () {
         Route::get('/newspaper-list', 'newspaperList')->name('newspaper-list');
-        Route::get('/show/{newspaper}', 'newspaperShow')->name('newspaper-show');
+        Route::get('/newspaper-details/{slug}', 'newspaperShow')->name('newspaper-show');
     });
 });

@@ -45,7 +45,7 @@ class NewspaperController extends Controller implements HasMiddleware
     public function newspaperList(Request $request)
     {
         if ($request->ajax()) {
-            $query = $this->newspaperService->getNewspapers();
+            $query = $this->newspaperService->getNewspapers()->active();
             return DataTables::eloquent($query)
                 ->editColumn('status', function ($newspaper) {
                     return "<span class='badge badge-soft " . $newspaper->status_color . "'>" . $newspaper->status_label . "</span>";
@@ -70,8 +70,8 @@ class NewspaperController extends Controller implements HasMiddleware
     {
         return [
             [
-                'routeName' => 'javascript:void(0)',
-                'data-id' => encrypt($model->id),
+                'routeName' => 'user.newspaper-show',
+                'params' => ['slug' => $model->slug],
                 'className' => 'view',
                 'label' => 'Details',
                 'permissions' => ['permission-list']
@@ -83,12 +83,10 @@ class NewspaperController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function newspaperShow(Request $request, string $id)
+    public function newspaperShow(string $slug)
     {
-        $data = $this->newspaperService->getNewspaper($id);
-        $data['creater_name'] = $this->creater_name($data);
-        $data['updater_name'] = $this->updater_name($data);
-        return response()->json($data);
+        $newspaper = $this->newspaperService->getNewspaper($slug , 'slug');
+        return view('backend.user.newspaper.show', compact('newspaper'));
     }
 
    

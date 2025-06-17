@@ -66,4 +66,8 @@ class Newspaper extends BaseModel
     {
         return storage_url($this->cover_image);
     }
+    public function scopeActive($query)
+    {
+        return $query->where('status', self::STATUS_ACTIVE);
+    }
 }

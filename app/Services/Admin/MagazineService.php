@@ -15,8 +15,11 @@ class MagazineService
     {
         return Magazine::orderBy($orderBy, $order)->latest();
     }
-    public function getMagazine(string $encryptedId): Magazine|Collection
+    public function getMagazine(string $encryptedId , string $type = 'encrypted'): Magazine|Collection
     {
+        if ($type == 'slug') {
+            return Magazine::where('slug', $encryptedId)->first();
+        }
         return Magazine::findOrFail(decrypt($encryptedId));
     }
     public function getDeletedMagazine(string $encryptedId): Magazine|Collection
