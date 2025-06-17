@@ -6,13 +6,13 @@
     <!-- Dropdown container -->
     <div class="relative dropdown">
         <!-- Toggle button -->
-        <button type="button" class="action-btn btn btn-ghost btn-circle dark:text-gray-200" @click="open = !open"
+        <button type="button" class="action-btn btn btn-ghost btn-circle text-black dark:text-white" @click="open = !open"
             @click.outside="open = false">
-            <i class="bx bx-cog text-2xl"></i>
+            <i  class="bx bx-cog text-2xl"></i>
         </button>
 
         <!-- Dropdown menu -->
-        <ul class="menu menu-sm dropdown-content bg-base-100 dark:bg-gray-900/80 text-gray-800 dark:text-white rounded-box shadow min-w-44 w-fit mt-2 right-0 z-50 transition-all duration-200 ease-in-out"
+        <ul class="menu menu-sm dropdown-content bg-base-100 dark:bg-gray-900 text-gray-800 dark:text-white rounded-box shadow min-w-44 w-fit mt-2 right-0 z-50 transition-all duration-200 ease-in-out"
             x-show="open" x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
             x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100"

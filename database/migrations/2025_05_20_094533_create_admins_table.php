@@ -24,7 +24,6 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
 
             // For Eamil OTP Verification
-            // For Eamil OTP Verification
             $table->string('email_otp', 6)->nullable();
             $table->timestamp('email_otp_expires_at')->nullable();
             $table->timestamp('last_otp_sent_at')->nullable();
