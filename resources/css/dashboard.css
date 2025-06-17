@@ -354,7 +354,7 @@
 
 @layer components {
 
-    /* .gradient-light { 
+    /* .gradient-light {
         @apply bg-gradient-to-b from-gradient-light-primary to-gradient-light-secondary dark:bg-none;
     } */
 
@@ -428,7 +428,13 @@
 .input,
 .textarea,
 .select {
-    @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full;
+    @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full px-0 ;
+}
+.select {
+    @apply px-3 ;
+}
+.input input {
+    @apply px-3 ;
 }
 
 /* Notification badge */

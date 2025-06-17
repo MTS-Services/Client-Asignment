@@ -8,7 +8,8 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Create Book') }}</h2>
-                <x-admin.primary-link href="{{ route('bm.book.index') }}">{{ __('Back') }} </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.book.index') }}">{{ __('Back') }} <i data-lucide="undo-2"
+                        class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 
@@ -23,13 +24,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Title') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </g>
-                                </svg>
+
                                 <input type="text" placeholder="Title" id="title" value="{{ old('title') }}"
                                     name="title" class="flex-1" />
                             </label>
@@ -39,13 +34,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Slug') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </g>
-                                </svg>
+
                                 <input type="text" placeholder="Slug" id="slug" value="{{ old('slug') }}"
                                     name="slug" class="flex-1" />
                             </label>
@@ -56,13 +45,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Isbn') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="text" name="isbn" value="{{ old('isbn') }}" placeholder="Isbn"
                                     class="flex-1" />
                             </label>
@@ -72,13 +55,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Publication Date') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="date" name="publication_date" value="{{ old('publication_date') }}"
                                     placeholder="Publication Date" class="flex-1" />
                             </label>
@@ -135,14 +112,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Language') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5"
-                                        fill="none" stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="text" name="language" value="{{ old('language') }}"
                                     placeholder="Language" class="flex-1" />
                             </label>
@@ -152,16 +122,9 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Price') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5"
-                                        fill="none" stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
-                                <input type="text" name="price" value="{{ old('price') }}"
-                                    placeholder="Price" class="flex-1" />
+
+                                <input type="text" name="price" value="{{ old('price') }}" placeholder="Price"
+                                    class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('price')" />
                         </div>
@@ -169,14 +132,6 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Total Copies') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5"
-                                        fill="none" stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
                                 <input type="text" name="total_copies" value="{{ old('total_copies') }}"
                                     placeholder="Total copies" class="flex-1" />
                             </label>
@@ -186,14 +141,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Available Copies') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5"
-                                        fill="none" stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="text" name="available_copies" value="{{ old('available_copies') }}"
                                     placeholder="Available Copies" class="flex-1" />
                             </label>

@@ -58,6 +58,7 @@ class BookIssuesController extends Controller implements HasMiddleware
             new Middleware('permission:book-issues-create', only: ['create', 'store']),
             new Middleware('permission:book-issues-edit', only: ['edit', 'update']),
             new Middleware('permission:book-issues-delete', only: ['destroy']),
+            new Middleware('permission:book-issues-status', only: ['status']),
             new Middleware('permission:book-issues-trash', only: ['trash']),
             new Middleware('permission:book-issues-restore', only: ['restore']),
             new Middleware('permission:book-issues-permanent-delete', only: ['permanentDelete']),

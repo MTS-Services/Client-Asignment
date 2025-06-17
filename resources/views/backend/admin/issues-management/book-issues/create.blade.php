@@ -56,13 +56,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Issue Date') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="date" name="issue_date" value="{{ old('issue_date') }}"
                                     placeholder="Birth Date" class="flex-1" />
                             </label>
@@ -72,13 +66,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Due Date') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="date" name="due_date" value="{{ old('due_date') }}"
                                     placeholder="Death Date" class="flex-1" />
                             </label>
@@ -88,13 +76,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Return Date') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="date" name="return_date" value="{{ old('return_date') }}"
                                     placeholder="Death Date" class="flex-1" />
                             </label>

@@ -41,14 +41,15 @@ class CategoryController extends Controller implements HasMiddleware
             'auth:admin', // Applies 'auth:admin' to all methods
 
             // Permission middlewares using the Middleware class
-            new Middleware('permission:permisison-list', only: ['index']),
-            new Middleware('permission:permisison-details', only: ['show']),
-            new Middleware('permission:permisison-create', only: ['create', 'store']),
-            new Middleware('permission:permisison-edit', only: ['edit', 'update']),
-            new Middleware('permission:permisison-delete', only: ['destroy']),
-            new Middleware('permission:permisison-trash', only: ['trash']),
-            new Middleware('permission:permisison-restore', only: ['restore']),
-            new Middleware('permission:permisison-permanent-delete', only: ['permanentDelete']),
+            new Middleware('permission:category-list', only: ['index']),
+            new Middleware('permission:category-details', only: ['show']),
+            new Middleware('permission:category-create', only: ['create', 'store']),
+            new Middleware('permission:category-edit', only: ['edit', 'update']),
+            new Middleware('permission:category-delete', only: ['destroy']),
+            new Middleware('permission:category-status', only: ['status']),
+            new Middleware('permission:category-trash', only: ['trash']),
+            new Middleware('permission:category-restore', only: ['restore']),
+            new Middleware('permission:category-permanent-delete', only: ['permanentDelete']),
             //add more permissions if needed
         ];
     }
@@ -83,19 +84,19 @@ class CategoryController extends Controller implements HasMiddleware
                 'data-id' => encrypt($model->id),
                 'className' => 'view',
                 'label' => 'Details',
-                'permissions' => ['permission-list', 'permission-delete', 'permission-status']
+                'permissions' => ['category-list', 'category-delete', 'category-status']
             ],
-            // [
-            //     'routeName' => 'bm.category.status',
-            //     'params' => [encrypt($model->id)],
-            //     'label' => $model->status_btn_label,
-            //     'permissions' => ['permission-status']
-            // ],
+            [
+                'routeName' => 'bm.category.status',
+                'params' => [encrypt($model->id)],
+                'label' => $model->status_btn_label,
+                'permissions' => ['category-status']
+            ],
             [
                 'routeName' => 'bm.category.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
-                'permissions' => ['permission-edit']
+                'permissions' => ['category-edit']
             ],
 
             [
@@ -103,7 +104,7 @@ class CategoryController extends Controller implements HasMiddleware
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
-                'permissions' => ['permission-delete']
+                'permissions' => ['category-delete']
             ]
 
         ];
@@ -213,14 +214,14 @@ class CategoryController extends Controller implements HasMiddleware
                 'routeName' => 'bm.category.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
-                'permissions' => ['permission-restore']
+                'permissions' => ['category-restore']
             ],
             [
                 'routeName' => 'bm.category.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,
-                'permissions' => ['permission-permanent-delete']
+                'permissions' => ['category-permanent-delete']
             ]
 
         ];
@@ -248,5 +249,13 @@ class CategoryController extends Controller implements HasMiddleware
             throw $e;
         }
         return $this->redirectTrashed();
+    }
+    public function status(string $id)
+    {
+        $magazine = $this->categoryService->getCategory($id);
+
+        $this->categoryService->toggleStatus($magazine);
+        session()->flash('success', 'Category status updated successfully!');
+        return redirect()->back();
     }
 }
