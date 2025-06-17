@@ -16,10 +16,6 @@ class AdminMiddlewareWithOtp
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // 1. Ensure the admin is authenticated.
-        if (!Auth::guard('admin')->check()) {
-            return redirect()->route('admin.login');
-        }
 
         // Get the authenticated admin instance.
         $admin = Auth::guard('admin')->user();

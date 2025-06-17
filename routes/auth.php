@@ -92,24 +92,24 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
         Route::post('/otp-resend', 'resend')->name('otp-resend')->middleware('throttle:6,1');
     });
 
-    Route::middleware('guest:admin')->group(function () {
-        Route::get('login', [AdminAuthenticatedSessionController::class, 'create'])
-            ->name('login');
+    // Route::middleware('guest:admin')->group(function () {
+    Route::get('login', [AdminAuthenticatedSessionController::class, 'create'])
+        ->name('login');
 
-        Route::post('login', [AdminAuthenticatedSessionController::class, 'store']);
+    Route::post('login', [AdminAuthenticatedSessionController::class, 'store']);
 
-        Route::get('forgot-password', [AdminPasswordResetLinkController::class, 'create'])
-            ->name('password.request');
+    Route::get('forgot-password', [AdminPasswordResetLinkController::class, 'create'])
+        ->name('password.request');
 
-        Route::post('forgot-password', [AdminPasswordResetLinkController::class, 'store'])
-            ->name('password.email');
+    Route::post('forgot-password', [AdminPasswordResetLinkController::class, 'store'])
+        ->name('password.email');
 
-        Route::get('reset-password/{token}', [AdminNewPasswordController::class, 'create'])
-            ->name('password.reset');
+    Route::get('reset-password/{token}', [AdminNewPasswordController::class, 'create'])
+        ->name('password.reset');
 
-        Route::post('reset-password', [AdminNewPasswordController::class, 'store'])
-            ->name('password.store');
-    });
+    Route::post('reset-password', [AdminNewPasswordController::class, 'store'])
+        ->name('password.store');
+    // });
 
     Route::middleware('auth:admin')->group(function () {
         Route::get('verify-email', AdminEmailVerificationPromptController::class)
