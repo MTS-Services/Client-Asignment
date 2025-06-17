@@ -93,7 +93,7 @@
                         </div>
                         <div class="space-y-2">
                             <p class="label">{{ __('Role') }}</p>
-                            <select name="role" class="input select select2">
+                            <select name="role" class="select select2">
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}"
                                         {{ $admin->role_id == $role->id ? 'selected' : '' }}>{{ $role->name }}

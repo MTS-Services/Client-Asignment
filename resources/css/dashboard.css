@@ -425,7 +425,9 @@
     @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full;
 } */
 
-.input, .textarea {
+.input,
+.textarea,
+.select {
     @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full;
 }
 

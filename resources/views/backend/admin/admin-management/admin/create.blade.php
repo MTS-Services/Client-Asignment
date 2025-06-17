@@ -107,7 +107,7 @@
                         </div>
                         <div class="space-y-2">
                             <p class="label">{{ __('Role') }}</p>
-                            <select name="role" class="input select select2 noSelect2">
+                            <select name="role" class="select select2">
                                 <option selected disabled>{{ __('Select Role') }}</option>
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
