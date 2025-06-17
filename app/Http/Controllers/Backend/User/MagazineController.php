@@ -45,13 +45,10 @@ class MagazineController extends Controller implements HasMiddleware
     public function magazineList(Request $request)
     {
         if ($request->ajax()) {
-            $query = $this->magazineService->getMagazines();
+            $query = $this->magazineService->getMagazines()->active();
             return DataTables::eloquent($query)
                 ->editColumn('status', function ($magazine) {
                     return "<span class='badge badge-soft " . $magazine->status_color . "'>" . $magazine->status_label . "</span>";
-                })
-                ->editColumn('created_by', function ($magazine) {
-                    return $this->creater_name($magazine);
                 })
                 ->editColumn('created_at', function ($magazine) {
                     return $magazine->created_at_formatted;
@@ -60,7 +57,7 @@ class MagazineController extends Controller implements HasMiddleware
                     $menuItems = $this->menuItems($service);
                     return view('components.user.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['created_by', 'status', 'created_at', 'action'])
+                ->rawColumns(['status', 'created_at', 'action'])
                 ->make(true);
         }
         return view('backend.user.magazine.index');
@@ -70,8 +67,8 @@ class MagazineController extends Controller implements HasMiddleware
     {
         return [
             [
-                'routeName' => 'javascript:void(0)',
-                'data-id' => encrypt($model->id),
+                'routeName' => 'user.magazine-show',
+                'params' => ['slug' => $model->slug],
                 'className' => 'view',
                 'label' => 'Details',
                 'permissions' => ['permission-list']
@@ -83,12 +80,10 @@ class MagazineController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function magazineShow(Request $request, string $id)
+    public function magazineShow(string $slug)
     {
-        $data = $this->magazineService->getMagazine($id);
-        $data['creater_name'] = $this->creater_name($data);
-        $data['updater_name'] = $this->updater_name($data);
-        return response()->json($data);
+        $magazine = $this->magazineService->getMagazine($slug , 'slug');
+        return view('backend.user.magazine.show', compact('magazine'));
     }
 }
 

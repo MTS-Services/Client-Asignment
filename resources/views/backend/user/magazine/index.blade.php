@@ -18,9 +18,7 @@
                     <tr>
                         <th width="5%">{{ __('SL') }}</th>
                         <th>{{ __('Title') }}</th>
-                        <th>{{ __('Slug') }}</th>
                         <th>{{ __('Status') }}</th>
-                        <th>{{ __('Created By') }}</th>
                         <th>{{ __('Created Date') }}</th>
                         <th width="10%">{{ __('Action') }}</th>
                     </tr>
@@ -31,7 +29,6 @@
         </div>
     </section>
 
-    <x-admin.details-modal />
 
     @push('js')
         <script src="{{ asset('assets/js/datatable.js') }}"></script>
@@ -40,9 +37,7 @@
                 let table_columns = [
                     //name and data, orderable, searchable
                     ['title', true, true],
-                    ['slug', true, true],
                     ['status', true, true],
-                    ['created_by', true, true],
                     ['created_at', true, true],
                     ['action', false, false],
                 ];
@@ -59,38 +54,6 @@
 
                 initializeDataTable(details);
             })
-        </script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-
-                $(document).on('click', '.view', function() {
-                    const id = $(this).data('id');
-                    const route = "{{ route('user.magazine-show', ':id') }}";
-
-                    const details = [{
-                            label: '{{ __('Title') }}',
-                            key: 'title',
-                        },
-                        {
-                            label: '{{ __('Slug') }}',
-                            key: 'slug',
-                            icon: 'shield-check',
-                        },
-                        {
-                            label:'{{ __('Description') }}',
-                            key: 'description',
-                        },
-                        {
-                            label: '{{ __('Cover Image') }}',
-                            key: 'cover_image',
-                            type: 'modified_image',
-                        },
-                    ];
-
-                    showDetailsModal(route, id, '{{ __('Magazine Details') }}', details);
-                });
-            });
         </script>
     @endpush
 </x-user::layout>

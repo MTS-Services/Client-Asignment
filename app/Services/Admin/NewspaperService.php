@@ -15,8 +15,11 @@ class NewspaperService
     {
         return Newspaper::orderBy($orderBy, $order)->latest();
     }
-    public function getNewspaper(string $encryptedId): Newspaper|Collection
+    public function getNewspaper(string $encryptedId, string $type = 'encrypted'): Newspaper|Collection
     {
+        if ($type == 'slug') {
+            return Newspaper::where('slug', $encryptedId)->first();
+        }
         return Newspaper::findOrFail(decrypt($encryptedId));
     }
     public function getDeletedNewspaper(string $encryptedId): Newspaper|Collection
