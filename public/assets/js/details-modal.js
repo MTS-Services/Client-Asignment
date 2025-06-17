@@ -207,9 +207,9 @@ function getDefaultIcon(key) {
     if (keyLower.includes('time')) return 'clock';
     if (keyLower.includes('department')) return 'building';
     if (keyLower.includes('address')) return 'map-pin';
+    if (keyLower.includes('video')) return 'video';
     if (keyLower.includes('id')) return 'hash';
     if (keyLower.includes('image')) return 'image';
-    if (keyLower.includes('video')) return 'video';
 
     return 'info';
 }
