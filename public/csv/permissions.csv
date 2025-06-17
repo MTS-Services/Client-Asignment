@@ -8,6 +8,8 @@ admin-details,admin,Admin
 admin-trash,admin,Admin
 admin-restore,admin,Admin
 admin-permanent-delete,admin,Admin
+
+
 role-list,admin,Role
 role-create,admin,Role
 role-edit,admin,Role
