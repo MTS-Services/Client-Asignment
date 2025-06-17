@@ -11,7 +11,7 @@ class UserService
 {
     use FileManagementTrait;
 
-    public function getUsers($orderBy = 'name', $order = 'asc')
+    public function getUsers($orderBy = 'sort_order', $order = 'asc')
     {
         return User::orderBy($orderBy, $order)->latest();
     }

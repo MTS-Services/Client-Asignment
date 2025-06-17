@@ -19,12 +19,12 @@ class RackController extends Controller implements HasMiddleware
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('rack.index');
+        return redirect()->route('bm.rack.index');
     }
 
     protected function redirectTrashed(): RedirectResponse
     {
-        return redirect()->route('rack.trash');
+        return redirect()->route('bm.rack.trash');
     }
 
     protected RackService $rackService;
@@ -83,14 +83,14 @@ class RackController extends Controller implements HasMiddleware
                 'permissions' => ['rack-list', 'rack-delete', 'rack-status']
             ],
             [
-                'routeName' => 'rack.edit',
+                'routeName' => 'bm.rack.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
                 'permissions' => ['rack-edit']
             ],
 
             [
-                'routeName' => 'rack.destroy',
+                'routeName' => 'bm.rack.destroy',
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
@@ -199,13 +199,13 @@ class RackController extends Controller implements HasMiddleware
     {
         return [
             [
-                'routeName' => 'rack.restore',
+                'routeName' => 'bm.rack.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
                 'permissions' => ['permission-restore']
             ],
             [
-                'routeName' => 'rack.permanent-delete',
+                'routeName' => 'bm.rack.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,

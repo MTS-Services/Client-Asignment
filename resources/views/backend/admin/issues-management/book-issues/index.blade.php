@@ -1,16 +1,18 @@
 <x-admin::layout>
-    <x-slot name="title">{{ __('Author List') }}</x-slot>
-    <x-slot name="breadcrumb">{{ __('Author List') }}</x-slot>
-    <x-slot name="page_slug">author</x-slot>
+    <x-slot name="title">{{ __('Book Issues List') }}</x-slot>
+    <x-slot name="breadcrumb">{{ __('Book Issues List') }}</x-slot>
+    <x-slot name="page_slug">book_issues</x-slot>
     <section>
 
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
-                <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Author List') }}</h2>
+                <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Book Issues List') }}</h2>
                 <div class="flex items-center gap-2">
-                    <x-admin.primary-link error="true" href="{{ route('bm.author.trash') }}">{{ __('Trash') }}
+                    <x-admin.primary-link secondary="true" href="{{ route('bm.book-issues.trash') }}">{{ __('Trash') }}
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </x-admin.primary-link>
-                    <x-admin.primary-link href="{{ route('bm.author.create') }}">{{ __('Add') }}
+                    <x-admin.primary-link href="{{ route('bm.book-issues.create') }}">{{ __('Add') }} <i
+                            data-lucide="user-round-plus" class="w-4 h-4"></i>
                     </x-admin.primary-link>
                 </div>
             </div>
@@ -20,8 +22,10 @@
                 <thead>
                     <tr>
                         <th width="5%">{{ __('SL') }}</th>
-                        <th>{{ __('Name') }}</th>
-                        <th>{{ __('Nationality') }}</th>
+                        <th>{{ __('User') }}</th>
+                        <th>{{ __('Book') }}</th>
+                        <th>{{ __('Issued By') }}</th>
+                        <th>{{ __('Returned By') }}</th>
                         <th>{{ __('Status') }}</th>
                         <th>{{ __('Created By') }}</th>
                         <th>{{ __('Created Date') }}</th>
@@ -43,10 +47,12 @@
             document.addEventListener('DOMContentLoaded', () => {
                 let table_columns = [
                     //name and data, orderable, searchable
-                    ['name', true, true],
-                    ['nationality', true, true],
+                    ['user_id', true, true],
+                    ['book_id', true, true],
+                    ['issued_by', true, true],
+                    ['returned_by', true, true],
                     ['status', true, true],
-                    ['created_by', true, true],
+                    ['creater_id', true, true],
                     ['created_at', true, true],
                     ['action', false, false],
                 ];
@@ -54,10 +60,10 @@
                     table_columns: table_columns,
                     main_class: '.datatable',
                     displayLength: 10,
-                    main_route: "{{ route('bm.author.index') }}",
+                    main_route: "{{ route('bm.book-issues.index') }}",
                     order_route: "{{ route('update.sort.order') }}",
-                    export_columns: [0, 1, 2, 3, 4, 5],
-                    model: 'Author',
+                    export_columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                    model: 'BookIssue',
                 };
                 // initializeDataTable(details);
 
@@ -74,8 +80,32 @@
                     const route = "{{ route('bm.author.show', ':id') }}";
 
                     const details = [{
-                            label: '{{ __('Name') }}',
-                            key: 'name',
+                            label: '{{ __('User') }}',
+                            key: 'username',
+                        },
+                        {
+                            label: '{{ __('Book') }}',
+                            key: 'book.title',
+                        },
+                        {
+                            label: '{{ __('Issued By') }}',
+                            key: 'issued_by_admin.name',
+                        },
+                        {
+                            label: '{{ __('Issue Date') }}',
+                            key: 'issue_date',
+                        },
+                        {
+                            label: '{{ __('Due Date') }}',
+                            key: 'due_date',
+                        },
+                        {
+                            label: '{{ __('Return Date') }}',
+                            key: 'return_date',
+                        },
+                        {
+                            label: '{{ __('Returned By') }}',
+                            key: 'returned_by_user.name',
                         },
                         {
                             label: '{{ __('Status') }}',
@@ -83,33 +113,20 @@
                             type: 'status',
                         },
                         {
-                            label: '{{ __('Nationality') }}',
-                            key: 'nationality',
+                            label: '{{ __('Fine Amount') }}',
+                            key: 'fine_amount',
                         },
                         {
-                            label: '{{ __('Birth Date') }}',
-                            key: 'birth_date',
+                            label: '{{ __('Fine Paid') }}',
+                            key: 'fine_paid',
                         },
                         {
-                            label: '{{ __('Death Date') }}',
-                            key: 'death_date',
-                        },
-                        {
-                            label: '{{ __('Biography') }}',
-                            key: 'biography',
-                        },
-                        {
-                            label: '{{ __('Status') }}',
-                            key: 'status',
-                        },
-                        {
-                            label: '{{ __('Image') }}',
-                            key: 'modified_image',
-                            type: 'image',
+                            label: '{{ __('Notes') }}',
+                            key: 'notes',
                         },
                     ];
 
-                    showDetailsModal(route, id, '{{ __('Author Details') }}', details);
+                    showDetailsModal(route, id, '{{ __('Book Details') }}', details);
                 });
             });
         </script>
