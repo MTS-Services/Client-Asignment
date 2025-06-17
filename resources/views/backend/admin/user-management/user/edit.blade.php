@@ -25,13 +25,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Name') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </g>
-                                </svg>
+
                                 <input type="text" placeholder="Name" name="name" value="{{ $user->name }}"
                                     class="flex-1" />
                             </label>
@@ -42,13 +36,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Email') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="email" name="email" value="{{ $user->email }}"
                                     placeholder="example@gmail.com" class="flex-1" />
                             </label>
@@ -59,15 +47,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Password') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <path
-                                            d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z">
-                                        </path>
-                                        <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
-                                    </g>
-                                </svg>
+                           
                                 <input type="password" name="password" placeholder="Password" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('password')" />
@@ -77,15 +57,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Confirm Password') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <path
-                                            d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z">
-                                        </path>
-                                        <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
-                                    </g>
-                                </svg>
+                            
                                 <input type="password" name="password_confirmation" placeholder="Confirm Password"
                                     class="flex-1" />
                             </label>
@@ -97,7 +69,7 @@
                                 accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
                             <x-input-error class="mt-2" :messages="$errors->get('image')" />
                         </div>
-                        
+
                     </div>
                     <div class="flex justify-end mt-5">
                         <x-admin.primary-button>{{ __('Update') }}</x-admin.primary-button>
@@ -113,10 +85,11 @@
             <script src="{{ asset('assets/js/filepond.js') }}"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                    const existingImage = {"#image": "{{ $user->modified_image }}"};
+                    const existingImage = {
+                        "#image": "{{ $user->modified_image }}"
+                    };
                     file_upload(["#image"], ["image/jpeg", "image/png", "image/jpg, image/webp, image/svg"], existingImage);
                 });
-
             </script>
         @endpush
 

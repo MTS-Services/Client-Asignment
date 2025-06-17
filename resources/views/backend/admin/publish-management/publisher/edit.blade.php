@@ -7,7 +7,8 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Edit Publisher') }}</h2>
-                <x-admin.primary-link href="{{ route('bm.publisher.index') }}">{{ __('Back') }} <i data-lucide="undo-2" class="w-4 h-4"></i>
+                <x-admin.primary-link href="{{ route('bm.publisher.index') }}">{{ __('Back') }} <i data-lucide="undo-2"
+                        class="w-4 h-4"></i>
                 </x-admin.primary-link>
             </div>
         </div>
@@ -25,13 +26,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Name') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </g>
-                                </svg>
+
                                 <input type="text" placeholder="Enter name" id="title"
                                     value="{{ $publisher->name }}" name="name" class="flex-1" />
                             </label>
@@ -40,13 +35,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Slug') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </g>
-                                </svg>
+
                                 <input type="text" placeholder="Enter slug" id="slug"
                                     value="{{ $publisher->slug }}" name="slug" class="flex-1" />
                             </label>
@@ -57,13 +46,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Email') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="email" name="email" value="{{ $publisher->email }}"
                                     placeholder="Enter email" class="flex-1" />
                             </label>
@@ -73,13 +56,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Phone') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="text" name="phone" value="{{ $publisher->phone }}"
                                     placeholder="Enter phone number" class="flex-1" />
                             </label>
@@ -98,8 +75,8 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Address') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="text" value="{{ $publisher->address }}" id="address"
-                                    name="address" class="form-control" placeholder="Enter address">
+                                <input type="text" value="{{ $publisher->address }}" id="address" name="address"
+                                    class="form-control" placeholder="Enter address">
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('address')" />
                         </div>

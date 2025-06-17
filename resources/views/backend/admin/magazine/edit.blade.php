@@ -11,7 +11,8 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Edit Magazine') }}</h2>
-                <x-admin.primary-link href="{{ route('magazine.index') }}">{{ __('Back') }} <i data-lucide="undo-2" class="w-4 h-4"></i> </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('magazine.index') }}">{{ __('Back') }} <i data-lucide="undo-2"
+                        class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 
@@ -19,7 +20,8 @@
             class="grid grid-cols-1 gap-4 sm:grid-cols-1  {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
-                <form action="{{ route('magazine.update', encrypt($magazine->id)) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('magazine.update', encrypt($magazine->id)) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -27,15 +29,9 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Title') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </g>
-                                </svg>
-                                <input type="text" id="title" placeholder="Title" value="{{ $magazine->title }}" name="title"
-                                    class="flex-1" />
+
+                                <input type="text" id="title" placeholder="Title" value="{{ $magazine->title }}"
+                                    name="title" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('title')" />
                         </div>
@@ -49,7 +45,7 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('slug')" />
                         </div>
-                        
+
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Image') }}</p>
                             <input type="file" name="cover_image" class="filepond" id="cover_image"
@@ -58,7 +54,7 @@
                         </div>
                         {{-- Description --}}
                         <div class="space-y-2 col-span-2">
-                           <p class="label">{{ __('Description') }}</p>
+                            <p class="label">{{ __('Description') }}</p>
                             <textarea name="description" rows="4" placeholder="Description"
                                 class="w-full border-gray-300 dark:border-gray-600 dark:bg-slate-900">{{ $magazine->description }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />

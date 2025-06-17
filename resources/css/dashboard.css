@@ -426,7 +426,13 @@
 } */
 
 .input {
-    @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full;
+    @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full px-0 ;
+}
+.input.select {
+    @apply px-3 ;
+}
+.input input {
+    @apply px-3 ;
 }
 
 /* Notification badge */
