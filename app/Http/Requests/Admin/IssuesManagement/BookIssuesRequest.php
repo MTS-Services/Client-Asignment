@@ -19,15 +19,16 @@ class BookIssuesRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
- public function rules(): array
-{
-    return [
-        'user_id'      => 'required|exists:users,id',
-        'book_id'      => 'required|exists:books,id', // ✅ fixed typo
-        'notes'        => 'nullable|string',
-        'issue_date'   => 'required|date',
-    ] + ($this->isMethod('POST') ? $this->store() :( $this->isMethod('PUT') ? $this->update() : $this->returnUpdate()));
-}
+    public function rules(): array
+    {
+        return [
+            'user_id'      => 'required|exists:users,id',
+            'book_id'      => 'required|exists:books,id', // ✅ fixed typo
+            'notes'        => 'nullable|string',
+            'issue_date'   => 'required|date',
+            'due_date' => 'nullable|date',
+        ] + ($this->isMethod('POST') ? $this->store() : ($this->isMethod('PUT') ? $this->update() : $this->returnUpdate()));
+    }
 
 
     protected function store(): array
@@ -39,11 +40,11 @@ class BookIssuesRequest extends FormRequest
     protected function update(): array
     {
         return [
-            'due_date' => 'nullable|date',
+
             'fine_amount' => 'nullable|numeric|min:0',
             'fine_paid' => 'nullable|boolean',
 
-        //   'returned_by' => 'required|exists:users,id',
+            //   'returned_by' => 'required|exists:users,id',
         ];
     }
     protected function returnUpdate(): array
