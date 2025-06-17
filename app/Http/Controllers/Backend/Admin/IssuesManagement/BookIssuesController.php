@@ -25,12 +25,12 @@ class BookIssuesController extends Controller implements HasMiddleware
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('bm.book-issues.index');
+        return redirect()->route('bim.book-issues.index');
     }
 
     protected function redirectTrashed(): RedirectResponse
     {
-        return redirect()->route('bm.book-issues.trash');
+        return redirect()->route('bim.book-issues.trash');
     }
 
     protected BookIssuesService $bookIssuesService;
@@ -71,8 +71,9 @@ class BookIssuesController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
+        $status = $request->get('status');
         if ($request->ajax()) {
-            $query = $this->bookIssuesService->getBookIssuess();
+            $query = $this->bookIssuesService->getBookIssuess()->where('status', array_search($status, BookIssues::statusList()));
 
             return DataTables::eloquent($query)
                 ->editColumn('user_id', fn($bookIssues) => $bookIssues->user?->name)
@@ -83,19 +84,19 @@ class BookIssuesController extends Controller implements HasMiddleware
                 ->editColumn('creater_id', fn($bookIssues) => $this->creater_name($bookIssues))
                 ->editColumn('created_at', fn($bookIssues) => $bookIssues->created_at_formatted)
                 ->editColumn('action', fn($bookIssues) => view('components.admin.action-buttons', [
-                    'menuItems' => $this->menuItems($bookIssues)
+                    'menuItems' => $this->menuItems($bookIssues, $status)
                 ])->render())
                 ->rawColumns(['created_by', 'issued_by', 'returned_by', 'user_id', 'book_id', 'status', 'creater_id', 'action'])
                 ->make(true);
         }
 
-        return view('backend.admin.issues-management.book-issues.index');
+        return view('backend.admin.issues-management.book-issues.index', compact('status'));
     }
 
 
-    protected function menuItems($model): array
+    protected function menuItems($model, $status): array
     {
-        return [
+        $items = [
             [
                 'routeName' => 'javascript:void(0)',
                 'data-id' => encrypt($model->id),
@@ -103,40 +104,70 @@ class BookIssuesController extends Controller implements HasMiddleware
                 'label' => 'Details',
                 'permissions' => ['book-issues-list', 'book-issues-delete', 'book-issues-status']
             ],
-            [
-                'routeName' => 'bm.book-issues.edit',
-                'params' => [encrypt($model->id)],
-                'label' => 'Edit',
-                'permissions' => ['book-issues-edit']
-            ],
-            [
-                'routeName' => 'bm.book-issues.status',
-                'params' => [encrypt($model->id)],
-                'label' => $model->status_label,
-                'permissions' => ['book-issues-status']
-            ],
-            [
-                'routeName' => 'bm.book-issues.return',
-                'params' => [encrypt($model->id)],
-                'label' => 'Return',
-                'permissions' => ['book-issues-restore']
-            ],
-            [
-                'routeName' => 'bm.book-issues.destroy',
-                'params' => [encrypt($model->id)],
-                'label' => 'Delete',
-                'delete' => true,
-                'permissions' => ['book-issues-delete']
-            ]
-
         ];
+
+        if ($model->status == BookIssues::STATUS_PENDING) {
+            $items = array_merge($items, [
+                [
+                    'routeName' => 'bim.book-issues.edit',
+                    'params' => [encrypt($model->id), 'status' => $status],
+                    'label' => 'Edit',
+                    'permissions' => ['book-issues-edit']
+                ],
+                [
+                    'routeName' => 'bim.book-issues.status',
+                    'params' => [
+                        encrypt($model->id),
+                        'status' => BookIssues::statusList()[BookIssues::STATUS_ISSUED]
+                    ],
+                    'label' => 'Issue',
+                    'issue' => true,
+                    'permissions' => ['book-issues-status']
+                ],
+                [
+                    'routeName' => 'bim.book-issues.destroy',
+                    'params' => [encrypt($model->id), 'status' => $status],
+                    'label' => 'Delete',
+                    'delete' => true,
+                    'permissions' => ['book-issues-delete']
+                ]
+            ]);
+        }
+        if ($model->status == BookIssues::STATUS_ISSUED) {
+            $items = array_merge($items, [
+                [
+                    'routeName' => 'bim.book-issues.status',
+                    'params' => [
+                        encrypt($model->id),
+                        'status' => BookIssues::statusList()[BookIssues::STATUS_PENDING]
+                    ],
+                    'label' => 'Cancel Issue',
+                    'permissions' => ['book-issues-status']
+                ],
+                [
+                    'routeName' => 'bim.book-issues.return',
+                    'params' => [encrypt($model->id), 'status' => $status],
+                    'label' => 'Return',
+                    'permissions' => ['book-issues-return']
+                ],
+                [
+                    'routeName' => 'bim.book-issues.lost',
+                    'params' => [encrypt($model->id), 'status' => $status],
+                    'label' => 'Lost',
+                    'permissions' => ['book-issues-lost']
+                ],
+            ]);
+        }
+        return $items;
     }
+
 
     public function return($id)
     {
         $data['issue'] = BookIssues::findOrFail(decrypt($id));
         return view('backend.admin.issues-management.book-issues.returned', $data);
     }
+
 
 
     public function updateReturn(Request $request, string $id): RedirectResponse
@@ -173,6 +204,7 @@ class BookIssuesController extends Controller implements HasMiddleware
 
         try {
             $validated = $request->validated();
+            $validated['status'] = BookIssues::STATUS_ISSUED;
             $this->bookIssuesService->createBookIssues($validated);
             session()->flash('success', "Book issues created successfully");
         } catch (\Throwable $e) {
@@ -188,6 +220,10 @@ class BookIssuesController extends Controller implements HasMiddleware
     public function show(Request $request, string $id)
     {
         $data = $this->bookIssuesService->getBookIssues($id);
+        $data['username'] = $data->user?->name;
+        $data['bookTitle'] = $data->book?->title;
+        $data['issuedBy'] = $data->issuedBy?->name;
+        $data['returnedBy'] = $data->returnedBy?->name;
         $data['creater_name'] = $this->creater_name($data);
         $data['updater_name'] = $this->updater_name($data);
         return response()->json($data);
@@ -200,7 +236,6 @@ class BookIssuesController extends Controller implements HasMiddleware
     {
         $data['issue'] = $this->bookIssuesService->getBookIssues($id);
         $data['users'] = $this->userService->getUsers()->select(['id', 'name'])->get();
-        $data['issueds'] = $this->adminService->getAdmins()->select(['id', 'name'])->get();
         $data['books'] = $this->bookService->getBooks()->select(['id', 'title'])->get();
         return view('backend.admin.issues-management.book-issues.edit', $data);
     }
@@ -263,13 +298,13 @@ class BookIssuesController extends Controller implements HasMiddleware
     {
         return [
             [
-                'routeName' => 'bm.book-issues.restore',
+                'routeName' => 'bim.book-issues.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
                 'permissions' => ['book-issues-restore']
             ],
             [
-                'routeName' => 'bm.book-issues.permanent-delete',
+                'routeName' => 'bim.book-issues.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,
@@ -303,14 +338,13 @@ class BookIssuesController extends Controller implements HasMiddleware
         }
         return $this->redirectTrashed();
     }
-    public function status(string $id)
+    public function status(string $id, string $status)
     {
         $bookIssues = $this->bookIssuesService->getBookIssues($id);
-        if ($bookIssues->role_id == 1 && admin()->role_id != 1) {
-            session()->flash('error', 'Only a Super Admin can change status of another Super Admin!');
-            return redirect()->back();
-        }
-        $this->bookIssuesService->toggleStatus($bookIssues);
+        match ($status) {
+            BookIssues::statusList()[BookIssues::STATUS_ISSUED] => $bookIssues->update(['status' => BookIssues::STATUS_ISSUED, 'issued_by' => admin()->id, 'updater_id' => admin()->id, 'updater_type' => get_class(admin())]),
+            BookIssues::statusList()[BookIssues::STATUS_PENDING] => $bookIssues->update(['status' => BookIssues::STATUS_PENDING, 'updater_id' => admin()->id, 'updater_type' => get_class(admin()), 'issued_by' => null]),
+        };
         session()->flash('success', 'Admin status updated successfully!');
         return redirect()->back();
     }

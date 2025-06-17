@@ -22,11 +22,11 @@ class BookIssuesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'      => 'required|exists:users,id',
-            'book_id'      => 'required|exists:books,id', // ✅ fixed typo
-            'notes'        => 'nullable|string',
-            'issue_date'   => 'required|date',
-            'due_date' => 'nullable|date',
+            'user_id' => 'required|exists:users,id',
+            'book_id' => 'required|exists:books,id', // ✅ fixed typo
+            'notes' => 'nullable|string',
+            'issue_date' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:issue_date',
         ] + ($this->isMethod('POST') ? $this->store() : ($this->isMethod('PUT') ? $this->update() : $this->returnUpdate()));
     }
 
@@ -40,11 +40,6 @@ class BookIssuesRequest extends FormRequest
     protected function update(): array
     {
         return [
-
-            'fine_amount' => 'nullable|numeric|min:0',
-            'fine_paid' => 'nullable|boolean',
-
-            //   'returned_by' => 'required|exists:users,id',
         ];
     }
     protected function returnUpdate(): array
