@@ -95,7 +95,7 @@
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Biography') }}</p>
                             <textarea name="biography" rows="4" placeholder="Biography"
-                                class="w-full border-gray-300 dark:border-gray-600">{{ old('biography') }}</textarea>
+                                class="textarea">{{ old('biography') }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('biography')" />
                         </div>
                     </div>
