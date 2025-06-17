@@ -9,8 +9,8 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Create Book Issue') }}</h2>
                 <x-admin.primary-link
-                    href="{{ route('bim.book-issues.index', ['status' => request('status')]) }}">{{ __('Back') }}
-                </x-admin.primary-link>
+                    href="{{ route('bim.book-issues.index', ['status' => request('status')]) }}">{{ __('Back') }} <i
+                        data-lucide="undo-2" class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 

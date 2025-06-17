@@ -14,7 +14,7 @@
                     </x-admin.primary-link>
                     <x-admin.primary-link
                         href="{{ route('bim.book-issues.create', ['status' => request('status')]) }}">{{ __('Add') }}
-                        <i data-lucide="user-round-plus" class="w-4 h-4"></i>
+                        <i data-lucide="plus" class="w-4 h-4"></i>
                     </x-admin.primary-link>
                 </div>
             </div>
