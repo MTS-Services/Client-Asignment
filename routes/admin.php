@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\Admin\AuthorController;
 use App\Http\Controllers\Backend\Admin\BookManagement\BookController;
 use App\Http\Controllers\Backend\Admin\BookManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Backend\Admin\IssuesManagement\BookIssuesController;
 use App\Http\Controllers\Backend\Admin\UserManagment\UserController;
 use App\Http\Controllers\Backend\Admin\MagazineController;
 use App\Http\Controllers\Backend\Admin\NewspaperController;
@@ -118,6 +119,19 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
             Route::get('/trash/bin', 'trash')->name('trash');
             Route::get('/restore/{category}', 'restore')->name('restore');
             Route::delete('/permanent-delete/{category}', 'permanentDelete')->name('permanent-delete');
+        });
+    });
+
+    Route::group(['as' => 'im.', 'prefix' => 'issues-management'], function () {
+        Route::resource('book-issues', BookIssuesController::class);
+        Route::controller(BookIssuesController::class)->name('book-issues.')->prefix('book-issues')->group(function () {
+            Route::post('/show/{bookIssue}', 'show')->name('show');
+            Route::get('/status/{bookIssue}', 'status')->name('status');
+            Route::get('/trash/bin', 'trash')->name('trash');
+            Route::get('/return/{bookIssue}', 'return')->name('return');
+            Route::get('/restore/{bookIssue}', 'restore')->name('restore');
+            Route::delete('/permanent-delete/{bookIssue}', 'permanentDelete')->name('permanent-delete');
+            Route::patch('/update-return/{bookIssue}', 'updateReturn')->name('update-return');
         });
     });
 });
