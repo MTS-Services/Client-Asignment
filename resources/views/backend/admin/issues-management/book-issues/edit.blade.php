@@ -59,6 +59,7 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('issue_date')" />
                         </div>
+                        {{-- Due Date --}}
                         <div class="space-y-2">
                             <p class="label">{{ __('Due Date') }}</p>
                             <label class="input flex items-center gap-2">
