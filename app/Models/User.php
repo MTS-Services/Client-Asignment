@@ -65,4 +65,9 @@ class User extends AuthBaseModel
             'email_otp' => 'integer',
         ];
     }
+
+    public function book_issues()
+    {
+        return $this->hasMany(BookIssues::class);
+    }
 }

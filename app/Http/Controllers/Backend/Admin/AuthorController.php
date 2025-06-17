@@ -20,12 +20,12 @@ class AuthorController extends Controller implements HasMiddleware
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('author.index');
+        return redirect()->route('bm.author.index');
     }
 
     protected function redirectTrashed(): RedirectResponse
     {
-        return redirect()->route('author.trash');
+        return redirect()->route('bm.author.trash');
     }
 
     protected AuthorService $authorService;
@@ -87,19 +87,19 @@ class AuthorController extends Controller implements HasMiddleware
                 'permissions' => ['author-list', 'author-delete', 'author-status']
             ],
             [
-                'routeName' => 'author.edit',
+                'routeName' => 'bm.author.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
                 'permissions' => ['author-edit']
             ],
             [
-                'routeName' => 'author.status',
+                'routeName' => 'bm.author.status',
                 'params' => [encrypt($model->id)],
                 'label' => $model->status_btn_label,
                 'permissions' => ['author-status']
             ],
             [
-                'routeName' => 'author.destroy',
+                'routeName' => 'bm.author.destroy',
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
@@ -151,7 +151,7 @@ class AuthorController extends Controller implements HasMiddleware
     public function edit(string $id): View
     {
         $data['author'] = $this->authorService->getAuthor($id);
-        return view('backend.admin.author.edit', $data);
+        return view('backend.admin.bm.author.edit', $data);
     }
 
     /**
@@ -203,7 +203,7 @@ class AuthorController extends Controller implements HasMiddleware
                 ->make(true);
         }
 
-        return view('backend.admin.author.trash');
+        return view('backend.admin.bm.author.trash');
     }
 
 
@@ -211,13 +211,13 @@ class AuthorController extends Controller implements HasMiddleware
     {
         return [
             [
-                'routeName' => 'author.restore',
+                'routeName' => 'bm.author.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
                 'permissions' => ['permission-restore']
             ],
             [
-                'routeName' => 'author.permanent-delete',
+                'routeName' => 'bm.author.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,

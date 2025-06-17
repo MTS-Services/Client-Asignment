@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             MagazineSeeder::class,
             NewspaperSeeder::class,
             BookSeeder::class,
+            BookIssuesSeeder::class,
         ]);
     }
 }

@@ -1,15 +1,16 @@
 <x-admin::layout>
-    <x-slot name="title">{{ __('Trashed Publisher List') }}</x-slot>
-    <x-slot name="breadcrumb">{{ __('Trashed Publisher List') }}</x-slot>
-    <x-slot name="page_slug">publisher</x-slot>
+    <x-slot name="title">{{ __('Trashed Book Issues List') }}</x-slot>
+    <x-slot name="breadcrumb">{{ __('Trashed Book Issues List') }}</x-slot>
+    <x-slot name="page_slug">book_issues</x-slot>
     <section>
 
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
-                <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Trashed Publisher List') }}
+                <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Trashed Book List') }}
                 </h2>
-                <x-admin.primary-link href="{{ route('bm.publisher.index') }}">{{ __('Back') }}
-                </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.book-issues.index') }}">{{ __('Back') }} <i
+                        data-lucide="undo-2" class="w-4 h-4"></i> </x-admin.primary-link>
+
             </div>
         </div>
 
@@ -18,9 +19,10 @@
                 <thead>
                     <tr>
                         <th width="5%">{{ __('SL') }}</th>
-                        <th>{{ __('Name') }}</th>
-                        <th>{{ __('Email') }}</th>
-                        <th>{{ __('Address') }}</th>
+                        <th>{{ __('User') }}</th>
+                        <th>{{ __('Book') }}</th>
+                        <th>{{ __('Issued By') }}</th>
+                        <th>{{ __('Returned By') }}</th>
                         <th>{{ __('Status') }}</th>
                         <th>{{ __('Deleted By') }}</th>
                         <th>{{ __('Deleted Date') }}</th>
@@ -39,9 +41,10 @@
             document.addEventListener('DOMContentLoaded', () => {
                 let table_columns = [
                     //name and data, orderable, searchable
-                    ['name', true, true],
-                    ['email', true, true],
-                    ['address', true, true],
+                    ['user_id', true, true],
+                    ['book_id', true, true],
+                    ['issued_by', true, true],
+                    ['returned_by', true, true],
                     ['status', true, true],
                     ['deleted_by', true, true],
                     ['deleted_at', true, true],
@@ -51,10 +54,10 @@
                     table_columns: table_columns,
                     main_class: '.datatable',
                     displayLength: 10,
-                    main_route: "{{ route('bm.publisher.trash') }}",
+                    main_route: "{{ route('bm.book-issues.trash') }}",
                     order_route: "{{ route('update.sort.order') }}",
-                    export_columns: [0, 1, 2, 3, 4],
-                    model: 'Publisher',
+                    export_columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                    model: 'BookIssue',
                 };
                 initializeDataTable(details);
             })
