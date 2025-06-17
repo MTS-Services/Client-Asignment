@@ -47,6 +47,7 @@ class PublisherController extends Controller implements HasMiddleware
             new Middleware('permission:publisher-create', only: ['create', 'store']),
             new Middleware('permission:publisher-edit', only: ['edit', 'update']),
             new Middleware('permission:publisher-delete', only: ['destroy']),
+            new Middleware('permission:publisher-status', only: ['status']),
             new Middleware('permission:publisher-trash', only: ['trash']),
             new Middleware('permission:publisher-restore', only: ['restore']),
             new Middleware('permission:publisher-permanent-delete', only: ['permanentDelete']),

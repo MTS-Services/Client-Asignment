@@ -53,6 +53,7 @@ class BookController extends Controller implements HasMiddleware
             new Middleware('permission:book-details', only: ['show']),
             new Middleware('permission:book-create', only: ['create', 'store']),
             new Middleware('permission:book-edit', only: ['edit', 'update']),
+            new Middleware('permission:book-status', only: ['status']),
             new Middleware('permission:book-delete', only: ['destroy']),
             new Middleware('permission:book-trash', only: ['trash']),
             new Middleware('permission:book-restore', only: ['restore']),

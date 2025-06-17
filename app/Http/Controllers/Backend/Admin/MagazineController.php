@@ -45,6 +45,7 @@ class MagazineController extends Controller implements HasMiddleware
             new Middleware('permission:magazine-create', only: ['create', 'store']),
             new Middleware('permission:magazine-edit', only: ['edit', 'update']),
             new Middleware('permission:magazine-delete', only: ['destroy']),
+            new Middleware('permission:magazine-status', only: ['status']),
             new Middleware('permission:magazine-trash', only: ['trash']),
             new Middleware('permission:magazine-restore', only: ['restore']),
             new Middleware('permission:magazine-permanent-delete', only: ['permanentDelete']),

@@ -45,6 +45,7 @@ class NewspaperController extends Controller implements HasMiddleware
             new Middleware('permission:newspaper-create', only: ['create', 'store']),
             new Middleware('permission:newspaper-edit', only: ['edit', 'update']),
             new Middleware('permission:newspaper-delete', only: ['destroy']),
+            new Middleware('permission:newspaper-status', only: ['status']),
             new Middleware('permission:newspaper-trash', only: ['trash']),
             new Middleware('permission:newspaper-restore', only: ['restore']),
             new Middleware('permission:newspaper-permanent-delete', only: ['permanentDelete']),
