@@ -21,8 +21,11 @@
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Role Name') }}</p>
-                            <input type="text" class="input" placeholder="Role" value="{{ old('name') }}"
-                                name="name" class="flex-1" />
+                            <label class="input relative flex items-center gap-2">
+
+                                <input type="text" placeholder="Role" value="{{ old('name') }}" name="name"
+                                    class="flex-1" />
+                            </label>
                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                         </div>
                         <div class="col-span-2">

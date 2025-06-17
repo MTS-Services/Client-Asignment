@@ -8,7 +8,7 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Create Author') }}</h2>
-                <x-admin.primary-link href="{{ route('bm.author.index') }}">{{ __('Back') }} </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.author.index') }}">{{ __('Back') }} <i data-lucide="undo-2" class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 
@@ -23,13 +23,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Name') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </g>
-                                </svg>
+                              
                                 <input type="text" placeholder="Name" value="{{ old('name') }}" name="name"
                                     class="flex-1" />
                             </label>
@@ -40,13 +34,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Nationality') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+                               
                                 <input type="text" name="nationality" value="{{ old('nationality') }}"
                                     placeholder="Nationality" class="flex-1" />
                             </label>
@@ -56,13 +44,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Birth Date') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+                               
                                 <input type="date" name="birth_date" value="{{ old('birth_date') }}"
                                     placeholder="Birth Date" class="flex-1" />
                             </label>
@@ -72,13 +54,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('Death Date') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+                               
                                 <input type="date" name="death_date" value="{{ old('death_date') }}"
                                     placeholder="Death Date" class="flex-1" />
                             </label>

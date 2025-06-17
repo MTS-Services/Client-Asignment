@@ -7,7 +7,7 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Edit Book') }}</h2>
-                <x-admin.primary-link href="{{ route('bm.book.index') }}">{{ __('Back') }}</x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.book.index') }}">{{ __('Back') }} <i data-lucide="undo-2" class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 
@@ -64,7 +64,7 @@
                         <!-- Category -->
                         <div class="space-y-2">
                             <p class="label">{{ __('Category') }}</p>
-                            <select name="category_id" class="w-full input border-gray-300 dark:border-gray-600">
+                            <select name="category_id" class="select select2">
                                 <option disabled>{{ __('Select Category') }}</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
@@ -79,7 +79,7 @@
                         <!-- Publisher -->
                         <div class="space-y-2">
                             <p class="label">{{ __('Publisher') }}</p>
-                            <select name="publisher_id" class="w-full input border-gray-300 dark:border-gray-600">
+                            <select name="publisher_id" class="select select2">
                                 <option disabled>{{ __('Select Publisher') }}</option>
                                 @foreach ($publishers as $publisher)
                                     <option value="{{ $publisher->id }}"
@@ -94,7 +94,7 @@
                         <!-- Rack -->
                         <div class="space-y-2">
                             <p class="label">{{ __('Rack') }}</p>
-                            <select name="rack_id" class="w-full input border-gray-300 dark:border-gray-600">
+                            <select name="rack_id" class="select select2">
                                 <option disabled>{{ __('Select Rack') }}</option>
                                 @foreach ($racks as $rack)
                                     <option value="{{ $rack->id }}"

@@ -76,12 +76,6 @@
                         'active' => 'book',
                     ],
                     [
-                        'name' => 'Book Issue',
-                        'route' => route('bm.book-issues.index'),
-                        'icon' => 'tags',
-                        'active' => 'book_issues',
-                    ],
-                    [
                         'name' => 'Category',
                         'route' => route('bm.category.index'),
                         'icon' => 'tags',
@@ -106,6 +100,57 @@
                         'active' => 'rack',
                     ],
                 ]" />
+
+            <x-admin.navlink type="dropdown" icon="app-window" name="Book Issues" :page_slug="$active" :items="[
+                [
+                    'name' => 'Book Issue Requests',
+                    'route' => route('bim.book-issues.index', [
+                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_PENDING],
+                    ]),
+                    'icon' => 'tags',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_PENDING],
+                ],
+                [
+                    'name' => 'Book Issued',
+                    'route' => route('bim.book-issues.index', [
+                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_ISSUED],
+                    ]),
+                    'icon' => 'tags',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_ISSUED],
+                ],
+                [
+                    'name' => 'Book Returned',
+                    'route' => route('bim.book-issues.index', [
+                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
+                    ]),
+                    'icon' => 'tags',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
+                ],
+                [
+                    'name' => 'Book Overdue',
+                    'route' => route('bim.book-issues.index', [
+                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
+                    ]),
+                    'icon' => 'tags',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
+                ],
+                [
+                    'name' => 'Book Lost',
+                    'route' => route('bim.book-issues.index', [
+                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
+                    ]),
+                    'icon' => 'tags',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
+                ],
+            ]" />
+
+
+
             <x-admin.navlink type="single" icon="layout-dashboard" name="Magazine" :route="route('magazine.index')" active="magazine"
                 :page_slug="$active" />
 

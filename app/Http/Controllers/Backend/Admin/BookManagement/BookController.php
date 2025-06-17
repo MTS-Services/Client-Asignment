@@ -53,6 +53,7 @@ class BookController extends Controller implements HasMiddleware
             new Middleware('permission:book-details', only: ['show']),
             new Middleware('permission:book-create', only: ['create', 'store']),
             new Middleware('permission:book-edit', only: ['edit', 'update']),
+            new Middleware('permission:book-status', only: ['status']),
             new Middleware('permission:book-delete', only: ['destroy']),
             new Middleware('permission:book-trash', only: ['trash']),
             new Middleware('permission:book-restore', only: ['restore']),
@@ -106,7 +107,7 @@ class BookController extends Controller implements HasMiddleware
             [
                 'routeName' => 'bm.book.status',
                 'params' => [encrypt($model->id)],
-                'label' => $model->status_label,
+                'label' => $model->status_btn_label,
                 'permissions' => ['book-status']
             ],
             [
@@ -138,7 +139,7 @@ class BookController extends Controller implements HasMiddleware
     {
         try {
             $validated = $request->validated();
-            $this->bookService->createBook($validated,  $request->file('cover_image'));
+            $this->bookService->createBook($validated, $request->file('cover_image'));
             session()->flash('success', "Book created successfully");
         } catch (\Throwable $e) {
             session()->flash('error', "Book creation failed");
@@ -271,5 +272,14 @@ class BookController extends Controller implements HasMiddleware
             throw $e;
         }
         return $this->redirectTrashed();
+    }
+
+     public function status(string $id)
+    {
+        $book = $this->bookService->getBook($id);
+
+        $this->bookService->toggleStatus($book);
+        session()->flash('success', 'Book status updated successfully!');
+        return redirect()->back();
     }
 }

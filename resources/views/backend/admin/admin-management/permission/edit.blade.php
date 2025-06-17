@@ -23,14 +23,18 @@
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                         <div class="space-y-2">
                             <p class="label">{{ __('Prefix') }}</p>
-                            <input type="text" class="input" placeholder="Prefix" value="{{ $permission->prefix }}"
-                                name="prefix" class="flex-1" />
+                            <label class="input relative flex items-center gap-2">
+                                <input type="text" placeholder="Prefix" value="{{ $permission->prefix }}"
+                                    name="prefix" class="flex-1" />
+                            </label>
                             <x-input-error class="mt-2" :messages="$errors->get('prefix')" />
                         </div>
                         <div class="space-y-2">
                             <p class="label">{{ __('Permission Name') }}</p>
-                            <input type="text" class="input" placeholder="Name" value="{{ $permission->name }}"
-                                name="name" class="flex-1" />
+                            <label class="input relative flex items-center gap-2">
+                                <input type="text" placeholder="Name" value="{{ $permission->name }}"
+                                    name="name" class="flex-1" />
+                            </label>
                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                         </div>
                     </div>

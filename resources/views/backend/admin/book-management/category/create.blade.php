@@ -11,7 +11,8 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Create Category') }}</h2>
-                <x-admin.primary-link href="{{ route('bm.category.index') }}">{{ __('Back') }} </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.category.index') }}">{{ __('Back') }} <i data-lucide="undo-2"
+                        class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 
@@ -36,13 +37,7 @@
                         <div class="space-y-2">
                             <p class="label">{{ __('slug') }}</p>
                             <label class="input flex items-center gap-2">
-                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                        stroke="currentColor">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </g>
-                                </svg>
+
                                 <input type="text" name="slug" value="{{ old('slug') }}" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('slug')" />

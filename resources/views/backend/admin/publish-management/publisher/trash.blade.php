@@ -8,7 +8,7 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Trashed Publisher List') }}
                 </h2>
-                <x-admin.primary-link href="{{ route('bm.publisher.index') }}">{{ __('Back') }}
+                <x-admin.primary-link href="{{ route('bm.publisher.index') }}">{{ __('Back') }} <i data-lucide="undo-2" class="w-4 h-4"></i>
                 </x-admin.primary-link>
             </div>
         </div>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Builder;
 
 class BookIssues extends BaseModel
 {
@@ -25,7 +26,7 @@ class BookIssues extends BaseModel
         'creater_id',
         'updater_id',
         'deleter_id',
-        
+
         'creater_type',
         'updater_type',
         'deleter_type',
@@ -39,6 +40,8 @@ class BookIssues extends BaseModel
 
             'status_label',
             'status_color',
+            'fine_status_label',
+            'fine_status_color',
             // 'status_btn_label',
             // 'status_btn_color',
         ]);
@@ -92,5 +95,51 @@ class BookIssues extends BaseModel
         return $this->belongsTo(User::class, 'returned_by');
     }
 
-    
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_PENDING);
+    }
+    public function scopeIssued(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_ISSUED);
+    }
+    public function scopeReturned(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_RETURNED);
+    }
+    public function scopeOverdue(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_OVERDUE);
+    }
+    public function scopeLost(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_LOST);
+    }
+
+
+    public const FINE_PAID = 1;
+    public const FINE_UNPAID = 2;
+    public static function fineStatusList(): array
+    {
+        return [
+            self::FINE_PAID => 'Paid',
+            self::FINE_UNPAID => 'Unpaid',
+        ];
+    }
+
+    public function getFineStatusLabelAttribute()
+    {
+        return self::fineStatusList()[$this->fine_status] ?? 'Not Applicable';
+    }
+    public function getFineStatusColorAttribute()
+    {
+        return match ($this->fine_status) {
+            self::FINE_PAID => 'badge-success',
+            self::FINE_UNPAID => 'badge-danger',
+            default => 'badge-secondary',
+        };
+    }
+
+
+
 }

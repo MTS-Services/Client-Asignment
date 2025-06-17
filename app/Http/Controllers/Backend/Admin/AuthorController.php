@@ -151,7 +151,7 @@ class AuthorController extends Controller implements HasMiddleware
     public function edit(string $id): View
     {
         $data['author'] = $this->authorService->getAuthor($id);
-        return view('backend.admin.bm.author.edit', $data);
+        return view('backend.admin.author.edit', $data);
     }
 
     /**

@@ -12,7 +12,7 @@
                             data-lucide="trash-2" class="w-4 h-4"></i>
                     </x-admin.primary-link>
                     <x-admin.primary-link href="{{ route('bm.book.create') }}">{{ __('Add') }} <i
-                            data-lucide="user-round-plus" class="w-4 h-4"></i>
+                            data-lucide="plus" class="w-4 h-4"></i>
                     </x-admin.primary-link>
                 </div>
             </div>
@@ -79,7 +79,7 @@
 
                 $(document).on('click', '.view', function() {
                     const id = $(this).data('id');
-                    const route = "{{ route('bm.author.show', ':id') }}";
+                    const route = "{{ route('bm.book.show', ':id') }}";
 
                     const details = [{
                             label: '{{ __('Title') }}',
@@ -100,7 +100,7 @@
                         },
                         {
                             label: '{{ __('Publisher Date') }}',
-                            key: 'publisher_date',
+                            key: 'publication_date',
                         },
                         {
                             label: '{{ __('Language') }}',
@@ -137,10 +137,6 @@
                         {
                             label: '{{ __('Description') }}',
                             key: 'description',
-                        },
-                        {
-                            label: '{{ __('Status') }}',
-                            key: 'status',
                         },
                         {
                             label: '{{ __('Image') }}',

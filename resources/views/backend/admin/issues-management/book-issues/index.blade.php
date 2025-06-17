@@ -1,18 +1,20 @@
 <x-admin::layout>
     <x-slot name="title">{{ __('Book Issues List') }}</x-slot>
     <x-slot name="breadcrumb">{{ __('Book Issues List') }}</x-slot>
-    <x-slot name="page_slug">book_issues</x-slot>
+    <x-slot name="page_slug">book_issues_{{ request('status') }}</x-slot>
     <section>
 
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Book Issues List') }}</h2>
                 <div class="flex items-center gap-2">
-                    <x-admin.primary-link secondary="true" href="{{ route('bm.book-issues.trash') }}">{{ __('Trash') }}
+                    <x-admin.primary-link secondary="true"
+                        href="{{ route('bim.book-issues.trash', ['status' => request('status')]) }}">{{ __('Trash') }}
                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </x-admin.primary-link>
-                    <x-admin.primary-link href="{{ route('bm.book-issues.create') }}">{{ __('Add') }} <i
-                            data-lucide="user-round-plus" class="w-4 h-4"></i>
+                    <x-admin.primary-link
+                        href="{{ route('bim.book-issues.create', ['status' => request('status')]) }}">{{ __('Add') }}
+                        <i data-lucide="user-round-plus" class="w-4 h-4"></i>
                     </x-admin.primary-link>
                 </div>
             </div>
@@ -25,7 +27,6 @@
                         <th>{{ __('User') }}</th>
                         <th>{{ __('Book') }}</th>
                         <th>{{ __('Issued By') }}</th>
-                        <th>{{ __('Returned By') }}</th>
                         <th>{{ __('Status') }}</th>
                         <th>{{ __('Created By') }}</th>
                         <th>{{ __('Created Date') }}</th>
@@ -50,7 +51,6 @@
                     ['user_id', true, true],
                     ['book_id', true, true],
                     ['issued_by', true, true],
-                    ['returned_by', true, true],
                     ['status', true, true],
                     ['creater_id', true, true],
                     ['created_at', true, true],
@@ -60,7 +60,7 @@
                     table_columns: table_columns,
                     main_class: '.datatable',
                     displayLength: 10,
-                    main_route: "{{ route('bm.book-issues.index') }}",
+                    main_route: "{{ route('bim.book-issues.index') }}",
                     order_route: "{{ route('update.sort.order') }}",
                     export_columns: [0, 1, 2, 3, 4, 5, 6, 7],
                     model: 'BookIssue',
@@ -77,7 +77,7 @@
 
                 $(document).on('click', '.view', function() {
                     const id = $(this).data('id');
-                    const route = "{{ route('bm.author.show', ':id') }}";
+                    const route = "{{ route('bim.book-issues.show', ':id') }}";
 
                     const details = [{
                             label: '{{ __('User') }}',
@@ -85,11 +85,23 @@
                         },
                         {
                             label: '{{ __('Book') }}',
-                            key: 'book.title',
+                            key: 'bookTitle',
+                        },
+                        {
+                            label: '{{ __('Status') }}',
+                            key: 'status_label',
+                            label_color: 'status_color',
+                            type: 'status',
+                        },
+                        {
+                            label: '{{ __('Fine Status') }}',
+                            key: 'fine_status_label',
+                            label_color: 'fine_status_color',
+                            type: 'status',
                         },
                         {
                             label: '{{ __('Issued By') }}',
-                            key: 'issued_by_admin.name',
+                            key: 'issuedBy',
                         },
                         {
                             label: '{{ __('Issue Date') }}',
@@ -100,25 +112,16 @@
                             key: 'due_date',
                         },
                         {
+                            label: '{{ __('Returned By') }}',
+                            key: 'returnedBy',
+                        },
+                        {
                             label: '{{ __('Return Date') }}',
                             key: 'return_date',
                         },
                         {
-                            label: '{{ __('Returned By') }}',
-                            key: 'returned_by_user.name',
-                        },
-                        {
-                            label: '{{ __('Status') }}',
-                            key: 'status_label',
-                            type: 'status',
-                        },
-                        {
                             label: '{{ __('Fine Amount') }}',
                             key: 'fine_amount',
-                        },
-                        {
-                            label: '{{ __('Fine Paid') }}',
-                            key: 'fine_paid',
                         },
                         {
                             label: '{{ __('Notes') }}',
