@@ -11,7 +11,7 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Create Magazine') }}</h2>
-                <x-admin.primary-link href="{{ route('magazine.index') }}">{{ __('Back') }} </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('magazine.index') }}">{{ __('Back') }} <i data-lucide="undo-2" class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 
@@ -59,7 +59,7 @@
                         <div class="space-y-2 col-span-2">
                            <p class="label">{{ __('Description') }}</p>
                             <textarea name="description" rows="4" placeholder="Description"
-                                class="w-full border-gray-300 dark:border-gray-600">{{ old('description') }}</textarea>
+                                class="w-full border-gray-300 dark:border-gray-600 dark:bg-slate-900">{{ old('description') }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
                     </div>

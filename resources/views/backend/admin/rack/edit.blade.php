@@ -77,7 +77,7 @@
                     <div class="space-y-2 col-span-2">
                         <p class="label">{{ __('Description') }}</p>
                         <textarea name="description" rows="4" placeholder="Description"
-                            class="w-full border-gray-300 dark:border-gray-600">{{ $rack->description }}</textarea>
+                            class="w-full border-gray-300 dark:border-gray-600 dark:bg-slate-900">{{ $rack->description }}</textarea>
                         <x-input-error class="mt-2" :messages="$errors->get('description')" />
                     </div>
                     <div class="flex justify-end mt-5">
