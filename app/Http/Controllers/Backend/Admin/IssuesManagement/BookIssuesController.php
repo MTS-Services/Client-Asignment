@@ -78,15 +78,14 @@ class BookIssuesController extends Controller implements HasMiddleware
             return DataTables::eloquent($query)
                 ->editColumn('user_id', fn($bookIssues) => $bookIssues->user?->name)
                 ->editColumn('book_id', fn($bookIssues) => $bookIssues->book?->title)
-                ->editColumn('issued_by', fn($bookIssues) => $bookIssues->issuedBy?->name)
-                ->editColumn('returned_by', fn($bookIssues) => $bookIssues->returnedBy?->name)
+                ->editColumn('issue_date', fn($bookIssues) => dateFormat($bookIssues->issue_date))
                 ->editColumn('status', fn($bookIssues) => "<span class='badge badge-soft {$bookIssues->status_color}'>{$bookIssues->status_label}</span>")
                 ->editColumn('creater_id', fn($bookIssues) => $this->creater_name($bookIssues))
                 ->editColumn('created_at', fn($bookIssues) => $bookIssues->created_at_formatted)
                 ->editColumn('action', fn($bookIssues) => view('components.admin.action-buttons', [
                     'menuItems' => $this->menuItems($bookIssues, $status)
                 ])->render())
-                ->rawColumns(['created_by', 'issued_by', 'returned_by', 'user_id', 'book_id', 'status', 'creater_id', 'action'])
+                ->rawColumns(['created_by', 'issue_date', 'user_id', 'book_id', 'status', 'creater_id', 'action'])
                 ->make(true);
         }
 
@@ -280,15 +279,14 @@ class BookIssuesController extends Controller implements HasMiddleware
             return DataTables::eloquent($query)
                 ->editColumn('user_id', fn($bookIssues) => $bookIssues->user?->name)
                 ->editColumn('book_id', fn($bookIssues) => $bookIssues->book?->title)
-                ->editColumn('issued_by', fn($bookIssues) => $bookIssues->issuedBy?->name)
-                ->editColumn('returned_by', fn($bookIssues) => $bookIssues->returnedBy?->name)
+                ->editColumn('issue_date', fn($bookIssues) => dateFormat($bookIssues->issue_date))
                 ->editColumn('status', fn($bookIssues) => "<span class='badge badge-soft {$bookIssues->status_color}'>{$bookIssues->status_label}</span>")
                 ->editColumn('deleted_by', fn($bookIssues) => $this->deleter_name($bookIssues))
                 ->editColumn('deleted_at', fn($bookIssues) => $bookIssues->deleted_at_formatted)
                 ->editColumn('action', fn($bookIssues) => view('components.admin.action-buttons', [
                     'menuItems' => $this->trashedMenuItems($bookIssues),
                 ])->render())
-                ->rawColumns(['created_by', 'issued_by', 'returned_by', 'user_id', 'book_id', 'status', 'deleter_id', 'action'])
+                ->rawColumns(['created_by', 'issue_date', 'user_id', 'book_id', 'status', 'deleter_id', 'action'])
                 ->make(true);
         }
         return view('backend.admin.issues-management.book-issues.trash');

@@ -26,8 +26,8 @@
                         <th width="5%">{{ __('SL') }}</th>
                         <th>{{ __('User') }}</th>
                         <th>{{ __('Book') }}</th>
-                        <th>{{ __('Issued By') }}</th>
                         <th>{{ __('Status') }}</th>
+                        <th>{{ __('Issued Date') }}</th>
                         <th>{{ __('Created By') }}</th>
                         <th>{{ __('Created Date') }}</th>
                         <th width="10%">{{ __('Action') }}</th>
@@ -50,8 +50,8 @@
                     //name and data, orderable, searchable
                     ['user_id', true, true],
                     ['book_id', true, true],
-                    ['issued_by', true, true],
                     ['status', true, true],
+                    ['issue_date', true, true],
                     ['creater_id', true, true],
                     ['created_at', true, true],
                     ['action', false, false],
