@@ -8,7 +8,7 @@
         'w-72 -translate-x-full': !desktop && !mobile_menu_open,
     }">
 
-    <div class="glass-card h-full custom-scrollbar rounded-xl overflow-y-auto">
+    <div class="glass-card h-full custom-scrollbar rounded-xl ">
         <!-- Sidebar Header -->
         <a href="{{ route('admin.dashboard') }}" class="p-3 border-b border-white/10 inline-block">
             <div class="flex items-center gap-4">
@@ -64,7 +64,7 @@
                         'name' => 'User',
                         'route' => route('um.user.index'),
                         'icon' => 'user',
-                        'active' => 'admin-users',
+                        'active' => 'user',
                     ],
                 ]" />
             <x-admin.navlink type="dropdown" icon="app-window" name="Book Management" :page_slug="$active"
@@ -76,37 +76,36 @@
                         'active' => 'book',
                     ],
                     [
+                        'name' => 'Book Issue',
+                        'route' => route('bm.book-issues.index'),
+                        'icon' => 'tags',
+                        'active' => 'book_issues',
+                    ],
+                    [
                         'name' => 'Category',
                         'route' => route('bm.category.index'),
                         'icon' => 'tags',
                         'active' => 'category',
                     ],
-                ]" />
-            <x-admin.navlink type="dropdown" icon="app-window" name="Book Issue Management" :page_slug="$active"
-                :items="[
                     [
-                        'name' => 'Book Issue',
-                        'route' => route('im.book-issues.index'),
-                        'icon' => 'tags',
-                        'active' => 'book_issues',
+                        'name' => 'Author',
+                        'route' => route('bm.author.index'),
+                        'icon' => 'user',
+                        'active' => 'author',
                     ],
-                   
-                ]" />
-            <x-admin.navlink type="dropdown" icon="users" name="Publisher Management" :page_slug="$active"
-                :items="[
                     [
                         'name' => 'Publisher',
-                        'route' => route('pm.publisher.index'),
-                        'icon' => 'user',
-                        'active' => 'publisher-users',
+                        'route' => route('bm.publisher.index'),
+                        // 'icon' => 'user',
+                        'active' => 'publisher',
+                    ],
+                    [
+                        'name' => 'Rack',
+                        'route' => route('bm.rack.index'),
+                        // 'icon' => 'rack',
+                        'active' => 'rack',
                     ],
                 ]" />
-            <x-admin.navlink type="single" icon="layout-dashboard" name="Author" :route="route('author.index')" active="users"
-                :page_slug="$active" />
-
-            <x-admin.navlink type="single" icon="layout-dashboard" name="Rack" :route="route('rack.index')" active="rack"
-                :page_slug="$active" />
-
             <x-admin.navlink type="single" icon="layout-dashboard" name="Magazine" :route="route('magazine.index')" active="magazine"
                 :page_slug="$active" />
 

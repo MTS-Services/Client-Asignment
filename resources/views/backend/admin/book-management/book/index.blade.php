@@ -79,7 +79,7 @@
 
                 $(document).on('click', '.view', function() {
                     const id = $(this).data('id');
-                    const route = "{{ route('author.show', ':id') }}";
+                    const route = "{{ route('bm.author.show', ':id') }}";
 
                     const details = [{
                             label: '{{ __('Title') }}',
@@ -116,7 +116,7 @@
                         },
                         {
                             label: '{{ __('Rack') }}',
-                            key: 'rack.rack_number',
+                            key: 'bm.rack.rack_number',
                         },
                         {
                             label: '{{ __('Language') }}',

@@ -8,9 +8,9 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Author List') }}</h2>
                 <div class="flex items-center gap-2">
-                    <x-admin.primary-link error="true" href="{{ route('author.trash') }}">{{ __('Trash') }}
+                    <x-admin.primary-link error="true" href="{{ route('bm.author.trash') }}">{{ __('Trash') }}
                     </x-admin.primary-link>
-                    <x-admin.primary-link href="{{ route('author.create') }}">{{ __('Add') }}
+                    <x-admin.primary-link href="{{ route('bm.author.create') }}">{{ __('Add') }}
                     </x-admin.primary-link>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                     table_columns: table_columns,
                     main_class: '.datatable',
                     displayLength: 10,
-                    main_route: "{{ route('author.index') }}",
+                    main_route: "{{ route('bm.author.index') }}",
                     order_route: "{{ route('update.sort.order') }}",
                     export_columns: [0, 1, 2, 3, 4, 5],
                     model: 'Author',
@@ -71,7 +71,7 @@
 
                 $(document).on('click', '.view', function() {
                     const id = $(this).data('id');
-                    const route = "{{ route('author.show', ':id') }}";
+                    const route = "{{ route('bm.author.show', ':id') }}";
 
                     const details = [{
                             label: '{{ __('Name') }}',
@@ -80,7 +80,7 @@
                         {
                             label: '{{ __('Status') }}',
                             key: 'status_label',
-                            type:'status',
+                            type: 'status',
                         },
                         {
                             label: '{{ __('Nationality') }}',
