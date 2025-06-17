@@ -7,6 +7,7 @@ import './axios';
 import './toastr';
 import './filepond';
 import './ckeditor5';
+import './select2';
 
 import Alpine from 'alpinejs';
 
