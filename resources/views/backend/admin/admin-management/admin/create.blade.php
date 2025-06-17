@@ -4,7 +4,7 @@
     <x-slot name="page_slug">admin</x-slot>
 
     @push('css')
-        {{-- <link rel="stylesheet" href="{{ asset('assets/css/filepond.css') }}"> --}}
+        {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css"> --}}
     @endpush
 
     <section>
@@ -107,7 +107,8 @@
                         </div>
                         <div class="space-y-2">
                             <p class="label">{{ __('Role') }}</p>
-                            <select name="role" class="input select select2">
+                            <select name="role" class="select select2">
+                                <option selected disabled>{{ __('Select Role') }}</option>
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                                 @endforeach

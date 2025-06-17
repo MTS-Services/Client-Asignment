@@ -88,7 +88,7 @@
                         {{-- Category --}}
                         <div class="space-y-2">
                             <p class="label">{{ __('Category') }}</p>
-                            <select name="category_id" class="w-full input border-gray-300 dark:border-gray-600">
+                            <select name="category_id" class="select select2">
                                 <option value="" selected disabled>{{ __('Select Category') }}</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
@@ -101,7 +101,7 @@
                         {{-- Publisher --}}
                         <div class="space-y-2">
                             <p class="label">{{ __('Publisher') }}</p>
-                            <select name="publisher_id" class="w-full input border-gray-300 dark:border-gray-600">
+                            <select name="publisher_id" class="select select2">
                                 <option value="" selected disabled>{{ __('Select Publisher') }}</option>
                                 @foreach ($publishers as $publisher)
                                     <option value="{{ $publisher->id }}"
@@ -114,7 +114,7 @@
                         {{-- Rack --}}
                         <div class="space-y-2">
                             <p class="label">{{ __('Rack') }}</p>
-                            <select name="rack_id" class="w-full input border-gray-300 dark:border-gray-600">
+                            <select name="rack_id" class="select select2">
                                 <option value="" selected disabled>{{ __('Select Rack') }}</option>
                                 @foreach ($racks as $rack)
                                     <option value="{{ $rack->id }}"

@@ -20,8 +20,7 @@
                 <form action="{{ route('bim.book-issues.update-return', encrypt($issue->id)) }}" method="POST">
                     @csrf
                     @method('PATCH')
-                    <select name="returned_by" id=""
-                        class="w-1/2 dark:bg-slate-900 border-gray-300 dark:border-gray-600">
+                    <select name="returned_by" id="" class="w-1/2 select select2">
                         <option value="" disabled>{{ __('Select User') }}</option>
                         @foreach (App\Models\User::all() as $user)
                             <option value="{{ $user->id }}" @if ($user->id == $issue->user_id) selected @endif>

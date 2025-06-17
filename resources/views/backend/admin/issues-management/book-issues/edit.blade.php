@@ -24,7 +24,7 @@
                         <!-- User -->
                         <div class="space-y-2">
                             <p class="label">{{ __('User') }}</p>
-                            <select name="user_id" class="w-full input border-gray-300 dark:border-gray-600">
+                            <select name="user_id" class="select select2">
                                 <option value="" disabled>{{ __('Select User') }}</option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}"
@@ -38,7 +38,7 @@
                         <!-- Book -->
                         <div class="space-y-2">
                             <p class="label">{{ __('Book') }}</p>
-                            <select name="book_id" class="w-full input border-gray-300 dark:border-gray-600">
+                            <select name="book_id" class="select select2">
                                 <option value="" disabled>{{ __('Select Book') }}</option>
                                 @foreach ($books as $book)
                                     <option value="{{ $book->id }}"
