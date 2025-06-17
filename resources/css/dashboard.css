@@ -354,7 +354,7 @@
 
 @layer components {
 
-    /* .gradient-light { 
+    /* .gradient-light {
         @apply bg-gradient-to-b from-gradient-light-primary to-gradient-light-secondary dark:bg-none;
     } */
 
@@ -425,17 +425,16 @@
     @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full;
 } */
 
-.input {
+.input,
+.textarea,
+.select {
     @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full px-0 ;
 }
-.input.select {
+.select {
     @apply px-3 ;
 }
 .input input {
     @apply px-3 ;
-}
-.input, .textarea {
-    @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full;
 }
 
 /* Notification badge */
