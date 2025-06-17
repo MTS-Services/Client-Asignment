@@ -31,7 +31,7 @@ class NewspaperService
     {
         return DB::transaction(function () use ($data, $file) {
             if ($file) {
-                $data['image'] = $this->handleFileUpload($file, 'newspapers', $data['cover_image']);
+                $data['image'] = $this->handleFileUpload($file, 'newspapers');
             }
             $data['created_by'] = admin()->id;
             $newspaper = Newspaper::create($data);
@@ -43,7 +43,7 @@ class NewspaperService
     {
         return DB::transaction(function () use ($newspaper, $data, $file) {
             if ($file) {
-                $data['image'] = $this->handleFileUpload($file, 'newspapers', $data['cover_image']);
+                $data['image'] = $this->handleFileUpload($file, 'newspapers');
                 $this->fileDelete($newspaper->image);
             }
             $data['updated_by'] = admin()->id;

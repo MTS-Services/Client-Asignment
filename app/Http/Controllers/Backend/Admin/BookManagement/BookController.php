@@ -139,7 +139,8 @@ class BookController extends Controller implements HasMiddleware
     {
         try {
             $validated = $request->validated();
-            $this->bookService->createBook($validated, $request->file('cover_image'));
+            $file = $request->validated('image') && $request->hasFile('cover_image') ? $request->file('cover_image') : null;
+            $this->bookService->createBook($validated, $file);
             session()->flash('success', "Book created successfully");
         } catch (\Throwable $e) {
             session()->flash('error', "Book creation failed");
@@ -180,8 +181,8 @@ class BookController extends Controller implements HasMiddleware
         try {
             $validated = $request->validated();
             $book = $this->bookService->getBook($id);
-
-            $this->bookService->updateBook($book, $validated, $request->file('cover_image'));
+            $file = $request->validated('cover_image') && $request->hasFile('cover_image') ? $request->file('cover_image') : null;
+            $this->bookService->updateBook($book, $validated, $file);
 
             session()->flash('success', "Book updated successfully");
         } catch (\Throwable $e) {
@@ -274,7 +275,7 @@ class BookController extends Controller implements HasMiddleware
         return $this->redirectTrashed();
     }
 
-     public function status(string $id)
+    public function status(string $id)
     {
         $book = $this->bookService->getBook($id);
 
