@@ -25,6 +25,8 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Test User',
             'username' => 'testuser',
+            'email_verified_at' => now(),
+            'status' => AuthBaseModel::STATUS_ACTIVE,
             'email' => 'testuser@dev.com',
             'password' => 'testuser@dev.com',
         ]);

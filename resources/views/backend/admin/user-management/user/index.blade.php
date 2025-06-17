@@ -8,9 +8,11 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('User List') }}</h2>
                 <div class="flex items-center gap-2">
-                    <x-admin.primary-link error="true" href="{{ route('um.user.trash') }}">{{ __('Trash') }}
+                    <x-admin.primary-link secondary="true" href="{{ route('um.user.trash') }}">{{ __('Trash') }}<i
+                            data-lucide="trash-2" class="w-4 h-4"></i>
                     </x-admin.primary-link>
-                    <x-admin.primary-link href="{{ route('um.user.create') }}">{{ __('Add') }}
+                    <x-admin.primary-link href="{{ route('um.user.create') }}">{{ __('Add') }}<i
+                            data-lucide="user-round-plus" class="w-4 h-4"></i>
                     </x-admin.primary-link>
                 </div>
             </div>
