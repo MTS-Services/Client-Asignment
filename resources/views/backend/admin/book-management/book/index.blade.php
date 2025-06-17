@@ -79,7 +79,7 @@
 
                 $(document).on('click', '.view', function() {
                     const id = $(this).data('id');
-                    const route = "{{ route('bm.author.show', ':id') }}";
+                    const route = "{{ route('bm.book.show', ':id') }}";
 
                     const details = [{
                             label: '{{ __('Title') }}',
@@ -100,7 +100,7 @@
                         },
                         {
                             label: '{{ __('Publisher Date') }}',
-                            key: 'publisher_date',
+                            key: 'publication_date',
                         },
                         {
                             label: '{{ __('Language') }}',
@@ -137,10 +137,6 @@
                         {
                             label: '{{ __('Description') }}',
                             key: 'description',
-                        },
-                        {
-                            label: '{{ __('Status') }}',
-                            key: 'status',
                         },
                         {
                             label: '{{ __('Image') }}',

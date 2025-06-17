@@ -82,6 +82,11 @@
                             key: 'slug',
                         },
                         {
+                                label: '{{ __('Status') }}',
+                                key: 'status_label',
+                                type:'status',
+                        },
+                        {
                             label: '{{ __('Desctiption') }}',
                             key: 'description',
                         },

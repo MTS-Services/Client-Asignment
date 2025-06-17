@@ -59,6 +59,17 @@ book-issues-restore,admin,Book Issues
 book-issues-permanent-delete,admin,Book Issues
 
 
+magazine-issues-list,admin,Magazine Issues
+magazine-issues-create,admin,Magazine Issues
+magazine-issues-edit,admin,Magazine Issues
+magazine-issues-delete,admin,Magazine Issues
+magazine-issues-status,admin,Magazine Issues
+magazine-issues-details,admin,Magazine Issues
+magazine-issues-trash,admin,Magazine Issues
+magazine-issues-restore,admin,Magazine Issues
+magazine-issues-permanent-delete,admin,Magazine Issues
+
+
 publisher-list,admin,Publisher
 publisher-create,admin,Publisher
 publisher-edit,admin,Publisher

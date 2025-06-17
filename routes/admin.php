@@ -86,6 +86,7 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
         Route::resource('category', CategoryController::class);
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
             Route::post('/show/{category}', 'show')->name('show');
+            Route::get('/status/{category}', 'status')->name('status');
             Route::get('/trash/bin', 'trash')->name('trash');
             Route::get('/restore/{category}', 'restore')->name('restore');
             Route::delete('/permanent-delete/{category}', 'permanentDelete')->name('permanent-delete');

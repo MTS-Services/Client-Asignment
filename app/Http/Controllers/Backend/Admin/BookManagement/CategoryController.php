@@ -86,12 +86,12 @@ class CategoryController extends Controller implements HasMiddleware
                 'label' => 'Details',
                 'permissions' => ['category-list', 'category-delete', 'category-status']
             ],
-            // [
-            //     'routeName' => 'bm.category.status',
-            //     'params' => [encrypt($model->id)],
-            //     'label' => $model->status_btn_label,
-            //     'permissions' => ['category-status']
-            // ],
+            [
+                'routeName' => 'bm.category.status',
+                'params' => [encrypt($model->id)],
+                'label' => $model->status_btn_label,
+                'permissions' => ['category-status']
+            ],
             [
                 'routeName' => 'bm.category.edit',
                 'params' => [encrypt($model->id)],
@@ -249,5 +249,13 @@ class CategoryController extends Controller implements HasMiddleware
             throw $e;
         }
         return $this->redirectTrashed();
+    }
+    public function status(string $id)
+    {
+        $magazine = $this->categoryService->getCategory($id);
+
+        $this->categoryService->toggleStatus($magazine);
+        session()->flash('success', 'Category status updated successfully!');
+        return redirect()->back();
     }
 }

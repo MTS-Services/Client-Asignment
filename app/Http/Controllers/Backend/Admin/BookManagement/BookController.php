@@ -107,7 +107,7 @@ class BookController extends Controller implements HasMiddleware
             [
                 'routeName' => 'bm.book.status',
                 'params' => [encrypt($model->id)],
-                'label' => $model->status_label,
+                'label' => $model->status_btn_label,
                 'permissions' => ['book-status']
             ],
             [
@@ -272,5 +272,14 @@ class BookController extends Controller implements HasMiddleware
             throw $e;
         }
         return $this->redirectTrashed();
+    }
+
+     public function status(string $id)
+    {
+        $book = $this->bookService->getBook($id);
+
+        $this->bookService->toggleStatus($book);
+        session()->flash('success', 'Book status updated successfully!');
+        return redirect()->back();
     }
 }
