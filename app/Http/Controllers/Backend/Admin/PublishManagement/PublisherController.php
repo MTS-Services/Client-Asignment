@@ -21,12 +21,12 @@ class PublisherController extends Controller implements HasMiddleware
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('pm.publisher.index');
+        return redirect()->route('bm.publisher.index');
     }
 
     protected function redirectTrashed(): RedirectResponse
     {
-        return redirect()->route('pm.publisher.trash');
+        return redirect()->route('bm.publisher.trash');
     }
 
 
@@ -87,20 +87,20 @@ class PublisherController extends Controller implements HasMiddleware
                 'permissions' => ['publisher-list', 'publisher-delete', 'publisher-status']
             ],
             [
-                'routeName' => 'pm.publisher.edit',
+                'routeName' => 'bm.publisher.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
                 'permissions' => ['publisher-edit']
             ],
             [
-                'routeName' => 'pm.publisher.status',
+                'routeName' => 'bm.publisher.status',
                 'params' => [encrypt($model->id)],
                 'label' => $model->status_btn_label,
                 'permissions' => ['publisher-status']
             ],
 
             [
-                'routeName' => 'pm.publisher.destroy',
+                'routeName' => 'bm.publisher.destroy',
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
@@ -218,13 +218,13 @@ class PublisherController extends Controller implements HasMiddleware
     {
         return [
             [
-                'routeName' => 'pm.publisher.restore',
+                'routeName' => 'bm.publisher.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
                 'permissions' => ['permission-restore']
             ],
             [
-                'routeName' => 'pm.publisher.permanent-delete',
+                'routeName' => 'bm.publisher.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,

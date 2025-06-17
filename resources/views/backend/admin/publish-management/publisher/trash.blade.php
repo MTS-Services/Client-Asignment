@@ -8,7 +8,7 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Trashed Publisher List') }}
                 </h2>
-                <x-admin.primary-link href="{{ route('pm.publisher.index') }}">{{ __('Back') }}
+                <x-admin.primary-link href="{{ route('bm.publisher.index') }}">{{ __('Back') }}
                 </x-admin.primary-link>
             </div>
         </div>
@@ -51,7 +51,7 @@
                     table_columns: table_columns,
                     main_class: '.datatable',
                     displayLength: 10,
-                    main_route: "{{ route('pm.publisher.trash') }}",
+                    main_route: "{{ route('bm.publisher.trash') }}",
                     order_route: "{{ route('update.sort.order') }}",
                     export_columns: [0, 1, 2, 3, 4],
                     model: 'Publisher',
