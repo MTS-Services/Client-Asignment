@@ -112,7 +112,6 @@
                 mobile_menu_open: false,
 
                 // App state
-                // activeTab: 'dashboard',
                 searchQuery: '',
                 darkMode: true,
                 showNotifications: false,
@@ -215,100 +214,99 @@
                 //     }
                 // },
 
-                showDetails(type) {
-                    console.log('Showing details for:', type);
-                    // Add modal or detailed view logic here
-                },
+                // showDetails(type) {
+                //     console.log('Showing details for:', type);
+                // },
 
-                initChart() {
-                    this.$nextTick(() => {
-                        const canvas = document.getElementById('revenueChart');
-                        if (!canvas) return;
+                // initChart() {
+                //     this.$nextTick(() => {
+                //         const canvas = document.getElementById('revenueChart');
+                //         if (!canvas) return;
 
-                        const ctx = canvas.getContext('2d');
+                //         const ctx = canvas.getContext('2d');
 
-                        // Destroy existing chart if it exists
-                        if (window.revenueChart instanceof Chart) {
-                            window.revenueChart.destroy();
-                        }
+                //         // Destroy existing chart if it exists
+                //         if (window.revenueChart instanceof Chart) {
+                //             window.revenueChart.destroy();
+                //         }
 
-                        // Create gradient
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-                        gradient.addColorStop(0, 'rgba(102, 126, 234, 0.8)');
-                        gradient.addColorStop(1, 'rgba(118, 75, 162, 0.1)');
+                //         // Create gradient
+                //         const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                //         gradient.addColorStop(0, 'rgba(102, 126, 234, 0.8)');
+                //         gradient.addColorStop(1, 'rgba(118, 75, 162, 0.1)');
 
-                        window.revenueChart = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-                                    'Oct', 'Nov', 'Dec'
-                                ],
-                                datasets: [{
-                                    label: 'Revenue',
-                                    data: [12000, 19000, 15000, 25000, 22000, 30000, 28000, 35000,
-                                        32000, 38000, 42000, 48000
-                                    ],
-                                    borderColor: '#667eea',
-                                    backgroundColor: gradient,
-                                    borderWidth: 3,
-                                    fill: true,
-                                    tension: 0.4,
-                                    pointBackgroundColor: '#667eea',
-                                    pointBorderColor: '#ffffff',
-                                    pointBorderWidth: 2,
-                                    pointRadius: 6,
-                                    pointHoverRadius: 8
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        display: false
-                                    }
-                                },
-                                scales: {
-                                    x: {
-                                        grid: {
-                                            display: false
-                                        },
-                                        ticks: {
-                                            color: 'rgba(255, 255, 255, 0.6)'
-                                        }
-                                    },
-                                    y: {
-                                        grid: {
-                                            color: 'rgba(255, 255, 255, 0.1)'
-                                        },
-                                        ticks: {
-                                            color: 'rgba(255, 255, 255, 0.6)',
-                                            callback: function(value) {
-                                                return '$' + value.toLocaleString();
-                                            }
-                                        }
-                                    }
-                                },
-                                interaction: {
-                                    intersect: false,
-                                    mode: 'index'
-                                },
-                                elements: {
-                                    point: {
-                                        hoverBackgroundColor: '#ffffff'
-                                    }
-                                }
-                            }
-                        });
-                    });
-                }
+                //         window.revenueChart = new Chart(ctx, {
+                //             type: 'line',
+                //             data: {
+                //                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+                //                     'Oct', 'Nov', 'Dec'
+                //                 ],
+                //                 datasets: [{
+                //                     label: 'Revenue',
+                //                     data: [12000, 19000, 15000, 25000, 22000, 30000, 28000, 35000,
+                //                         32000, 38000, 42000, 48000
+                //                     ],
+                //                     borderColor: '#667eea',
+                //                     backgroundColor: gradient,
+                //                     borderWidth: 3,
+                //                     fill: true,
+                //                     tension: 0.4,
+                //                     pointBackgroundColor: '#667eea',
+                //                     pointBorderColor: '#ffffff',
+                //                     pointBorderWidth: 2,
+                //                     pointRadius: 6,
+                //                     pointHoverRadius: 8
+                //                 }]
+                //             },
+                //             options: {
+                //                 responsive: true,
+                //                 maintainAspectRatio: false,
+                //                 plugins: {
+                //                     legend: {
+                //                         display: false
+                //                     }
+                //                 },
+                //                 scales: {
+                //                     x: {
+                //                         grid: {
+                //                             display: false
+                //                         },
+                //                         ticks: {
+                //                             color: 'rgba(255, 255, 255, 0.6)'
+                //                         }
+                //                     },
+                //                     y: {
+                //                         grid: {
+                //                             color: 'rgba(255, 255, 255, 0.1)'
+                //                         },
+                //                         ticks: {
+                //                             color: 'rgba(255, 255, 255, 0.6)',
+                //                             callback: function(value) {
+                //                                 return '$' + value.toLocaleString();
+                //                             }
+                //                         }
+                //                     }
+                //                 },
+                //                 interaction: {
+                //                     intersect: false,
+                //                     mode: 'index'
+                //                 },
+                //                 elements: {
+                //                     point: {
+                //                         hoverBackgroundColor: '#ffffff'
+                //                     }
+                //                 }
+                //             }
+                //         });
+                //     });
+                // }
             }
         }
 
         // Initialize Lucide icons after DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             // if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
+            lucide.createIcons();
             // }
         });
 
