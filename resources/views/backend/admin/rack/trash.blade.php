@@ -7,7 +7,7 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Trashed Rack List') }}</h2>
-                <x-admin.primary-link href="{{ route('rack.index') }}">{{ __('Back') }} </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.rack.index') }}">{{ __('Back') }} </x-admin.primary-link>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
                     table_columns: table_columns,
                     main_class: '.datatable',
                     displayLength: 10,
-                    main_route: "{{ route('rack.trash') }}",
+                    main_route: "{{ route('bm.rack.trash') }}",
                     order_route: "{{ route('update.sort.order') }}",
                     export_columns: [0, 1, 2, 3, 4, 5],
                     model: 'Rack',

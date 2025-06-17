@@ -8,7 +8,7 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Edit Author') }}</h2>
-                <x-admin.primary-link href="{{ route('author.index') }}">{{ __('Back') }} </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.author.index') }}">{{ __('Back') }} </x-admin.primary-link>
             </div>
         </div>
 
@@ -16,7 +16,7 @@
             class="grid grid-cols-1 gap-4 sm:grid-cols-1  {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
-                <form action="{{ route('author.update', encrypt($author->id)) }}" method="POST"
+                <form action="{{ route('bm.author.update', encrypt($author->id)) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -86,19 +86,19 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('death_date')" />
                         </div>
+                        {{-- Image --}}
+                        <div class="space-y-2 col-span-2">
+                            <p class="label">{{ __('Image') }}</p>
+                            <input type="file" name="image" class="filepond" id="image"
+                                accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
+                            <x-input-error class="mt-2" :messages="$errors->get('image')" />
+                        </div>
                         {{-- Biography --}}
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Biography') }}</p>
-                            <textarea name="biography" rows="4" placeholder="Biography" class="w-full border-gray-300 dark:border-gray-600">{{ $author->biography }}</textarea>
+                            <textarea name="biography" rows="4" placeholder="Biography" class="textarea">{{ $author->biography }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('biography')" />
                         </div>
-                    </div>
-                    {{-- Image --}}
-                    <div class="space-y-2 col-span-2">
-                        <p class="label">{{ __('Image') }}</p>
-                        <input type="file" name="image" class="filepond" id="image"
-                            accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
-                        <x-input-error class="mt-2" :messages="$errors->get('image')" />
                     </div>
                     <div class="flex justify-end mt-5">
                         <x-admin.primary-button>{{ __('Update') }}</x-admin.primary-button>

@@ -45,4 +45,8 @@ class Admin extends AuthBaseModel
     {
         return $this->belongsTo(Role::class, 'role_id')->select(['name', 'id']);
     }
+    public function issuedBy()
+    {
+        return $this->hasMany(BookIssues::class, 'issued_by');
+    }
 }

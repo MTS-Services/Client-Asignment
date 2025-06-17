@@ -7,7 +7,7 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Create Publisher') }}</h2>
-                <x-admin.primary-link href="{{ route('pm.publisher.index') }}">{{ __('Back') }}
+                <x-admin.primary-link href="{{ route('bm.publisher.index') }}">{{ __('Back') }}
                 </x-admin.primary-link>
             </div>
         </div>
@@ -16,7 +16,7 @@
             class="grid grid-cols-1 gap-4 sm:grid-cols-1  {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
-                <form action="{{ route('pm.publisher.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('bm.publisher.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                         <!-- Name -->
@@ -30,8 +30,8 @@
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </g>
                                 </svg>
-                                <input type="text" placeholder="Enter name" id="title" value="{{ old('name') }}"
-                                    name="name" class="flex-1" />
+                                <input type="text" placeholder="Enter name" id="title"
+                                    value="{{ old('name') }}" name="name" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                         </div>
@@ -45,8 +45,8 @@
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </g>
                                 </svg>
-                                <input type="text" placeholder="Enter slug" id="slug" value="{{ old('slug') }}"
-                                    name="slug" class="flex-1" />
+                                <input type="text" placeholder="Enter slug" id="slug"
+                                    value="{{ old('slug') }}" name="slug" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('slug')" />
                         </div>
@@ -85,10 +85,9 @@
                         </div>
                         <div class="space-y-2">
                             <p class="label">{{ __('Website') }}</p>
-                            <label class="input flex items-center gap-2">
-                                <input type="url" value="{{ old('website') }}" id="website" name="website"
-                                    class="form-control" placeholder="Enter website">
-                            </label>
+                            <input type="url" required placeholder="https://" value="https://"
+                                pattern="^(https?://)?([a-zA-Z0-9]([a-zA-Z0-9\-].*[a-zA-Z0-9])?\.)+[a-zA-Z].*$"
+                                title="Must be valid URL" class="input"/>
                             <x-input-error class="mt-2" :messages="$errors->get('website')" />
                         </div>
 

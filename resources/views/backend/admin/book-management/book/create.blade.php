@@ -88,7 +88,7 @@
                         {{-- Category --}}
                         <div class="space-y-2">
                             <p class="label">{{ __('Category') }}</p>
-                            <select name="category_id" class="w-full border-gray-300 dark:border-gray-600">
+                            <select name="category_id" class="w-full input border-gray-300 dark:border-gray-600">
                                 <option value="" selected disabled>{{ __('Select Category') }}</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
@@ -101,7 +101,7 @@
                         {{-- Publisher --}}
                         <div class="space-y-2">
                             <p class="label">{{ __('Publisher') }}</p>
-                            <select name="publisher_id" class="w-full border-gray-300 dark:border-gray-600">
+                            <select name="publisher_id" class="w-full input border-gray-300 dark:border-gray-600">
                                 <option value="" selected disabled>{{ __('Select Publisher') }}</option>
                                 @foreach ($publishers as $publisher)
                                     <option value="{{ $publisher->id }}"
@@ -114,7 +114,7 @@
                         {{-- Rack --}}
                         <div class="space-y-2">
                             <p class="label">{{ __('Rack') }}</p>
-                            <select name="rack_id" class="w-full border-gray-300 dark:border-gray-600">
+                            <select name="rack_id" class="w-full input border-gray-300 dark:border-gray-600">
                                 <option value="" selected disabled>{{ __('Select Rack') }}</option>
                                 @foreach ($racks as $rack)
                                     <option value="{{ $rack->id }}"
@@ -203,7 +203,7 @@
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Description') }}</p>
                             <textarea name="description" rows="4" placeholder="Description"
-                                class="w-full border-gray-300 dark:border-gray-600">{{ old('description') }}</textarea>
+                                class="textarea">{{ old('description') }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
                     </div>
@@ -218,6 +218,7 @@
         </div>
     </section>
     @push('js')
+        <script src="{{ asset('assets/js/ckEditor.js') }}"></script>
         <script src="{{ asset('assets/js/filepond.js') }}"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
