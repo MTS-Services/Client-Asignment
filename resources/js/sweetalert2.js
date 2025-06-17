@@ -41,3 +41,18 @@ window.confirmPermanentDelete = (callback) => {
         }
     });
 };
+window.confirmBookIssue = (callback) => {
+    swal.fire({
+        title: 'Issue Book?',
+        text: "Are you sure you want to issue this book?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, issue!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            callback();
+        }
+    });
+};

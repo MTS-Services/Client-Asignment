@@ -7,8 +7,7 @@ use App\Http\Traits\AuditColumnsTrait;
 use App\Models\BookIssues;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-return new class extends Migration
-{
+return new class extends Migration {
     use SoftDeletes, AuditColumnsTrait;
     /**
      * Run the migrations.
@@ -29,9 +28,9 @@ return new class extends Migration
 
             $table->tinyInteger('status')->default(BookIssues::STATUS_PENDING); // 1: Pending, 2: Issued, 3: Returned, 4: Overdue, 5: Lost
             $table->decimal('fine_amount', 8, 2)->default(0);
-            $table->boolean('fine_paid')->default(false);
+            $table->boolean('fine_paid')->nullable();
             $table->text('notes')->nullable();
-          
+
 
             // Foreign keys with cascade
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
