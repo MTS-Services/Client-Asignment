@@ -62,15 +62,14 @@ function loadModalDetails(data, detailsConfig) {
                 let rawValue = data[item.key];
 
                 let formattedValue;
-
                 if (item.loop && Array.isArray(rawValue)) {
                     // Looping through nested items (e.g., permissions)
                     formattedValue = rawValue.map(subItem =>
-                        formatValue(subItem[item.loopKey], item.key, item.type)
+                        formatValue(subItem[item.loopKey], item.key, item.type, (data[item.label_color] || 'badge-secondary'))
                     ).join(', ');
                 } else {
                     // Single value
-                    formattedValue = formatValue(rawValue, item.key, item.type);
+                    formattedValue = formatValue(rawValue, item.key, item.type, (data[item.label_color] || 'badge-secondary'));
                 }
                 const icon = item.icon || getDefaultIcon(item.key);
 
@@ -99,7 +98,7 @@ function loadModalDetails(data, detailsConfig) {
                     .replace(/\b\w/g, l => l.toUpperCase());
 
                 const icon = getDefaultIcon(key);
-                const displayValue = formatValue(value, key);
+                const displayValue = formatValue(value, key, label_color);
 
                 html += `
                     <div class="detail-item flex items-center justify-between py-4 px-4 rounded-lg">
@@ -132,7 +131,7 @@ function loadModalDetails(data, detailsConfig) {
     }
 }
 
-function formatValue(value, key, type) {
+function formatValue(value, key, type, label_color) {
     if (value === null || value === undefined || value === '') {
         return '<span class="text-gray-400 dark:text-gray-500 italic">N/A</span>';
     }
@@ -141,7 +140,7 @@ function formatValue(value, key, type) {
     if (type === 'image') {
         return `
             <div class="relative group cursor-pointer" onclick="openImageLightbox('${value}')">
-                <img src="${value}" alt="Preview" 
+                <img src="${value}" alt="Preview"
                      class="w-20 h-20 object-cover rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-blue-400 transition-all duration-200 shadow-sm hover:shadow-md">
                 <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-lg transition-all duration-200 flex items-center justify-center">
                     <i data-lucide="zoom-in" class="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"></i>
@@ -166,7 +165,7 @@ function formatValue(value, key, type) {
 
     // Format based on key type
     if (key.toLowerCase().includes('status')) {
-        return formatStatus(value);
+        return formatStatus(value, label_color);
     } else if (key.toLowerCase().includes('email')) {
         return `<a href="mailto:${value}" class="text-blue-600 dark:text-blue-400 hover:underline">${value}</a>`;
     } else if (key.toLowerCase().includes('phone')) {
@@ -176,21 +175,21 @@ function formatValue(value, key, type) {
     }
 }
 
-function formatStatus(status) {
+function formatStatus(status, label_color) {
     const statusStr = String(status).toLowerCase();
-    let colorClass = '';
+    // let colorClass = '';
 
-    if (statusStr === 'active' || statusStr === '1' || statusStr === 'enabled') {
-        colorClass = 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
-    } else if (statusStr === 'inactive' || statusStr === '0' || statusStr === 'disabled') {
-        colorClass = 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
-    } else if (statusStr === 'pending') {
-        colorClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
-    } else {
-        colorClass = 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-    }
+    // if (statusStr === 'active' || statusStr === '1' || statusStr === 'enabled') {
+    //     colorClass = 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+    // } else if (statusStr === 'inactive' || statusStr === '0' || statusStr === 'disabled') {
+    //     colorClass = 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+    // } else if (statusStr === 'pending') {
+    //     colorClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+    // } else {
+    //     colorClass = 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+    // }
 
-    return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colorClass}">${status}</span>`;
+    return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ${label_color}">${status}</span>`;
 }
 
 function getDefaultIcon(key) {
@@ -223,7 +222,7 @@ function openImageLightbox(imageSrc) {
                 <button onclick="closeLightbox()" class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors duration-200 z-10">
                     <i data-lucide="x" class="w-8 h-8"></i>
                 </button>
-                <img src="${imageSrc}" alt="Full Size Preview" 
+                <img src="${imageSrc}" alt="Full Size Preview"
                      class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-scale-in">
                 <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm">
                     <i data-lucide="zoom-in" class="w-4 h-4 inline mr-2"></i>
@@ -232,17 +231,17 @@ function openImageLightbox(imageSrc) {
             </div>
         </div>
     `;
-    
+
     document.body.insertAdjacentHTML('beforeend', lightboxHtml);
     document.body.style.overflow = 'hidden';
-    
+
     // Add click to close functionality
     document.getElementById('image-lightbox').addEventListener('click', function(e) {
         if (e.target === this || e.target.tagName === 'IMG') {
             closeLightbox();
         }
     });
-    
+
     // Reinitialize Lucide icons
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
@@ -272,17 +271,17 @@ function openVideoLightbox(videoSrc) {
             </div>
         </div>
     `;
-    
+
     document.body.insertAdjacentHTML('beforeend', lightboxHtml);
     document.body.style.overflow = 'hidden';
-    
+
     // Add click to close functionality (but not on video element)
     document.getElementById('video-lightbox').addEventListener('click', function(e) {
         if (e.target === this) {
             closeLightbox();
         }
     });
-    
+
     // Reinitialize Lucide icons
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
@@ -293,11 +292,11 @@ function openVideoLightbox(videoSrc) {
 function closeLightbox() {
     const imageLightbox = document.getElementById('image-lightbox');
     const videoLightbox = document.getElementById('video-lightbox');
-    
+
     if (imageLightbox) {
         imageLightbox.remove();
     }
-    
+
     if (videoLightbox) {
         // Pause video before removing
         const video = document.getElementById('lightbox-video');
@@ -306,7 +305,7 @@ function closeLightbox() {
         }
         videoLightbox.remove();
     }
-    
+
     document.body.style.overflow = 'auto';
 }
 
@@ -373,7 +372,7 @@ document.addEventListener('keydown', function (e) {
         if (!modal.classList.contains('hidden')) {
             closeDetailsModal();
         }
-        
+
         // Also close lightbox if open
         const imageLightbox = document.getElementById('image-lightbox');
         const videoLightbox = document.getElementById('video-lightbox');

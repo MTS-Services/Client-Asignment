@@ -95,7 +95,7 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
         Route::resource('book-issues', BookIssuesController::class);
         Route::controller(BookIssuesController::class)->name('book-issues.')->prefix('book-issues')->group(function () {
             Route::post('/show/{bookIssue}', 'show')->name('show');
-            Route::get('/status/{bookIssue}', 'status')->name('status');
+            Route::get('/status/{bookIssue}/{status}', 'status')->name('status');
             Route::get('/trash/bin', 'trash')->name('trash');
             Route::get('/return/{bookIssue}', 'return')->name('return');
             Route::get('/restore/{bookIssue}', 'restore')->name('restore');
@@ -128,6 +128,22 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
             Route::get('/trash/bin', 'trash')->name('trash');
             Route::get('/restore/{rack}', 'restore')->name('restore');
             Route::delete('/permanent-delete/{rack}', 'permanentDelete')->name('permanent-delete');
+        });
+    });
+
+
+    Route::group(['as' => 'bim.', 'prefix' => 'book-issue-management'], function () {
+        //Book Issue
+        Route::resource('book-issues', BookIssuesController::class);
+        Route::controller(BookIssuesController::class)->name('book-issues.')->prefix('book-issues')->group(function () {
+            Route::post('/show/{bookIssue}', 'show')->name('show');
+            Route::get('/status/{bookIssue}/{status}', 'status')->name('status');
+            Route::get('/trash/bin', 'trash')->name('trash');
+            Route::get('/return/{bookIssue}', 'return')->name('return');
+            Route::get('/lost/{bookIssue}', 'lost')->name('lost');
+            Route::get('/restore/{bookIssue}', 'restore')->name('restore');
+            Route::delete('/permanent-delete/{bookIssue}', 'permanentDelete')->name('permanent-delete');
+            Route::patch('/update-return/{bookIssue}', 'updateReturn')->name('update-return');
         });
     });
 });

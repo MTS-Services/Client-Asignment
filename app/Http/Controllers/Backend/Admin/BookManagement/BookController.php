@@ -139,7 +139,7 @@ class BookController extends Controller implements HasMiddleware
     {
         try {
             $validated = $request->validated();
-            $this->bookService->createBook($validated,  $request->file('cover_image'));
+            $this->bookService->createBook($validated, $request->file('cover_image'));
             session()->flash('success', "Book created successfully");
         } catch (\Throwable $e) {
             session()->flash('error', "Book creation failed");
