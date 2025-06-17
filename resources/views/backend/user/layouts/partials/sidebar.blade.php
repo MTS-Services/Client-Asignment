@@ -36,8 +36,8 @@
 
             {{-- 2. SIMPLE DROPDOWN (multiple items under one parent) --}}
 
-            <x-user.navlink type="single" icon="users" name="Magazine" :route="route('user.magazine-list')" active="magazine" :page_slug="$active"/>
-            <x-user.navlink type="single" icon="list" name="Newspaper" :route="route('user.newspaper-list')" active="newspaper" :page_slug="$active"/>
+            <x-user.navlink type="single" icon="notebook-pen" name="Magazine" :route="route('user.magazine-list')" active="magazine" :page_slug="$active"/>
+            <x-user.navlink type="single" icon="newspaper" name="Newspaper" :route="route('user.newspaper-list')" active="newspaper" :page_slug="$active"/>
             <x-user.navlink type="dropdown" icon="ratio" name="Actions" :page_slug="$active"
                 :items="[
                     [
