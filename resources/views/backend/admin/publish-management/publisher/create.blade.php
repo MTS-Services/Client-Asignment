@@ -85,10 +85,9 @@
                         </div>
                         <div class="space-y-2">
                             <p class="label">{{ __('Website') }}</p>
-                            <label class="input flex items-center gap-2">
-                                <input type="url" value="{{ old('website') }}" id="website" name="website"
-                                    class="form-control" placeholder="Enter website">
-                            </label>
+                            <input type="url" required placeholder="https://" value="https://"
+                                pattern="^(https?://)?([a-zA-Z0-9]([a-zA-Z0-9\-].*[a-zA-Z0-9])?\.)+[a-zA-Z].*$"
+                                title="Must be valid URL" class="input"/>
                             <x-input-error class="mt-2" :messages="$errors->get('website')" />
                         </div>
 

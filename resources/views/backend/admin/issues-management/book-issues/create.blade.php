@@ -103,7 +103,7 @@
                         {{-- Notes --}}
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Notes') }}</p>
-                            <textarea name="notes" rows="4" placeholder="Notes" class="w-full dark:bg-slate-900 border-gray-300 dark:border-gray-600">{{ old('notes') }}</textarea>
+                            <textarea name="notes" rows="4" placeholder="Notes" class="textarea">{{ old('notes') }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('notes')" />
                         </div>
                     </div>
@@ -118,6 +118,6 @@
         </div>
     </section>
     @push('js')
-        <script src="{{ asset('assets/js/filepond.js') }}"></script>
+        <script src="{{ asset('assets/js/ckEditor.js') }}"></script>
     @endpush
 </x-admin::layout>

@@ -72,13 +72,14 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('capacity')" />
                         </div>
-                    </div>
-                    {{-- Description --}}
-                    <div class="space-y-2 col-span-2">
-                        <p class="label">{{ __('Description') }}</p>
-                        <textarea name="description" rows="4" placeholder="Description"
-                            class="w-full border-gray-300 dark:border-gray-600">{{ $rack->description }}</textarea>
-                        <x-input-error class="mt-2" :messages="$errors->get('description')" />
+
+                        {{-- Description --}}
+                        <div class="space-y-2 col-span-2">
+                            <p class="label">{{ __('Description') }}</p>
+                            <textarea name="description" rows="4" placeholder="Description"
+                                class="textarea">{{ $rack->description }}</textarea>
+                            <x-input-error class="mt-2" :messages="$errors->get('description')" />
+                        </div>
                     </div>
                     <div class="flex justify-end mt-5">
                         <x-admin.primary-button>{{ __('Update') }}</x-admin.primary-button>
@@ -91,6 +92,6 @@
         </div>
     </section>
     @push('js')
-        <script src="{{ asset('assets/js/filepond.js') }}"></script>
+        <script src="{{ asset('assets/js/ckEditor.js') }}"></script>
     @endpush
 </x-admin::layout>
