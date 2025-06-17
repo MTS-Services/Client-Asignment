@@ -24,7 +24,7 @@
                         <!-- User -->
                         <div class="space-y-2">
                             <p class="label">{{ __('User') }}</p>
-                            <select name="user_id" class="w-full border-gray-300 dark:border-gray-600">
+                            <select name="user_id" class="w-full input border-gray-300 dark:border-gray-600">
                                 <option value="" disabled>{{ __('Select User') }}</option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}"
@@ -38,7 +38,7 @@
                         <!-- Book -->
                         <div class="space-y-2">
                             <p class="label">{{ __('Book') }}</p>
-                            <select name="book_id" class="w-full border-gray-300 dark:border-gray-600">
+                            <select name="book_id" class="w-full input border-gray-300 dark:border-gray-600">
                                 <option value="" disabled>{{ __('Select Book') }}</option>
                                 @foreach ($books as $book)
                                     <option value="{{ $book->id }}"
@@ -91,7 +91,7 @@
                         {{-- Notes --}}
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Notes') }}</p>
-                            <textarea name="notes" rows="4" placeholder="Notes" class="w-full border-gray-300 dark:border-gray-600">{{ old('notes', $issue->notes) }}</textarea>
+                            <textarea name="notes" rows="4" placeholder="Notes" class="w-full dark:bg-slate-900 border-gray-300 dark:border-gray-600">{{ old('notes', $issue->notes) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('notes')" />
                         </div>
                         {{-- Fine Paid --}}
