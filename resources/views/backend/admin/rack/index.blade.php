@@ -8,9 +8,9 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Rack List') }}</h2>
                 <div class="flex items-center gap-2">
-                    <x-admin.primary-link error="true" href="{{ route('rack.trash') }}">{{ __('Trash') }}
+                    <x-admin.primary-link error="true" href="{{ route('bm.rack.trash') }}">{{ __('Trash') }}
                     </x-admin.primary-link>
-                    <x-admin.primary-link href="{{ route('rack.create') }}">{{ __('Add') }}
+                    <x-admin.primary-link href="{{ route('bm.rack.create') }}">{{ __('Add') }}
                     </x-admin.primary-link>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                     table_columns: table_columns,
                     main_class: '.datatable',
                     displayLength: 10,
-                    main_route: "{{ route('rack.index') }}",
+                    main_route: "{{ route('bm.rack.index') }}",
                     order_route: "{{ route('update.sort.order') }}",
                     export_columns: [0, 1, 2, 3, 4],
                     model: 'Admin',
@@ -71,7 +71,7 @@
 
                 $(document).on('click', '.view', function() {
                     const id = $(this).data('id');
-                    const route = "{{ route('rack.show', ':id') }}";
+                    const route = "{{ route('bm.rack.show', ':id') }}";
 
                     const details = [{
                             label: '{{ __('Rack Number') }}',

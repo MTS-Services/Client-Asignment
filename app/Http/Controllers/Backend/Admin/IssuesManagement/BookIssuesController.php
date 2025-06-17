@@ -25,12 +25,12 @@ class BookIssuesController extends Controller implements HasMiddleware
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('im.book-issues.index');
+        return redirect()->route('bm.book-issues.index');
     }
 
     protected function redirectTrashed(): RedirectResponse
     {
-        return redirect()->route('im.book-issues.trash');
+        return redirect()->route('bm.book-issues.trash');
     }
 
     protected BookIssuesService $bookIssuesService;
@@ -103,25 +103,25 @@ class BookIssuesController extends Controller implements HasMiddleware
                 'permissions' => ['book-issues-list', 'book-issues-delete', 'book-issues-status']
             ],
             [
-                'routeName' => 'im.book-issues.edit',
+                'routeName' => 'bm.book-issues.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
                 'permissions' => ['book-issues-edit']
             ],
             [
-                'routeName' => 'im.book-issues.status',
+                'routeName' => 'bm.book-issues.status',
                 'params' => [encrypt($model->id)],
                 'label' => $model->status_label,
                 'permissions' => ['book-issues-status']
             ],
             [
-                'routeName' => 'im.book-issues.return',
+                'routeName' => 'bm.book-issues.return',
                 'params' => [encrypt($model->id)],
                 'label' => 'Return',
                 'permissions' => ['book-issues-restore']
             ],
             [
-                'routeName' => 'im.book-issues.destroy',
+                'routeName' => 'bm.book-issues.destroy',
                 'params' => [encrypt($model->id)],
                 'label' => 'Delete',
                 'delete' => true,
@@ -262,13 +262,13 @@ class BookIssuesController extends Controller implements HasMiddleware
     {
         return [
             [
-                'routeName' => 'im.book-issues.restore',
+                'routeName' => 'bm.book-issues.restore',
                 'params' => [encrypt($model->id)],
                 'label' => 'Restore',
                 'permissions' => ['book-issues-restore']
             ],
             [
-                'routeName' => 'im.book-issues.permanent-delete',
+                'routeName' => 'bm.book-issues.permanent-delete',
                 'params' => [encrypt($model->id)],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,
@@ -302,7 +302,7 @@ class BookIssuesController extends Controller implements HasMiddleware
         }
         return $this->redirectTrashed();
     }
-      public function status(string $id)
+    public function status(string $id)
     {
         $bookIssues = $this->bookIssuesService->getBookIssues($id);
         if ($bookIssues->role_id == 1 && admin()->role_id != 1) {
