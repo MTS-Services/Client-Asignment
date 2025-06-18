@@ -161,10 +161,22 @@
                                 App\Models\BookIssues::FINE_UNPAID
                             ],
                         ]),
-                        'icon' => 'book-check',
+                        'icon' => 'badge-dollar-sign',
                         'active' =>
                             'book_issues_' .
                             App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_UNPAID],
+                    ],
+                    [
+                        'name' => 'Fine Paid',
+                        'route' => route('bim.book-issues.index', [
+                            'fine-status' => App\Models\BookIssues::fineStatusList()[
+                                App\Models\BookIssues::FINE_PAID
+                            ],
+                        ]),
+                        'icon' => 'hand-coins',
+                        'active' =>
+                            'book_issues_' .
+                            App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_PAID],
                     ],
                 ]" />
 

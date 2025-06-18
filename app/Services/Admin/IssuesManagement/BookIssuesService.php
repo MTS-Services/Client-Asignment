@@ -75,7 +75,7 @@ class BookIssuesService
     public function updateReturnBookIssue(string $encryptedId, array $data): BookIssues
     {
         $bookIssue = $this->getBookIssues($encryptedId);
-        
+
         $data['status'] = BookIssues::STATUS_RETURNED;
         $returnDate = \Carbon\Carbon::parse($data['return_date']);
         $data['return_date'] = $returnDate;
@@ -101,5 +101,15 @@ class BookIssuesService
         $bookIssue->update($data);
 
         return $bookIssue;
+    }
+
+    public function updateFineStatus(string $encryptedId, string $fineStatus)
+    {
+        $bookIssue = $this->getBookIssues($encryptedId);
+        $bookIssue->update([
+            'fine_status' => BookIssues::FINE_PAID,
+            'updater_id' => admin()->id,
+            'updater_type' => get_class(admin())
+        ]);
     }
 }

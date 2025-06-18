@@ -18,6 +18,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
 class BookIssuesController extends Controller implements HasMiddleware
@@ -118,8 +119,11 @@ class BookIssuesController extends Controller implements HasMiddleware
         if ($model->fine_status == BookIssues::FINE_UNPAID) {
             $items = array_merge($items, [
                 [
-                    'routeName' => 'bim.book-issues.edit',
-                    'params' => [encrypt($model->id), 'fine_status' => $fine_status],
+                    'routeName' => 'bm.book-issues.fine-status',
+                    'params' => [
+                        encrypt($model->id),
+                        'status' => BookIssues::fineStatusList()[BookIssues::FINE_PAID]
+                    ],
                     'label' => 'Make Paid',
                     'permissions' => ['book-issues-edit']
                 ],
@@ -394,5 +398,17 @@ class BookIssuesController extends Controller implements HasMiddleware
         };
         session()->flash('success', 'Admin status updated successfully!');
         return redirect()->back();
+    }
+
+    public function fineStatus(string $id, string $status)
+    {
+        try {
+            $this->bookIssuesService->updateFineStatus($id, $status);
+            session()->flash('success', 'Fine status updated successfully!');
+        } catch (Throwable $e) {
+            session()->flash('Something went wrong! Please try again.');
+            throw $e;
+        }
+        return redirect()->back()->with('fine-status', BookIssues::fineStatusList()[BookIssues::FINE_UNPAID]);
     }
 }
