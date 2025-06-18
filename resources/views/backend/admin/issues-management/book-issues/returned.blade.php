@@ -15,7 +15,7 @@
                         data-lucide="undo-2" class="w-4 h-4"></i></x-admin.primary-link>
             </div>
         </div>
-           <div class="glass-card shadow rounded-xl p-6 mb-6 bg-white dark:bg-[#19221F]">
+        <div class="glass-card shadow rounded-xl p-6 mb-6 bg-white dark:bg-[#19221F]">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white mb-4">📚 Book Issue Details</h2>
 
             <div class="grid grid-cols-2 gap-4 text-sm">
@@ -30,12 +30,14 @@
 
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Book</p>
-                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->book?->title }}</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->book?->title }}
+                    </p>
                 </div>
 
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Issued By</p>
-                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->issuedBy?->name }}</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->issuedBy?->name }}
+                    </p>
                 </div>
 
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
@@ -103,8 +105,7 @@
                             <select name="fine_status" id="fine_status" class="select  block w-full">
                                 <option value="" selected>{{ __('Select Status') }}</option>
                                 @foreach (app\Models\BookIssues::fineStatusList() as $key => $label)
-                                    <option value="{{ $key }}"
-                                        {{ old('fine_status', $issue->fine_status) }}>
+                                    <option value="{{ $key }}" {{ old('fine_status', $issue->fine_status) }}>
                                         {{ $label }}
                                     </option>
                                 @endforeach
