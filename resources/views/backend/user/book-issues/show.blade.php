@@ -116,7 +116,7 @@
                         </div>
                         <div class="bg-bg-white/50 dark:bg-slate-900 p-4 rounded-lg">
                             <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">
-                                {{ __('Publisher Date') }}</p>
+                                {{ __('Publish Date') }}</p>
                             <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">
                                 {{ $book_issue->book?->publication_date }}</p>
                         </div>
@@ -137,7 +137,7 @@
                             <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">
                                 {{ __('Price') }}</p>
                             <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">
-                                {{ $book_issue->book?->price }}</p>
+                                ${{ number_format($book_issue->book?->price, 2) }}</p>
                         </div>
                         @if ($book_issue->notes)
                             <div class="bg-bg-white/50 dark:bg-slate-900 p-4 rounded-lg col-span-2">
