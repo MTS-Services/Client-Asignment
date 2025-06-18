@@ -74,7 +74,7 @@ class BookIssues extends BaseModel
             self::STATUS_ISSUED => 'badge-primary',
             self::STATUS_RETURNED => 'badge-success',
             self::STATUS_OVERDUE => 'badge-warning',
-            self::STATUS_LOST => 'badge-danger',
+            self::STATUS_LOST => 'badge-error',
             default => 'badge-secondary',
         };
     }
