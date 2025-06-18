@@ -71,8 +71,8 @@
 
                     <button @click="open = !open" class="avatar">
                         <div class="w-8 rounded-xl">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face&auto=format"
-                                alt="" class="object-cover w-full h-full">
+                            <img src="{{ auth()->user()->modified_image ?? 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face&auto=format' }}"
+                                alt="{{ auth()->user()->name }}" class="object-cover w-full h-full">
                         </div>
                     </button>
 
@@ -84,7 +84,7 @@
                         class="hidden absolute right-0 mt-2 w-fit min-w-40 glass-card bg-bg-dark-primary/40   dark:bg-bg-dark-tertiary rounded-xl shadow-lg py-2 z-50"
                         :class="open ? '!block' : '!hidden'">
                         {{-- @if (isset($not_use)) --}}
-                        <x-user.profile-navlink route="#" name="{{ __('Profile') }}" />
+                        <x-user.profile-navlink route="{{ route('user.profile') }}" name="{{ __('Profile') }}" />
                         <x-user.profile-navlink route="{{ route('otp-verification', ['forgot' => true]) }}"
                             name="{{ __('Password') }}" />
                         {{-- <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" /> --}}

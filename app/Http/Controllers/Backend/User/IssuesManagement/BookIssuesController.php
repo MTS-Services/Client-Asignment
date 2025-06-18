@@ -41,12 +41,7 @@ class BookIssuesController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            'auth:admin', // Applies 'auth:admin' to all methods
-
-            // Permission middlewares using the Middleware class
-            new Middleware('permission:book-issues-list', only: ['issuesList']),
-            new Middleware('permission:book-issues-details', only: ['issueDetails']),
-            //add more permissions if needed
+            'auth:web',
         ];
     }
 
