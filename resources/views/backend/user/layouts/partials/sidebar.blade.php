@@ -38,7 +38,54 @@
 
             <x-user.navlink type="single" icon="notebook-pen" name="Magazine" :route="route('user.magazine-list')" active="magazine" :page_slug="$active"/>
             <x-user.navlink type="single" icon="newspaper" name="Newspaper" :route="route('user.newspaper-list')" active="newspaper" :page_slug="$active"/>
-            <x-user.navlink type="dropdown" icon="ratio" name="Actions" :page_slug="$active"
+            <x-admin.navlink type="dropdown" icon="app-window" name="Book Issues" :page_slug="$active" :items="[
+                [
+                    'name' => 'Book Issue Requests',
+                    'route' => route('user.book-issues-list', [
+                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_PENDING],
+                    ]),
+                    'icon' => 'tags',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_PENDING],
+                ],
+                [
+                    'name' => 'Book Issued',
+                    'route' => route('user.book-issues-list', [
+                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_ISSUED],
+                    ]),
+                    'icon' => 'tags',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_ISSUED],
+                ],
+                [
+                    'name' => 'Book Returned',
+                    'route' => route('user.book-issues-list', [
+                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
+                    ]),
+                    'icon' => 'tags',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
+                ],
+                [
+                    'name' => 'Book Overdue',
+                    'route' => route('user.book-issues-list', [
+                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
+                    ]),
+                    'icon' => 'tags',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
+                ],
+                [
+                    'name' => 'Book Lost',
+                    'route' => route('user.book-issues-list', [
+                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
+                    ]),
+                    'icon' => 'tags',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
+                ],
+            ]" />
+            {{-- <x-user.navlink type="dropdown" icon="ratio" name="Actions" :page_slug="$active"
                 :items="[
                     [
                         'name' => 'action',
@@ -46,7 +93,7 @@
                         'icon' => 'user',
                         'active' => 'action',
                     ],
-                ]" />
+                ]" /> --}}
 
 
 

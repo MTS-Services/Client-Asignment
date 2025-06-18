@@ -139,7 +139,8 @@ class BookIssues extends BaseModel
             default => 'badge-secondary',
         };
     }
-
-
-
+   public function scopeSelf(Builder $query): Builder
+    {
+        return $query->where('user_id',user()->id);
+    }
 }
