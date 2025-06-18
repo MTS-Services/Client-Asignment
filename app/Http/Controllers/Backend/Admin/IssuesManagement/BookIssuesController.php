@@ -182,7 +182,7 @@ class BookIssuesController extends Controller implements HasMiddleware
             session()->flash('error', 'Book return update failed');
             throw $e;
         }
-        return $this->redirectIndex(request());
+        return $this->redirectIndex(request('status'));
     }
 
     /**
