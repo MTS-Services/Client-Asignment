@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin\UserManagment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserManagement\UserRequest;
 use App\Http\Traits\AuditRelationTraits;
+use App\Models\User;
 use App\Services\Admin\UserManagement\UserService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -58,8 +59,13 @@ class UserController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
+
+        $status = $request->get('status');
         if ($request->ajax()) {
             $query = $this->userService->getUsers();
+            if ($status) {
+                $query = $query->where('status', array_search($status, User::statusList()))->verified();
+            }
 
             return DataTables::eloquent($query)
                 ->editColumn('email_verified_at', fn($user) => "<span class='badge badge-soft {$user->verify_color}'>{$user->verify_label}</span>")

@@ -9,87 +9,158 @@
             x-transition:enter="transition-all duration-500" x-transition:enter-start="opacity-0 translate-y-8"
             x-transition:enter-end="opacity-100 translate-y-0">
 
-            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0s;"
-                @click="showDetails('users')">
+            <a href="{{ route('am.admin.index', ['status' => App\Models\AuthBaseModel::statusList()[App\Models\AuthBaseModel::STATUS_ACTIVE]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0s;">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                        <i data-lucide="users" class="w-6 h-6 text-blue-400"></i>
+                        <i data-lucide="user-cog" class="w-6 h-6 text-blue-400"></i>
                     </div>
-                    <div class="text-green-400 text-sm font-medium flex items-center gap-1">
-                        <i data-lucide="trending-up" class="w-3 h-3"></i>
-                        +12%
-                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($active_admins) }}</h3>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1"
-                    x-text="stats.users.toLocaleString()">
-                    12,384</h3>
-                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">Total Users</p>
-                <div class="mt-4 h-1 bg-white/10 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full progress-bar"
-                        style="width: 75%;"></div>
-                </div>
-            </div>
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Active Admins') }}</p>
+            </a>
 
-            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.2s;"
-                @click="showDetails('revenue')">
+
+            <a href="{{ route('um.user.index', ['status' => App\Models\AuthBaseModel::statusList()[App\Models\AuthBaseModel::STATUS_ACTIVE]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.2s;">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
-                        <i data-lucide="trending-up" class="w-6 h-6 text-green-400"></i>
+                        <i data-lucide="users" class="w-6 h-6 text-green-400"></i>
                     </div>
-                    <div class="text-green-400 text-sm font-medium flex items-center gap-1">
-                        <i data-lucide="trending-up" class="w-3 h-3"></i>
-                        +23%
-                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($active_users) }}</h3>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">$<span
-                        x-text="stats.revenue.toLocaleString()">48,392</span></h3>
-                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">Total Revenue</p>
-                <div class="mt-4 h-1 bg-white/10 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full progress-bar"
-                        style="width: 60%;"></div>
-                </div>
-            </div>
 
-            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.4s;"
-                @click="showDetails('orders')">
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Active Users') }}</p>
+            </a>
+
+            <a href="{{ route('bm.book.index', ['status' => App\Models\Book::statusList()[App\Models\Book::STATUS_AVAILABLE]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.4s;">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                        <i data-lucide="shopping-bag" class="w-6 h-6 text-purple-400"></i>
+                        <i data-lucide="book-a" class="w-6 h-6 text-purple-400"></i>
                     </div>
-                    <div class="text-red-400 text-sm font-medium flex items-center gap-1">
-                        <i data-lucide="trending-down" class="w-3 h-3"></i>
-                        -5%
-                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($available_books) }}</h3>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1"
-                    x-text="stats.orders.toLocaleString()">
-                    2,847</h3>
-                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">Total Orders</p>
-                <div class="mt-4 h-1 bg-white/10 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-purple-400 to-purple-600 rounded-full progress-bar"
-                        style="width: 45%;"></div>
-                </div>
-            </div>
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Available Books') }}</p>
+            </a>
 
-            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.6s;"
-                @click="showDetails('active')">
+            <a href="{{ route('magazine.index', ['status' => App\Models\Magazine::statusList()[App\Models\Magazine::STATUS_ACTIVE]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.6s;">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-                        <i data-lucide="activity" class="w-6 h-6 text-yellow-400"></i>
+                        <i data-lucide="book-open-check" class="w-6 h-6 text-yellow-400"></i>
                     </div>
-                    <div class="text-yellow-400 text-sm font-medium flex items-center gap-1">
-                        <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                        Live
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($available_magazines) }}</h3>
+                </div>
+
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Available Magazine') }}</p>
+            </a>
+
+
+            <a href="{{ route('newspaper.index', ['status' => App\Models\NewsPaper::statusList()[App\Models\NewsPaper::STATUS_ACTIVE]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="newspaper" class="w-6 h-6 text-orange-400"></i>
                     </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($available_newspapers) }}</h3>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1"
-                    x-text="stats.activeUsers.toLocaleString()">847</h3>
-                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">Active Users</p>
-                <div class="mt-4 h-1 bg-white/10 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full pulse-slow progress-bar"
-                        style="width: 85%;"></div>
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Available Newspapers') }}</p>
+            </a>
+
+            <a href="{{ route('bim.book-issues.index', ['status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_PENDING]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.2s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="file-user" class="w-6 h-6 text-indigo-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($book_requests) }}</h3>
                 </div>
-            </div>
+
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Book Requests') }}</p>
+            </a>
+
+            <a href="{{ route('bim.book-issues.index', ['status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_ISSUED]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.4s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-fuchsia-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="book-check" class="w-6 h-6 text-fuchsia-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($book_issued) }}</h3>
+                </div>
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Book Issues') }}</p>
+            </a>
+
+            <a href="{{ route('bim.book-issues.index', ['status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.6s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="bring-to-front" class="w-6 h-6 text-red-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($book_overdues) }}</h3>
+                </div>
+
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Overdue') }}</p>
+            </a>
+
+
+            <a href="{{ route('bim.book-issues.index', ['status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="badge-x" class="w-6 h-6 text-pink-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($book_lost) }}</h3>
+                </div>
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Book Lost') }}</p>
+            </a>
+
+            <a href="{{ route('bm.publisher.index', ['status' => App\Models\Publisher::statusList()[App\Models\Publisher::STATUS_ACTIVE]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.2s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="rss" class="w-6 h-6 text-purple-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($publishers) }}</h3>
+                </div>
+
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Publishers') }}</p>
+            </a>
+
+            <a href="{{ route('bm.category.index', ['status' => App\Models\Category::statusList()[App\Models\Category::STATUS_ACTIVE]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.4s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-zinc-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="chart-bar-stacked" class="w-6 h-6 text-zinc-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($categories) }}</h3>
+                </div>
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Categories') }}</p>
+            </a>
+
+            <a href="{{ route('bim.book-issues.index', ['fine_status' => App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_PAID]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.6s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-rose-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="hand-coins" class="w-6 h-6 text-rose-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($unpaid) }}</h3>
+                </div>
+
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Fine Unpaid') }}</p>
+            </a>
         </div>
 
         <!-- Charts Section -->

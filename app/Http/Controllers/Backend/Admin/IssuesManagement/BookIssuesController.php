@@ -72,8 +72,15 @@ class BookIssuesController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         $status = $request->get('status');
+        $fine_status = $request->get('fine_status');
         if ($request->ajax()) {
-            $query = $this->bookIssuesService->getBookIssuess()->where('status', array_search($status, BookIssues::statusList()));
+            $query = $this->bookIssuesService->getBookIssuess();
+            if ($status) {
+                $query = $query->where('status', array_search($status, BookIssues::statusList()));
+            }
+            if ($fine_status) {
+                $query = $query->where('fine_status', array_search($fine_status, BookIssues::fineStatusList()));
+            }
 
             return DataTables::eloquent($query)
                 ->editColumn('user_id', fn($bookIssues) => $bookIssues->user?->name)

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -106,13 +107,21 @@ class AuthBaseModel extends Authenticatable
     }
 
     // Verified scope
-    public function scopeVerified($query)
+    public function scopeVerified(Builder $query): Builder
     {
         return $query->whereNotNull('email_verified_at');
     }
-    public function scopeUnverified($query)
+    public function scopeUnverified(Builder $query): Builder
     {
         return $query->whereNull('email_verified_at');
+    }
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_ACTIVE);
+    }
+    public function scopeInactive(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_INACTIVE);
     }
 
     // Accessor for created time
