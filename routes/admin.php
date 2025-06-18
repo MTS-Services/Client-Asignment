@@ -144,6 +144,7 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
             Route::get('/restore/{bookIssue}', 'restore')->name('restore');
             Route::delete('/permanent-delete/{bookIssue}', 'permanentDelete')->name('permanent-delete');
             Route::patch('/update-return/{bookIssue}', 'updateReturn')->name('update-return');
+            Route::post('/update-return/{bookIssue}', 'updateLost')->name('update-lost');
         });
 
     });

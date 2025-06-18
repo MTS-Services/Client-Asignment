@@ -74,7 +74,7 @@ class BookIssues extends BaseModel
             self::STATUS_ISSUED => 'badge-primary',
             self::STATUS_RETURNED => 'badge-success',
             self::STATUS_OVERDUE => 'badge-warning',
-            self::STATUS_LOST => 'badge-danger',
+            self::STATUS_LOST => 'badge-error',
             default => 'badge-secondary',
         };
     }
@@ -139,8 +139,8 @@ class BookIssues extends BaseModel
             default => 'badge-secondary',
         };
     }
-   public function scopeSelf(Builder $query): Builder
+    public function scopeSelf(Builder $query): Builder
     {
-        return $query->where('user_id',user()->id);
+        return $query->where('user_id', user()->id);
     }
 }

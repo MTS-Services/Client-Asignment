@@ -87,12 +87,19 @@ class BookIssuesService
         $data['updater_id'] = admin()->id;
         $data['updater_type'] = get_class(admin());
 
-        // Check if return is after due date
-        // if ($returnDate->gt($bookIssue->due_date)) {
-        //     $data['status'] = BookIssues::STATUS_OVERDUE;
-        // } else {
-        //     $data['status'] = BookIssues::STATUS_RETURNED;
-        // }
+        $bookIssue->update($data);
+
+        return $bookIssue;
+    }
+    public function updateBookLost(string $encryptedId, array $data): BookIssues
+    {
+        $bookIssue = $this->getBookIssues($encryptedId);
+
+        $data['status'] = BookIssues::STATUS_LOST;
+        $data['fine_amount'] = $data['fine_amount'] ?? 0;
+        $data['fine_status'] = $data['fine_status'] ?? null;
+        $data['updater_id'] = admin()->id;
+        $data['updater_type'] = get_class(admin());
 
         $bookIssue->update($data);
 
