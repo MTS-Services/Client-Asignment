@@ -28,7 +28,7 @@ class BookService
     {
         return DB::transaction(function () use ($data, $file) {
             if ($file) {
-                $data['cover_image'] = $this->handleFileUpload($file, 'books', $data['cover_image']);
+                $data['cover_image'] = $this->handleFileUpload($file, 'books');
             }
             $data['created_by'] = admin()->id;
             $book = Book::create($data);
@@ -40,7 +40,7 @@ class BookService
     {
         return DB::transaction(function () use ($book, $data, $file) {
             if ($file) {
-                $data['cover_image'] = $this->handleFileUpload($file, 'books', $data['cover_image']);
+                $data['cover_image'] = $this->handleFileUpload($file, 'books');
                 $this->fileDelete($book->cover_image);
             }
             $data['updated_by'] = admin()->id;

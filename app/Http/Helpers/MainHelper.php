@@ -13,6 +13,11 @@ function timeFormat($time)
 {
     return $time ? date(('d M, Y H:i A'), strtotime($time)) : 'N/A';
 }
+
+function dateFormat($time)
+{
+    return $time ? date(('d M, Y'), strtotime($time)) : 'N/A';
+}
 function timeFormatHuman($time)
 {
     return Carbon::parse($time)->diffForHumans();
@@ -197,7 +202,8 @@ function generateBookIssueNumber()
         ->latest('id')
         ->first();
 
-    $number = $latestBook ? ((int) substr($latestBook->book_number, -5)) + 1 : 1;
 
+
+    $number = $latestBook ? ((int) substr($latestBook->issue_code, -5)) + 1 : 1;
     return $prefix . str_pad($number, 5, '0', STR_PAD_LEFT);
 }

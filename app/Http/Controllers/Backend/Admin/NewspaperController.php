@@ -123,8 +123,8 @@ class NewspaperController extends Controller implements HasMiddleware
     {
         try {
             $validated = $request->validated();
-
-            $this->newspaperService->createNewspaper($validated, $request->file('cover_image'));
+            $file = $request->validated('cover_image') && $request->hasFile('cover_image') ? $request->file('cover_image') : null;
+            $this->newspaperService->createNewspaper($validated, $file);
             session()->flash('success', "Newspaper created successfully");
         } catch (\Throwable $e) {
             session()->flash('error', "Newspaper creation failed");
@@ -162,7 +162,8 @@ class NewspaperController extends Controller implements HasMiddleware
         try {
             $validated = $request->validated();
             $newspaper = $this->newspaperService->getNewspaper($id);
-            $this->newspaperService->updateNewspaper($newspaper, $validated, $request->file('cover_image'));
+            $file = $request->validated('cover_image') && $request->hasFile('cover_image') ? $request->file('cover_image') : null;
+            $this->newspaperService->updateNewspaper($newspaper, $validated, $file);
             session()->flash('success', "Newspaper updated successfully");
         } catch (\Throwable $e) {
             session()->flash('error', "Newspaper update failed");

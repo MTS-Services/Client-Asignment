@@ -48,13 +48,12 @@
                             <p class="label">{{ __('Image') }}</p>
                             <input type="file" name="cover_image" class="filepond" id="cover_image"
                                 accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
-                            <x-input-error class="mt-2" :messages="$errors->get('image')" />
+                            <x-input-error class="mt-2" :messages="$errors->get('cover_image')" />
                         </div>
                         {{-- Description --}}
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Description') }}</p>
-                            <textarea name="description" rows="4" placeholder="Description"
-                                class="textarea">{{ old('description') }}</textarea>
+                            <textarea name="description" rows="4" placeholder="Description" class="textarea">{{ old('description') }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
                     </div>

@@ -8,9 +8,11 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Magazine List') }}</h2>
                 <div class="flex items-center gap-2">
-                    <x-admin.primary-link secondary="true" href="{{ route('magazine.trash') }}">{{ __('Trash') }} <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    <x-admin.primary-link secondary="true" href="{{ route('magazine.trash') }}">{{ __('Trash') }} <i
+                            data-lucide="trash-2" class="w-4 h-4"></i>
                     </x-admin.primary-link>
-                    <x-admin.primary-link href="{{ route('magazine.create') }}">{{ __('Add') }} <i data-lucide="plus" class="w-4 h-4"></i>
+                    <x-admin.primary-link href="{{ route('magazine.create') }}">{{ __('Add') }} <i
+                            data-lucide="plus" class="w-4 h-4"></i>
                     </x-admin.primary-link>
                 </div>
             </div>
@@ -82,9 +84,9 @@
                             icon: 'shield-check',
                         },
                         {
-                                label: '{{ __('Status') }}',
-                                key: 'status_label',
-                                type:'status',
+                            label: '{{ __('Status') }}',
+                            key: 'status_label',
+                            type: 'status',
                         },
                         {
                             label: '{{ __('Description') }}',
@@ -92,8 +94,8 @@
                         },
                         {
                             label: '{{ __('Cover Image') }}',
-                            key: 'cover_image',
-                            type: 'modified_image',
+                            key: 'modified_image',
+                            type: 'image',
                         },
                     ];
 
