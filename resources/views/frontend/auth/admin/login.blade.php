@@ -1,10 +1,23 @@
-<x-guest-layout>
+<x-frontend::layout>
+
+    <x-slot name="title">
+        {{ __('Admin Login') }}
+    </x-slot>
+    <x-slot name="breadcrumb">
+        {{ __('Admin Login') }}
+    </x-slot>
+    <x-slot name="page_slug">
+        admin-login
+    </x-slot>
+
+
     <!-- Session Status -->
+
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('admin.login') }}">
         @csrf
-        <h1>{{ __( 'Admin Login') }}</h1>
+        <h1>{{ __('Admin Login') }}</h1>
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
@@ -46,4 +59,4 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+    </x-fronlayout>
