@@ -80,6 +80,7 @@
                         {
                             label: '{{ __('Status') }}',
                             key: 'status_label',
+                            label_color: 'status_color',
                             type: 'status',
                         },
                         {
@@ -97,10 +98,6 @@
                         {
                             label: '{{ __('Biography') }}',
                             key: 'biography',
-                        },
-                        {
-                            label: '{{ __('Status') }}',
-                            key: 'status',
                         },
                         {
                             label: '{{ __('Image') }}',

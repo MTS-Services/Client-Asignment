@@ -62,11 +62,15 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
                         </div>
+
+                        <!-- Website -->
                         <div class="space-y-2">
                             <p class="label">{{ __('Website') }}</p>
-                            <input type="url" required placeholder="https://" value="https://{{ $publisher->website }}"
-                                pattern="^(https?://)?([a-zA-Z0-9]([a-zA-Z0-9\-].*[a-zA-Z0-9])?\.)+[a-zA-Z].*$"
-                                title="Must be valid URL" class="input" />
+                             <label class="input flex items-center gap-2">
+
+                                <input type="text" name="website" value="{{ $publisher->website }}"
+                                    placeholder="Enter website" class="flex-1" />
+                            </label>
                             <x-input-error class="mt-2" :messages="$errors->get('website')" />
                         </div>
 

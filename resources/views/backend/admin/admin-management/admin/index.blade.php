@@ -92,6 +92,12 @@
                             key: 'role_name',
                         },
                         {
+                            label: '{{ __('Status') }}',
+                            key: 'status_label',
+                            label_color: 'status_color',
+                            type: 'status',
+                        },
+                        {
                             label: '{{ __('Image') }}',
                             key: 'modified_image',
                             type: 'image',

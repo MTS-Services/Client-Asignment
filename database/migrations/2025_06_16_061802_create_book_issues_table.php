@@ -28,7 +28,7 @@ return new class extends Migration {
 
             $table->tinyInteger('status')->default(BookIssues::STATUS_PENDING); // 1: Pending, 2: Issued, 3: Returned, 4: Overdue, 5: Lost
             $table->decimal('fine_amount', 8, 2)->default(0);
-            $table->boolean('fine_paid')->nullable();
+            $table->boolean('fine_status')->nullable();
             $table->text('notes')->nullable();
 
 

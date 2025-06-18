@@ -16,6 +16,11 @@
 
         <div
             class="grid grid-cols-1 gap-4 sm:grid-cols-1  {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
+
+
+            <div>
+
+            </div>
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
                 <form action="{{ route('bim.book-issues.store') }}" method="POST" enctype="multipart/form-data">

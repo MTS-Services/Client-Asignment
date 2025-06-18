@@ -86,6 +86,7 @@
                         {
                             label: '{{ __('Status') }}',
                             key: 'status_label',
+                            label_color: 'status_color',
                             type: 'status',
                         },
                         {
