@@ -31,7 +31,7 @@ class MagazineService
     {
         return DB::transaction(function () use ($data, $file) {
             if ($file) {
-                $data['image'] = $this->handleFileUpload($file, 'magazines');
+                $data['cover_image'] = $this->handleFileUpload($file, 'magazines');
             }
             $data['created_by'] = admin()->id;
             $magazine = Magazine::create($data);
@@ -43,7 +43,7 @@ class MagazineService
     {
         return DB::transaction(function () use ($magazine, $data, $file) {
             if ($file) {
-                $data['image'] = $this->handleFileUpload($file, 'magazines');
+                $data['cover_image'] = $this->handleFileUpload($file, 'magazines');
                 $this->fileDelete($magazine->image);
             }
             $data['updated_by'] = admin()->id;
