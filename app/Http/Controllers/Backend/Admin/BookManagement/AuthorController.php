@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Admin;
+namespace App\Http\Controllers\Backend\Admin\BookManagement;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AuthorRequest;
@@ -72,7 +72,7 @@ class AuthorController extends Controller implements HasMiddleware
                 ->make(true);
         }
 
-        return view('backend.admin.author.index');
+        return view('backend.admin.book-management.author.index');
     }
 
 
@@ -115,7 +115,7 @@ class AuthorController extends Controller implements HasMiddleware
     public function create(): View
     {
         //
-        return view('backend.admin.author.create');
+        return view('backend.admin.book-management.author.create');
     }
 
     /**
@@ -151,7 +151,7 @@ class AuthorController extends Controller implements HasMiddleware
     public function edit(string $id): View
     {
         $data['author'] = $this->authorService->getAuthor($id);
-        return view('backend.admin.author.edit', $data);
+        return view('backend.admin.book-management.author.edit', $data);
     }
 
     /**
@@ -203,7 +203,7 @@ class AuthorController extends Controller implements HasMiddleware
                 ->make(true);
         }
 
-        return view('backend.admin.bm.author.trash');
+        return view('backend.admin.book-management.author.trash');
     }
 
 

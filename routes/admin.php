@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
-use App\Http\Controllers\Backend\Admin\AuthorController;
+use App\Http\Controllers\Backend\Admin\BookManagement\AuthorController;
 use App\Http\Controllers\Backend\Admin\BookManagement\BookController;
 use App\Http\Controllers\Backend\Admin\BookManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
@@ -13,14 +13,14 @@ use App\Http\Controllers\Backend\Admin\UserManagment\UserController;
 use App\Http\Controllers\Backend\Admin\MagazineController;
 use App\Http\Controllers\Backend\Admin\NewspaperController;
 use App\Http\Controllers\Backend\Admin\ProfileController;
-use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
-use App\Http\Controllers\Backend\Admin\RackController;
 use App\Http\Controllers\Backend\Admin\ApplicationSettingController;
+use App\Http\Controllers\Backend\Admin\BookManagement\PublisherController;
+use App\Http\Controllers\Backend\Admin\BookManagement\RackController;
 
 Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
     // Profile Management
-    Route::controller(ProfileController::class)->group( function () {
+    Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'showProfile')->name('profile');
         Route::put('/update-profile/{id}', 'updateProfile')->name('update-profile');
         Route::get('/change-password', 'showPasswordPage')->name('change-password');

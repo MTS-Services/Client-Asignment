@@ -26,7 +26,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web', 'user.verified']], f
         Route::get('/newspaper-list', 'newspaperList')->name('newspaper-list');
         Route::get('/newspaper-details/{slug}', 'newspaperShow')->name('newspaper-show');
     });
-    // Issues 
+    // Issues
     Route::controller(UserBookIssuesController::class)->group(function () {
         Route::get('/book-issues-list', 'issuesList')->name('book-issues-list');
         Route::get('/book-issues-details/{id}', 'issuesShow')->name('book-issues-show');

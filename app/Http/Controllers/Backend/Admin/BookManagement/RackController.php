@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Admin;
+namespace App\Http\Controllers\Backend\Admin\BookManagement;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RackRequest;
@@ -68,7 +68,7 @@ class RackController extends Controller implements HasMiddleware
                 ->rawColumns(['created_by', 'created_at', 'action'])
                 ->make(true);
         }
-        return view('backend.admin.rack.index');
+        return view('backend.admin.book-management.rack.index');
     }
 
 
@@ -106,7 +106,7 @@ class RackController extends Controller implements HasMiddleware
     public function create(): View
     {
         //
-        return view('backend.admin.rack.create');
+        return view('backend.admin.book-management.rack.create');
     }
 
     /**
@@ -142,7 +142,7 @@ class RackController extends Controller implements HasMiddleware
     public function edit(string $id): View
     {
         $data['rack'] = $this->rackService->getRack($id);
-        return view('backend.admin.rack.edit', $data);
+        return view('backend.admin.book-management.rack.edit', $data);
     }
 
     /**
@@ -191,7 +191,7 @@ class RackController extends Controller implements HasMiddleware
                 ->rawColumns(['deleted_by', 'deleted_at', 'action'])
                 ->make(true);
         }
-        return view('backend.admin.rack.trash');
+        return view('backend.admin.book-management.rack.trash');
     }
 
 

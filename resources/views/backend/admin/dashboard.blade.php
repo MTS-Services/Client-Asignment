@@ -149,8 +149,26 @@
                 <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Categories') }}</p>
             </a>
 
-            <a href="{{ route('bim.book-issues.index', ['fine_status' => App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_PAID]]) }}"
+            <a href="{{ route('bm.rack.index') }}"
                 class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.6s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="box" class="w-6 h-6 text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($racks) }}</h3>
+                </div>
+
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Racks') }}</p>
+            </a>
+
+
+
+
+
+
+            <a href="{{ route('bim.book-issues.index', ['fine_status' => App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_UNPAID]]) }}"
+                class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0s;">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-rose-500/20 rounded-xl flex items-center justify-center">
                         <i data-lucide="hand-coins" class="w-6 h-6 text-rose-400"></i>
@@ -158,9 +176,43 @@
                     <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
                         {{ number_format($unpaid) }}</h3>
                 </div>
-
                 <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Fine Unpaid') }}</p>
             </a>
+
+            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.2s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="banknote" class="w-6 h-6 text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($fines->sum('fine_amount'), 2) }}</h3>
+                </div>
+
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Total Fine Amount') }}</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.4s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-lime-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="circle-dollar-sign" class="w-6 h-6 text-lime-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($fines->paid()->sum('fine_amount'), 2) }}</h3>
+                </div>
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Total Fine Paid') }}</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 card-hover float interactive-card" style="animation-delay: 0.6s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="dollar-sign" class="w-6 h-6 text-pink-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-text-white mb-1">
+                        {{ number_format($fines->unpaid()->sum('fine_amount'), 2) }}</h3>
+                </div>
+
+                <p class="text-gray-800/60 dark:text-text-dark-primary text-sm">{{ __('Total Fine Unpaid') }}</p>
+            </div>
         </div>
 
         <!-- Charts Section -->
