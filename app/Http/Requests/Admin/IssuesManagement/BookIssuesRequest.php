@@ -22,11 +22,7 @@ class BookIssuesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
-            'book_id' => 'required|exists:books,id', // ✅ fixed typo
-            'notes' => 'nullable|string',
-            'issue_date' => 'required|date',
-            'due_date' => 'required|date|after_or_equal:issue_date',
+            
         ] + (
             $this->isMethod('POST') ? $this->store() : ($this->isMethod('PUT') ? $this->update() : ($this->isMethod('PATCH') ? $this->returnUpdate() : [])
             ));
@@ -36,12 +32,22 @@ class BookIssuesRequest extends FormRequest
     protected function store(): array
     {
         return [
-            //
+           'user_id' => 'required|exists:users,id',
+            'book_id' => 'required|exists:books,id', // ✅ fixed typo
+            'notes' => 'nullable|string',
+            'issue_date' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:issue_date',
         ];
     }
     protected function update(): array
     {
-        return [];
+        return [
+            'user_id' => 'required|exists:users,id',
+            'book_id' => 'required|exists:books,id', // ✅ fixed typo
+            'notes' => 'nullable|string',
+            'issue_date' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:issue_date',
+        ];
     }
     protected function returnUpdate(): array
     {

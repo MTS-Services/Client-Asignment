@@ -4,6 +4,9 @@
     <x-slot name="page_slug">book_issues_{{ request('status') }}</x-slot>
 
     <section>
+
+
+
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Return Book Issue') }}</h2>
@@ -47,6 +50,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <x-input-error class="mt-2" :messages="$errors->get('returned_by')" />
                         </div>
                         {{-- Issue Date --}}
                         <div class="space-y-2">
@@ -61,18 +65,30 @@
                         <div id="fine-field" class="space-y-2 hidden">
                             <p class="label">{{ __('Fine') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="number" name="fine_amount" value="{{ old('fine_amount') }}" step="0.01" min="0" class="flex-1"
-                                    placeholder="Enter fine amount" />
-                                    <x-input-error class="mt-2" :messages="$errors->get('fine_amount')" />
+                                <input type="number" name="fine_amount" value="{{ old('fine_amount') }}"
+                                    step="0.01" min="0" class="flex-1" placeholder="Enter fine amount" />
+                                <x-input-error class="mt-2" :messages="$errors->get('fine_amount')" />
                             </label>
                         </div>
-                    </div>
-                      {{-- Notes --}}
-                        <div class="space-y-2 ">
-                            <p class="label pt-2.5">{{ __('Notes') }}</p>
-                            <textarea name="notes" rows="4" placeholder="Notes" class="textarea !px-3">{{ old('notes') }}</textarea>
-                            <x-input-error class="mt-2" :messages="$errors->get('notes')" />
+                        {{-- status --}}
+                        <div class="mb-4">
+                            <label for="fine_status" class="block font-medium text-sm text-gray-700">Fine Status</label>
+                            <select name="fine_status" id="fine_status" class="form-select mt-1 block w-full">
+                                @foreach (app\Models\BookIssues::fineStatusList() as $key => $label)
+                                    <option value="{{ $key }}"
+                                        {{ old('fine_status', $issue->fine_status ?? '') == $key ? 'selected' : '' }}>
+                                        {{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
+                    </div>
+                    {{-- Notes --}}
+                    <div class="space-y-2 ">
+                        <p class="label pt-2.5">{{ __('Notes') }}</p>
+                        <textarea name="notes" rows="4" placeholder="Notes" class="textarea !px-3">{{ old('notes') }}</textarea>
+                        <x-input-error class="mt-2" :messages="$errors->get('notes')" />
+                    </div>
                     <div class="flex justify-end mt-5">
                         <x-admin.primary-button>{{ __('Submit') }}</x-admin.primary-button>
                     </div>
@@ -96,7 +112,7 @@
                 input.addEventListener('change', e => {
                     const ret = new Date(e.target.value).toISOString().split('T')[0];
                     fine.classList.toggle('hidden', ret <= due || isNaN(new Date(e.target.value)));
-                }); 
+                });
             </script>
         @endpush
 

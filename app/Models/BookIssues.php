@@ -20,7 +20,7 @@ class BookIssues extends BaseModel
         'returned_by',
         'status',
         'fine_amount',
-        'fine_paid',
+        'fine_status',
         'notes',
 
         'creater_id',

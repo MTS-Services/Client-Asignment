@@ -172,17 +172,26 @@ class BookIssuesController extends Controller implements HasMiddleware
 
     public function updateReturn(BookIssuesRequest $request, string $id): RedirectResponse
     {
-
         try {
             $validated = $request->validated();
+
+            // Update book issue
             $this->bookIssuesService->updateReturnBookIssue($id, $validated);
+
+            // Update fine_status separately
+            $bookIssue = BookIssues::findOrFail(decrypt($id));
+            $bookIssue->fine_status = $validated['fine_status'] ?? null;
+            $bookIssue->save();
+
             session()->flash('success', "Book return updated successfully");
         } catch (\Throwable $e) {
-           session()->flash('error', 'Book return update failed');
+            session()->flash('error', 'Book return update failed');
             throw $e;
         }
+
         return $this->redirectIndex();
     }
+
     /**
      * Show the form for creating a new resource.
      */
