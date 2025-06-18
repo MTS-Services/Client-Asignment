@@ -12,7 +12,7 @@
         login
     </x-slot>
 
-    <section >
+    <section>
         <div class=" min-h-screen flex items-center justify-center  ">
             <div
                 class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border  rounded-2xl overflow-hidden  w-[1550px] items-center">
@@ -30,11 +30,11 @@
 
                         <div>
                             <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                {{ __('Username or Email') }}
+                                {{ __('Email') }}
                             </label>
-                            <input type="text" name="login" placeholder="Username or Email"
+                            <input type="text" name="email" placeholder="Email"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
-                            <x-input-error class="mt-2" :messages="$errors->get('login')" />
+                            <x-input-error class="mt-2" :messages="$errors->get('email')" />
                         </div>
 
                         <div>
@@ -74,7 +74,7 @@
                                 {{ __('Log in') }}
                             </x-primary-button>
                         </div>
-                          <p class="text-sm mt-4 text-end ">
+                        <p class="text-sm mt-4 text-end ">
                             {{ __('Don\'t have an account?') }} <a href="{{ route('register') }}"
                                 class="text-primary font-medium hover:text-primary/70 deuration-300 ">
                                 {{ __('Sign up') }} </a>
