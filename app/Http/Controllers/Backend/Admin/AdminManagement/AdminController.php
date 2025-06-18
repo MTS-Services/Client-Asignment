@@ -126,7 +126,8 @@ class AdminController extends Controller implements HasMiddleware
         try {
             $validated = $request->validated();
             $validated['role_id'] = $request->role;
-            $this->adminService->createAdmin($validated, $request->file('image'));
+            $file = $request->validated('image') && $request->hasFile('image') ? $request->file('image') : null;
+            $this->adminService->createAdmin($validated, $file);
             session()->flash('success', 'Admin created successfully!');
         } catch (\Throwable $e) {
             session()->flash('error', 'Admin create failed!');
@@ -143,6 +144,7 @@ class AdminController extends Controller implements HasMiddleware
         $data = $this->adminService->getAdmin($id);
         $data['creater_name'] = $this->creater_name($data);
         $data['updater_name'] = $this->updater_name($data);
+        $data['role_name'] = $data->role?->name;
         return response()->json($data);
     }
 
@@ -189,7 +191,8 @@ class AdminController extends Controller implements HasMiddleware
             }
             $validated = $request->validated();
             $validated['role_id'] = $request->role;
-            $this->adminService->updateAdmin($admin, $validated, $request->file('image'));
+            $file = $request->validated('image') && $request->hasFile('image') ? $request->file('image') : null;
+            $this->adminService->updateAdmin($admin, $validated, $file);
             session()->flash('success', 'Admin updated successfully!');
         } catch (\Throwable $e) {
             session()->flash('error', 'Admin update failed!');
@@ -218,23 +221,23 @@ class AdminController extends Controller implements HasMiddleware
         return $this->redirectIndex();
     }
 
-public function trash(Request $request)
-{
-    if ($request->ajax()) {
-        $query = $this->adminService->getAdmins()->onlyTrashed();
+    public function trash(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = $this->adminService->getAdmins()->onlyTrashed();
 
-        return DataTables::eloquent($query)
-            ->editColumn('deleted_by', fn($admin) => $this->deleter_name($admin))
-            ->editColumn('deleted_at', fn($admin) => $admin->deleted_at_formatted)
-            ->editColumn('action', fn($admin) => view('components.admin.action-buttons', [
-                'menuItems' => $this->trashedMenuItems($admin),
-            ])->render())
-            ->rawColumns(['deleted_by', 'deleted_at', 'action'])
-            ->make(true);
+            return DataTables::eloquent($query)
+                ->editColumn('deleted_by', fn($admin) => $this->deleter_name($admin))
+                ->editColumn('deleted_at', fn($admin) => $admin->deleted_at_formatted)
+                ->editColumn('action', fn($admin) => view('components.admin.action-buttons', [
+                    'menuItems' => $this->trashedMenuItems($admin),
+                ])->render())
+                ->rawColumns(['deleted_by', 'deleted_at', 'action'])
+                ->make(true);
+        }
+
+        return view('backend.admin.admin-management.admin.trash');
     }
-
-    return view('backend.admin.admin-management.admin.trash');
-}
 
 
     protected function trashedMenuItems($model): array

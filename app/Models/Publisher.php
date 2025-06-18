@@ -20,13 +20,16 @@ class Publisher extends BaseModel
         'updated_by',
         'deleted_by',
     ];
-
-    protected $appends = [
-        'status_label',
-        'status_color',
-        'status_btn_label',
-        'status_btn_color',
-    ];
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->appends = array_merge(parent::getAppends(), [
+            'status_label',
+            'status_color',
+            'status_btn_label',
+            'status_btn_color',
+        ]);
+    }
     public const STATUS_ACTIVE = 1;
     public const STATUS_INACTIVE = 0;
 

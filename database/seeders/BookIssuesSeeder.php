@@ -22,7 +22,6 @@ class BookIssuesSeeder extends Seeder
             'due_date' => now()->addDays(14),
             'status' => BookIssues::STATUS_PENDING,
             'fine_amount' => 0,
-            'fine_paid' => false,
             'notes' => 'Second issue of the book.',
             // ✅ Do not add stray values like [], '', or 0 without a key
         ]);
@@ -37,7 +36,6 @@ class BookIssuesSeeder extends Seeder
             'due_date' => now()->addDays(14),
             'status' => BookIssues::STATUS_PENDING,
             'fine_amount' => 0.00,
-            'fine_paid' => false,
             'notes' => 'Third issue of the book.',
         ]);
     }

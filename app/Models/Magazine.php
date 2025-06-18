@@ -64,7 +64,7 @@ class Magazine extends BaseModel
     }
     public function getModifiedImageAttribute()
     {
-        return auth_storage_url($this->cover_image);
+        return storage_url($this->cover_image);
     }
     public function scopeActive($query)
     {

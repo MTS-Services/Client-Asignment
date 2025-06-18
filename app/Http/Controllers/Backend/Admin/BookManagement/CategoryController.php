@@ -87,18 +87,17 @@ class CategoryController extends Controller implements HasMiddleware
                 'permissions' => ['category-list', 'category-delete', 'category-status']
             ],
             [
-                'routeName' => 'bm.category.status',
-                'params' => [encrypt($model->id)],
-                'label' => $model->status_btn_label,
-                'permissions' => ['category-status']
-            ],
-            [
                 'routeName' => 'bm.category.edit',
                 'params' => [encrypt($model->id)],
                 'label' => 'Edit',
                 'permissions' => ['category-edit']
             ],
-
+            [
+                'routeName' => 'bm.category.status',
+                'params' => [encrypt($model->id)],
+                'label' => $model->status_btn_label,
+                'permissions' => ['category-status']
+            ],
             [
                 'routeName' => 'bm.category.destroy',
                 'params' => [encrypt($model->id)],
@@ -141,7 +140,6 @@ class CategoryController extends Controller implements HasMiddleware
     public function show(Request $request, string $id)
     {
         $data = $this->categoryService->getCategory($id);
-        $data->load(['parent:id,name,slug,description']);
         $data['creater_name'] = $this->creater_name($data);
         $data['updater_name'] = $this->updater_name($data);
         return response()->json($data);

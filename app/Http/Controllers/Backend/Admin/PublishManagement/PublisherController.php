@@ -64,8 +64,8 @@ class PublisherController extends Controller implements HasMiddleware
             $query = $this->publisherService->getPublishers();
 
             return DataTables::eloquent($query)
-                ->editColumn('created_by', fn($publisher) => $this->creater_name($publisher))
                 ->editColumn('status', fn($publisher) => "<span class='badge badge-soft {$publisher->status_color}'>{$publisher->status_label}</span>")
+                ->editColumn('created_by', fn($publisher) => $this->creater_name($publisher))
                 ->editColumn('created_at', fn($publisher) => $publisher->created_at_formatted)
                 ->editColumn('action', fn($publisher) => view('components.admin.action-buttons', [
                     'menuItems' => $this->menuItems($publisher),
@@ -85,7 +85,7 @@ class PublisherController extends Controller implements HasMiddleware
                 'data-id' => encrypt($model->id),
                 'className' => 'view',
                 'label' => 'Details',
-                'permissions' => ['publisher-list', 'publisher-delete', 'publisher-status']
+                'permissions' => ['permission-list', 'permission-delete', 'permission-status']
             ],
             [
                 'routeName' => 'bm.publisher.edit',
@@ -128,9 +128,9 @@ class PublisherController extends Controller implements HasMiddleware
         try {
             $validated = $request->validated();
             $this->publisherService->createPublisher($validated);
-            session()->flash('success', "Service created successfully");
+            session()->flash('success', "Publisher created successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service creation failed');
+            session()->flash('Publisher creation failed');
             throw $e;
         }
         return $this->redirectIndex();
@@ -165,9 +165,9 @@ class PublisherController extends Controller implements HasMiddleware
             $publisher = $this->publisherService->getPublisher($id);
             $validated = $request->validated();
             $this->publisherService->updatePublisher($publisher, $validated);
-            session()->flash('success', "Service updated successfully");
+            session()->flash('success', "Publisher updated successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service update failed');
+            session()->flash('Publisher update failed');
             throw $e;
         }
         return $this->redirectIndex();
@@ -189,9 +189,9 @@ class PublisherController extends Controller implements HasMiddleware
         try {
             $publisher = $this->publisherService->getPublisher($id);
             $this->publisherService->delete($publisher);
-            session()->flash('success', "Service deleted successfully");
+            session()->flash('success', "Publisher deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service delete failed');
+            session()->flash('Publisher delete failed');
             throw $e;
         }
         return $this->redirectIndex();
@@ -239,9 +239,9 @@ class PublisherController extends Controller implements HasMiddleware
     {
         try {
             $this->publisherService->restore($id);
-            session()->flash('success', "Service restored successfully");
+            session()->flash('success', "Publisher restored successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service restore failed');
+            session()->flash('Publisher restore failed');
             throw $e;
         }
         return $this->redirectTrashed();
@@ -251,9 +251,9 @@ class PublisherController extends Controller implements HasMiddleware
     {
         try {
             $this->publisherService->permanentDelete($id);
-            session()->flash('success', "Service permanently deleted successfully");
+            session()->flash('success', "Publisher permanently deleted successfully");
         } catch (\Throwable $e) {
-            session()->flash('Service permanent delete failed');
+            session()->flash('Publisher permanent delete failed');
             throw $e;
         }
         return $this->redirectTrashed();

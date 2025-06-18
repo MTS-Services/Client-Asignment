@@ -65,7 +65,7 @@
 
                     <button @click="open = !open" class="avatar">
                         <div class="w-8 rounded-xl">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face&auto=format"
+                            <img src="{{ auth_storage_url(admin()->image) }}"
                                 alt="" class="object-cover w-full h-full">
                         </div>
                     </button>
@@ -77,9 +77,9 @@
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                         class="hidden absolute right-0 mt-2 w-fit min-w-40 glass-card bg-bg-white dark:bg-bg-dark-tertiary rounded-xl shadow-lg py-2 z-50"
                         :class="open ? '!block' : '!hidden'">
+                        <x-admin.profile-navlink route="javascript:void(0)" name="{{ __('Profile') }}" />
                         @if (isset($not_use))
-                            {{-- <x-admin.profile-navlink route="#" name="{{ __('Profile') }}" />
-                            <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" /> --}}
+                            {{-- <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" /> --}}
                         @endif
                         <x-admin.profile-navlink route="{{ route('admin.logout') }}" logout='true'
                             name="{{ __('Sign Out') }}" />

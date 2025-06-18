@@ -96,6 +96,7 @@
                         {
                             label: '{{ __('Status') }}',
                             key: 'status_label',
+                            label_color: 'status_color',
                             type: 'status',
                         },
                         {
@@ -108,19 +109,15 @@
                         },
                         {
                             label: '{{ __('Category') }}',
-                            key: 'category.name',
+                            key: 'category_name',
                         },
                         {
                             label: '{{ __('Publisher') }}',
-                            key: 'publisher.name',
+                            key: 'publisher_name',
                         },
                         {
                             label: '{{ __('Rack') }}',
-                            key: 'bm.rack.rack_number',
-                        },
-                        {
-                            label: '{{ __('Language') }}',
-                            key: 'language',
+                            key: 'rack_number',
                         },
                         {
                             label: '{{ __('Price') }}',
