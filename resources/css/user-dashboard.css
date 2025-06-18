@@ -420,7 +420,7 @@
         @apply backdrop-blur-md bg-gradient-to-tr from-[#c1e4e5] to-[#ddfbe9] shadow-glass-card;
     }
     .glass-card {
-        @apply backdrop-blur-md bg-gradient-to-tr from-white/30 to-gradient-light-quaternary/30 shadow-glass-card;
+        @apply backdrop-blur-md bg-gradient-to-tr from-white/30 to-gradient-light-quaternary/10 shadow-glass-card;
     }
     /* .glass-card {
         @apply backdrop-blur-md bg-gradient-to-tr from-[#ddfbe9] to-[#ddfbe9] shadow-glass-card;
