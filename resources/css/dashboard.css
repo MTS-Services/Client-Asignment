@@ -413,6 +413,7 @@
     .dark .glass-card {
         @apply backdrop-blur-md bg-transparent bg-gradient-to-b from-gradient-dark-quaternary to-gradient-dark-quinary;
     }
+
     .sidebar-glass-card {
         @apply bg-gradient-to-tr from-white/50 to-gradient-light-quaternary/20 shadow-glass-card;
     }
@@ -435,13 +436,15 @@
 .input,
 .textarea,
 .select {
-    @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full px-0 ;
+    @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full px-0;
 }
+
+input {
+    @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-border-active focus-within:border-border-active w-full px-3 rounded;
+}
+
 .select {
-    @apply px-3 ;
-}
-.input input {
-    @apply px-3 ;
+    @apply px-3;
 }
 
 /* Notification badge */

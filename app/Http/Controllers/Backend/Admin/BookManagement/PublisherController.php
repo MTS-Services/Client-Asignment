@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Admin\PublishManagement;
+namespace App\Http\Controllers\Backend\Admin\BookManagement;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PublishManagement\PublisherRequest;
@@ -78,7 +78,7 @@ class PublisherController extends Controller implements HasMiddleware
                 ->make(true);
         }
 
-        return view('backend.admin.publish-management.publisher.index');
+        return view('backend.admin.book-management.publisher.index');
     }
 
     protected function menuItems($model): array
@@ -121,7 +121,7 @@ class PublisherController extends Controller implements HasMiddleware
     public function create(): View
     {
         //
-        return view('backend.admin.publish-management.publisher.create');
+        return view('backend.admin.book-management.publisher.create');
     }
 
     /**
@@ -157,7 +157,7 @@ class PublisherController extends Controller implements HasMiddleware
     public function edit(string $id)
     {
         $data['publisher'] = $this->publisherService->getPublisher($id);
-        return view('backend.admin.publish-management.publisher.edit', $data);
+        return view('backend.admin.book-management.publisher.edit', $data);
     }
 
     /**
@@ -216,7 +216,7 @@ class PublisherController extends Controller implements HasMiddleware
                 ->make(true);
         }
 
-        return view('backend.admin.publish-management.publisher.trash');
+        return view('backend.admin.book-management.publisher.trash');
     }
 
     protected function trashedMenuItems($model): array

@@ -30,6 +30,8 @@ class DashboardController extends Controller
         $data['publishers'] = Publisher::active()->count();
         $data['categories'] = Category::active()->count();
         $data['unpaid'] = BookIssues::unpaid()->count();
+        $data['racks'] = Rack::count();
+        $data['fines'] = BookIssues::select(['fine_amount', 'fine_status'])->where('status', BookIssues::FINE_PAID)->orWhere('status', BookIssues::FINE_UNPAID);
         return view('backend.admin.dashboard', $data);
     }
 }

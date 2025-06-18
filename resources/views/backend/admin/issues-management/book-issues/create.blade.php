@@ -89,7 +89,7 @@
                         </div> --}}
 
                         {{-- Notes --}}
-                        <div class="space-y-2 col-span-2">
+                        <div class="space-y-2 sm:col-span-2">
                             <p class="label">{{ __('Notes') }}</p>
                             <textarea name="notes" rows="4" placeholder="Notes" class="textarea">{{ old('notes') }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('notes')" />
