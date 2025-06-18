@@ -13,8 +13,11 @@ class BookIssuesService
     {
         return BookIssues::orderBy($orderBy, $order)->latest();
     }
-    public function getBookIssues(string $encryptedId): BookIssues|Collection
+    public function getBookIssues(string $encryptedId, string $type = 'encrypted'): BookIssues|Collection
     {
+        if($type == 'issue_code') {
+            return BookIssues::where('issue_code', $encryptedId)->first();
+        }
         return BookIssues::findOrFail(decrypt($encryptedId));
     }
     public function getDeletedBookIssues(string $encryptedId): BookIssues|Collection

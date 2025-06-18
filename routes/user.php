@@ -29,6 +29,6 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web', 'user.verified']], f
     // Issues
     Route::controller(UserBookIssuesController::class)->group(function () {
         Route::get('/book-issues-list', 'issuesList')->name('book-issues-list');
-        Route::get('/book-issues-details/{id}', 'issuesShow')->name('book-issues-show');
+        Route::get('/book-issues-details/{code}', 'issuesShow')->name('book-issues-show');
     });
 });
