@@ -11,16 +11,9 @@
     <x-slot name="page_slug">
         admin-login
     </x-slot>
-<<<<<<< Updated upstream
-    <section class="min-h-[80vh] flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
-        <div
-            class="flex flex-col md:flex-row bg-white dark:bg-gray-800 border-gray-50 border dark:border-black shadow-xl rounded-2xl overflow-hidden w-[1550px]">
-            <!-- Left: Image -->
-=======
     <section class="min-h-screen flex items-center justify-center ">
         <div class="flex flex-col md:flex-row bg-white dark:bg-gray-800 border-gray-50 border dark:border-black shadow-xl rounded-2xl overflow-hidden w-[1550px]">
              <!-- Left: Image -->
->>>>>>> Stashed changes
             <div class="hidden md:block md:w-7/12">
                 <img src="{{ asset('/frontend/images/admin.jpg') }}" alt="Admin Login Image"
                     class="w-full h-full object-cover">
