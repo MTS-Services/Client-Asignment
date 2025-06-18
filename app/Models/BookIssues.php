@@ -135,7 +135,7 @@ class BookIssues extends BaseModel
     {
         return match ($this->fine_status) {
             self::FINE_PAID => 'badge-success',
-            self::FINE_UNPAID => 'badge-danger',
+            self::FINE_UNPAID => 'badge-error',
             default => 'badge-secondary',
         };
     }
