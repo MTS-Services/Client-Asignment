@@ -53,7 +53,7 @@ class BookIssuesRequest extends FormRequest
         return [
             'returned_by' => 'required|exists:users,id',
             'return_date' => 'required|date',
-            'fine_amount' => 'sometimes|numeric|min:0',
+            'fine_amount' => 'sometimes|numeric|min:0|max:999999.99',
             'fine_status' => 'sometimes|string|in:' . implode(',', array_keys(BookIssues::fineStatusList())),
             'notes' => 'nullable|string',
 

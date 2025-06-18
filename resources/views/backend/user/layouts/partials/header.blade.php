@@ -1,5 +1,5 @@
 <header class="sticky top-0 z-30 pt-2 px-2">
-    <div class="header-glass-card">
+    <div class="glass-card">
         <div class="flex items-center justify-between p-4 lg:p-6">
             <div class="flex items-center gap-4">
                 <!-- Menu Toggle Button -->

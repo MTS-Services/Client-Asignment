@@ -8,7 +8,7 @@
         'w-72 -translate-x-full': !desktop && !mobile_menu_open,
     }">
 
-    <div class="sidebar-glass-card h-full custom-scrollbar overflow-y-auto">
+    <div class="glass-card h-full custom-scrollbar overflow-y-auto">
         <!-- Sidebar Header -->
         <a href="{{ route('user.dashboard') }}" class="p-3 border-b border-white/10 inline-block">
             <div class="flex items-center gap-4">
