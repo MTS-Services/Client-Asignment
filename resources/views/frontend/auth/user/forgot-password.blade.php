@@ -50,7 +50,7 @@
     <section class="py-20">
         <div class=" min-h-[75vh] flex items-center justify-center ">
             <div
-                class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border shadow-top rounded-2xl overflow-hidden  w-[1550px]">
+                class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border shadow-top rounded-2xl overflow-hidden  w-[1550px] ">
 
                 <!-- Left Side: Form -->
                 <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
