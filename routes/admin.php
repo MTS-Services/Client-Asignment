@@ -146,12 +146,13 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
             Route::delete('/permanent-delete/{bookIssue}', 'permanentDelete')->name('permanent-delete');
             Route::patch('/update-return/{bookIssue}', 'updateReturn')->name('update-return');
         });
-
     });
 
 
     // Application Settings 
     Route::controller(ApplicationSettingController::class)->name('app-settings.')->prefix('application-settings')->group(function () {
         Route::get('/', 'general')->name('general');
+        Route::post('/update-settings', 'updateSettings')->name('update-settings');
+        Route::get('/database', 'database')->name('database');
     });
 });

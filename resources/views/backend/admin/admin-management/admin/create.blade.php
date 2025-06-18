@@ -79,7 +79,7 @@
                             </select>
                             <x-input-error class="mt-2" :messages="$errors->get('role')" />
                         </div>
-                        <div class="space-y-2 col-span-2">
+                        <div class="space-y-2 sm:col-span-2">
                             <p class="label">{{ __('Image') }}</p>
                             <input type="file" name="image" class="filepond" id="image"
                                 accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">

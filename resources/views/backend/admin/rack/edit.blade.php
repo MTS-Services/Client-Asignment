@@ -56,7 +56,7 @@
                         </div>
 
                         {{-- Description --}}
-                        <div class="space-y-2 col-span-2">
+                        <div class="space-y-2 sm:col-span-2">
                             <p class="label">{{ __('Description') }}</p>
                             <textarea name="description" rows="4" placeholder="Description"
                                 class="textarea">{{ $rack->description }}</textarea>

@@ -170,6 +170,12 @@
                         'icon' => 'settings',
                         'active' => 'app-general-settings',
                     ],
+                    // [
+                    //     'name' => 'Database Settings',
+                    //     'route' => route('app-settings.database'),
+                    //     'icon' => 'database',
+                    //     'active' => 'app-database-settings',
+                    // ],
                 ]" />
 
             @if (isset($not_use))

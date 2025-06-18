@@ -6,12 +6,11 @@
         <div
             class="grid grid-cols-1 gap-4 sm:grid-cols-1  {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
-                <form action="{{ route('am.admin.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('app-settings.update-settings') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="grid grid-cols-7 gap-5">
-                        <div class="col-span-5 grid grid-cols-1 gap-5 sm:grid-cols-2 h-fit">
-
-                            <div class="space-y-2 col-span-2">
+                    <div class="grid grid-cols-1 2xl:grid-cols-9 gap-5">
+                        <div class="2xl:col-span-6 grid grid-cols-1 gap-5 sm:grid-cols-2 h-fit">
+                            <div class="space-y-2 sm:col-span-2">
                                 <p class="label">{{ __('Institution Name') }}</p>
                                 <label class="input flex items-center px-2">
                                     <input type="text" placeholder="Institution Name"
@@ -53,10 +52,11 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <x-input-error class="mt-2" :messages="$errors->get('public_registration')" />
                             </div>
                             <div class="space-y-2">
                                 <p class="label">{{ __('Registration Approval') }}</p>
-                                <select name="public_registration" class="select">
+                                <select name="registration_approval" class="select">
                                     @foreach (App\Models\ApplicationSetting::getRegistrationApprovalInfos() as $key => $info)
                                         <option value="{{ $key }}"
                                             @if (isset($general_settings['registration_approval']) && $general_settings['registration_approval'] == $key) selected @endif>
@@ -64,12 +64,13 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <x-input-error class="mt-2" :messages="$errors->get('registration_approval')" />
                             </div>
 
                             <div class="space-y-2">
                                 <p class="label">{{ __('Timezone') }}</p>
                                 <select name="timezone" class="select select2">
-                                    <option selected disabled>{{ __('Select timezone') }}</option>
+                                    <option value="" selected hidden>{{ __('Select timezone') }}</option>
                                     @foreach ($timezones as $timezone)
                                         <option value="{{ $timezone['timezone'] }}"
                                             @if (isset($general_settings['timezone']) && $general_settings['timezone'] == $timezone['timezone']) selected @endif>
@@ -82,27 +83,27 @@
                                 <p class="label">{{ __('Environment') }}
                                     <small>({{ __('Best to keep in production') }})</small>
                                 </p>
-                                <select name="env" class="select">
+                                <select name="environment" class="select">
                                     @foreach (App\Models\ApplicationSetting::getEnvironmentInfos() as $key => $info)
                                         <option value="{{ $key }}"
-                                            @if (isset($general_settings['env']) && $general_settings['env'] == $key) selected @endif>{{ $info }}
+                                            @if (isset($general_settings['environment']) && $general_settings['environment'] == $key) selected @endif>{{ $info }}
                                         </option>
                                     @endforeach
                                 </select>
-                                <x-input-error class="mt-2" :messages="$errors->get('env')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('environment')" />
                             </div>
                             <div class="space-y-2">
                                 <p class="label">{{ __('App Debug') }}
                                     <small>({{ __('Best to keep in false') }})</small>
                                 </p>
-                                <select name="debug" class="select">
+                                <select name="app_debug" class="select">
                                     @foreach (App\Models\ApplicationSetting::getAppDebugInfos() as $key => $info)
                                         <option value="{{ $key }}"
-                                            @if (isset($general_settings['debug']) && $general_settings['debug'] == $key) selected @endif>{{ $info }}
+                                            @if (isset($general_settings['app_debug']) && $general_settings['app_debug'] == $key) selected @endif>{{ $info }}
                                         </option>
                                     @endforeach
                                 </select>
-                                <x-input-error class="mt-2" :messages="$errors->get('debug')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('app_debug')" />
                             </div>
                             <div class="space-y-2">
                                 <p class="label">{{ __('Enable Debugbar') }}
@@ -117,7 +118,7 @@
                                 </select>
                                 <x-input-error class="mt-2" :messages="$errors->get('debugbar')" />
                             </div>
-                            <div class="space-y-2 col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                            <div class="space-y-2 sm:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-5">
                                 <div class="space-y-2">
                                     <p class="label">{{ __('Date Format') }}</p>
                                     <select name="date_format" class="select">
@@ -144,7 +145,7 @@
                                 </div>
                                 <div class="space-y-2">
                                     <p class="label">{{ __('Default Theme Mode') }}</p>
-                                    <select name="time_format" class="select">
+                                    <select name="theme_mode" class="select">
                                         @foreach (App\Models\ApplicationSetting::getThemeModeInfos() as $key => $info)
                                             <option value="{{ $key }}"
                                                 @if (isset($general_settings['theme_mode']) && $general_settings['theme_mode'] == $key) selected @endif>
@@ -152,22 +153,22 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <x-input-error class="mt-2" :messages="$errors->get('time_format')" />
+                                    <x-input-error class="mt-2" :messages="$errors->get('theme_mode')" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-span-2 grid grid-cols-1 gap-5 h-fit">
+                        <div class="2xl:col-span-3 grid grid-cols-1 gap-5 h-fit">
                             <div class="space-y-2">
-                                <p class="label">{{ __('Favicon') }}</p>
-                                <input type="file" name="favicon" class="filepond" id="favicon"
-                                    accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
-                                <x-input-error class="mt-2" :messages="$errors->get('image')" />
-                            </div>
-                            <div class="space-y-2">
-                                <p class="label">{{ __('App Logo') }}</p>
+                                <p class="label">{{ __('App Logo') }}<small>({{ __('Max: 400x150') }})</small></p>
                                 <input type="file" name="app_logo" class="filepond" id="app_logo"
                                     accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
-                                <x-input-error class="mt-2" :messages="$errors->get('image')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('app_logo')" />
+                            </div>
+                            <div class="space-y-2">
+                                <p class="label">{{ __('Favicon') }} <small>({{ __('16x16') }})</small></p>
+                                <input type="file" name="favicon" class="filepond" id="favicon"
+                                    accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
+                                <x-input-error class="mt-2" :messages="$errors->get('favicon')" />
                             </div>
                         </div>
                     </div>
@@ -185,8 +186,12 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
 
-                file_upload(["#favicon"], ["image/jpeg", "image/png", "image/jpg, image/webp, image/svg"]);
-                file_upload(["#app_logo"], ["image/jpeg", "image/png", "image/jpg, image/webp, image/svg"]);
+                file_upload(["#favicon"], ["image/jpeg", "image/png", "image/jpg, image/webp, image/svg"], {
+                    "#favicon": "{{ isset($general_settings['favicon']) ? asset('storage/' . $general_settings['favicon']) : null }}"
+                });
+                file_upload(["#app_logo"], ["image/jpeg", "image/png", "image/jpg, image/webp, image/svg"], {
+                    "#app_logo": "{{ isset($general_settings['app_logo']) ? asset('storage/' . $general_settings['app_logo']) : null }}"
+                });
             });
         </script>
     @endpush

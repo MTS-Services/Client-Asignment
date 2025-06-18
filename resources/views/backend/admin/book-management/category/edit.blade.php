@@ -39,7 +39,7 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('slug')" />
                         </div>
-                        <div class="space-y-2 col-span-2">
+                        <div class="space-y-2 sm:col-span-2">
                             <p class="label">{{ __('Description') }}</p>
                             <textarea name="description" id="description" cols="" rows="10" class="textarea">{{ $category->description }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />

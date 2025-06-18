@@ -10,20 +10,18 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\Admin\ApplicationSettingRequest;
+use App\Http\Traits\FileManagementTrait;
 use App\Models\ApplicationSetting;
+use Throwable;
 
 class ApplicationSettingController extends Controller implements HasMiddleware
 {
-    use AuditRelationTraits;
+    use AuditRelationTraits, FileManagementTrait;
 
     protected function redirectIndex(): RedirectResponse
     {
-        return redirect()->route('index route');
-    }
-
-    protected function redirectTrashed(): RedirectResponse
-    {
-        return redirect()->route('trash route');
+        return redirect()->back();
     }
 
     public static function middleware(): array
@@ -32,7 +30,7 @@ class ApplicationSettingController extends Controller implements HasMiddleware
             'auth:admin', // Applies 'auth:admin' to all methods
 
             // Permission middlewares using the Middleware class
-            new Middleware('permission:application-settings-list', only: ['index']),
+            new Middleware('permission:application-settings-general', only: ['general']),
             //add more permissions if needed
         ];
     }
@@ -42,8 +40,55 @@ class ApplicationSettingController extends Controller implements HasMiddleware
      */
     public function general(): View
     {
-        $data['general_settings'] = ApplicationSetting::whereIn('key', ['site_name', 'site_short_name', 'timezone', 'site_logo', 'site_favicon', 'env', 'debug', 'debugbar', 'date_format', 'time_format'])->pluck('value', 'key')->all();
+        $data['general_settings'] = ApplicationSetting::whereIn('key', ['institution_name', 'library_name', 'library_short_name', 'timezone', 'date_format', 'time_format', 'theme_mode', 'app_logo', 'favicon', 'public_registration', 'registration_approval', 'environment', 'app_debug', 'debugbar'])->pluck('value', 'key')->all();
         $data['timezones'] = availableTimezones();
         return View('backend.admin.application-settings.general', $data);
+    }
+
+    public function database(): View
+    {
+        return View('backend.admin.application-settings.database');
+    }
+
+    public function updateSettings(ApplicationSettingRequest $request): RedirectResponse
+    {
+        try {
+            $validated = $request->validated();
+            $envPath = base_path('.env');
+            $env = file($envPath);
+
+            foreach ($validated as $key => $value) {
+                if ($key == 'app_logo' || $key == 'favicon') {
+                    $value = $this->handleFileUpload($value, 'application_settings', $key);
+                }
+
+                $applicationSetting = ApplicationSetting::updateOrCreate(['key' => $key], ['value' => $value]);
+
+                if (!empty($applicationSetting->env_key)) {
+                    $env = $this->set($applicationSetting->env_key, '"' . html_entity_decode($value) . '"', $env);
+                }
+            }
+            $fp = fopen($envPath, 'w');
+            fwrite($fp, implode($env));
+            fclose($fp);
+            session()->flash('success', "Settings added successfully.");
+            return $this->redirectIndex();
+        } catch (Throwable $e) {
+            session()->flash('error', "Something went wrong! Please try again.");
+            throw $e;
+        }
+    }
+
+    private function set($key, $value, $env): array
+    {
+        foreach ($env as $env_key => $env_value) {
+            $entry = explode("=", $env_value, 2);
+            if ($entry[0] == $key) {
+                $env[$env_key] = $key . "=" . $value . "\n";
+            } else {
+                $env[$env_key] = $env_value;
+            }
+        }
+        return $env;
     }
 }

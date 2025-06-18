@@ -40,8 +40,8 @@ class ApplicationSetting extends BaseModel
     //     return $this->key == 'registration_approval' ? self::getRegistrationApprovalInfos()[$this->value] : 'Unknown';
     // }
 
-    public const ENVIRONMENT_PRODUCTION = 'production';
-    public const ENVIRONMENT_DEVELOPMENT = 'development';
+    public const ENVIRONMENT_PRODUCTION = 1;
+    public const ENVIRONMENT_DEVELOPMENT = 2;
 
     public static function getEnvironmentInfos()
     {
@@ -56,14 +56,14 @@ class ApplicationSetting extends BaseModel
     //     return $this->key == 'environment' ? self::getEnvironmentInfos()[$this->value] : 'Unknown';
     // }
 
-    public const APP_DEBUG_ON = 1;
-    public const APP_DEBUG_OFF = 2;
+    public const APP_DEBUG_TRUE = 1;
+    public const APP_DEBUG_FALSE = 2;
 
     public static function getAppDebugInfos()
     {
         return [
-            self::APP_DEBUG_OFF => 'False',
-            self::APP_DEBUG_ON => 'True',
+            self::APP_DEBUG_FALSE => 'False',
+            self::APP_DEBUG_TRUE => 'True',
         ];
     }
 
@@ -135,8 +135,23 @@ class ApplicationSetting extends BaseModel
         ];
     }
 
-    // public function getThemeLabelAttribute()
+    // public function getThemeModeLabelAttribute()
     // {
-    //     return $this->key == 'theme' ? self::getThemeInfos()[$this->value] : 'Unknown';
+    //     return $this->key == 'theme_mode' ? self::getThemeInfos()[$this->value] : 'Unknown';
     // }
+
+    public const DATATBASE_DRIVER_MYSQL = 1;
+    public const DATATBASE_DRIVER_PGSQL = 2;
+    public const DATATBASE_DRIVER_SQLITE = 3;
+    public const DATATBASE_DRIVER_SQLSRV = 4;
+
+    public static function getDatabaseDriverInfos()
+    {
+        return [
+            self::DATATBASE_DRIVER_MYSQL => 'MySQL',
+            self::DATATBASE_DRIVER_PGSQL => 'PostgreSQL',
+            self::DATATBASE_DRIVER_SQLITE => 'SQLite',
+            self::DATATBASE_DRIVER_SQLSRV => 'SQL Server',
+        ];
+    }
 }
