@@ -142,7 +142,7 @@ function formatValue(value, key, type, label_color) {
             <div class="relative group cursor-pointer" onclick="openImageLightbox('${value}')">
                 <img src="${value}" alt="Preview"
                      class="w-20 h-20 object-cover rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-blue-400 transition-all duration-200 shadow-sm hover:shadow-md">
-                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-lg transition-all duration-200 flex items-center justify-center">
+                <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 rounded-lg transition-all duration-200 flex items-center justify-center">
                     <i data-lucide="zoom-in" class="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"></i>
                 </div>
             </div>
@@ -207,9 +207,9 @@ function getDefaultIcon(key) {
     if (keyLower.includes('time')) return 'clock';
     if (keyLower.includes('department')) return 'building';
     if (keyLower.includes('address')) return 'map-pin';
+    if (keyLower.includes('video')) return 'video';
     if (keyLower.includes('id')) return 'hash';
     if (keyLower.includes('image')) return 'image';
-    if (keyLower.includes('video')) return 'video';
 
     return 'info';
 }
@@ -218,12 +218,12 @@ function getDefaultIcon(key) {
 function openImageLightbox(imageSrc) {
     const lightboxHtml = `
         <div id="image-lightbox" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
-            <div class="relative max-w-7xl max-h-[90vh] mx-4">
+            <div class="relative max-w-3xl aspect-video mx-4">
                 <button onclick="closeLightbox()" class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors duration-200 z-10">
                     <i data-lucide="x" class="w-8 h-8"></i>
                 </button>
                 <img src="${imageSrc}" alt="Full Size Preview"
-                     class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-scale-in">
+                     class="max-w-full object-contain rounded-lg shadow-2xl animate-scale-in">
                 <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm">
                     <i data-lucide="zoom-in" class="w-4 h-4 inline mr-2"></i>
                     Click anywhere to close

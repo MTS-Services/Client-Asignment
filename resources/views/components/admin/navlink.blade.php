@@ -12,7 +12,7 @@
 @php
     // Default icons for different levels
     $defaultParentIcon = $icon ?: 'folder';
-    $defaultSubitemIcon = 'file';
+    $defaultSubitemIcon = 'tags';
     $defaultMultiSubitemIcon = 'circle';
 
     // Check if main item or any sub-item is active
@@ -66,13 +66,21 @@
         <a href="{{ $route }}"
             class="sidebar-item flex items-center gap-4 p-3 rounded-xl hover:bg-bg-black/10 dark:hover:bg-bg-white/10 text-text-white transition-all duration-200 group {{ $isMainActive ? 'active' : '' }}">
             <div
-                class="w-8 h-8 bg-bg-black/10 dark:bg-bg-white/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                class="w-8 h-8 bg-bg-black/10 dark:bg-bg-white/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform relative">
                 @if ($boxicon)
-                    <i class="{{ $defaultParentIcon }} text-blue"></i>
+                    <i class="{{ $defaultParentIcon }} text-text-black dark:text-text-white"></i>
                 @else
                     <i data-lucide="{{ $defaultParentIcon }}"
                         class="w-5 h-5 stroke-bg-black dark:stroke-bg-white flex-shrink-0"></i>
                 @endif
+                <!-- Active indicator for collapsed state -->
+                <div x-show="!((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) && {{ $isAnyActive ? 'true' : 'false' }}"
+                    class="absolute -top-1 -right-1 w-3 h-3 bg-violet-400 dark:bg-violet-300 rounded-full animate-pulse invisible"
+                    :class="{
+                        'visible': !((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) &&
+                            {{ $isAnyActive ? 'true' : 'false' }}
+                    }">
+                </div>
             </div>
             <span x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
                 x-transition:enter="transition-all duration-300 delay-75"
@@ -89,9 +97,10 @@
         <!-- Dropdown Button -->
         <button
             @click="((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) ? (open = !open) : toggleCollapsedDropdown()"
-            class="sidebar-item flex items-center gap-4 p-3 rounded-xl hover:bg-bg-black/10 dark:hover:bg-bg-white/10 text-text-white transition-all duration-200 group w-full {{ $isAnyActive ? 'active' : '' }}"> {{-- relative --}}
+            class="sidebar-item flex items-center gap-4 p-3 rounded-xl hover:bg-bg-black/10 dark:hover:bg-bg-white/10 text-text-white transition-all duration-200 group w-full {{ $isAnyActive ? 'active' : '' }}">
+            {{-- relative --}}
             <div
-                class="w-8 h-8 bg-bg-black/10 dark:bg-bg-white/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform"> {{-- relative --}}
+                class="w-8 h-8 bg-bg-black/10 dark:bg-bg-white/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform relative">
                 @if ($boxicon)
                     <i class="{{ $defaultParentIcon }} text-blue"></i>
                 @else
@@ -101,7 +110,9 @@
 
                 <!-- Active indicator for collapsed state -->
                 <div x-show="!((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) && {{ $isAnyActive ? 'true' : 'false' }}"
-                    class="absolute -top-1 -right-1 w-3 h-3 bg-violet-400 dark:bg-violet-300 rounded-full animate-pulse">
+                    class="absolute -top-1 -right-1 w-3 h-3 bg-violet-400 dark:bg-violet-300 rounded-full animate-pulse invisible"
+                    :class="{ 'visible': !((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) &&
+                            {{ $isAnyActive ? 'true' : 'false' }} }">
                 </div>
             </div>
 
@@ -130,8 +141,9 @@
             x-transition:leave="transition-all duration-200 ease-in"
             x-transition:leave-start="opacity-100 translate-x-0 scale-100"
             x-transition:leave-end="opacity-0 translate-x-2 scale-95"
-            class="hidden absolute z-[9999] min-w-64 max-w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 py-3 left-full ml-2 top-0"
-            :class="(collapsedDropdown && !((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) ? '!block' : '!hidden')"
+            class="hidden absolute z-[9999] min-w-64 max-w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 py-3 right-full ml-2 top-0"
+            :class="(collapsedDropdown && !((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) ? '!block' :
+                '!hidden')"
             style="backdrop-filter: blur(12px);" x-init="// Calculate position relative  to the trigger button
             $nextTick(() => {
                 if (collapsedDropdown) {
@@ -174,8 +186,7 @@
                         
                         $el.style.top = topPosition + 'px';
                     });
-                }"
-            >
+                }">
 
             <!-- Header -->
             <div class="px-4 pb-3 border-b border-gray-200 dark:border-gray-700">
@@ -343,7 +354,7 @@
             x-transition:leave="transition-all duration-200 ease-in"
             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
             x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
-            class="ml-4 mt-2 space-y-1 border-l-2 border-bg-black/10 dark:border-bg-white/10 pl-4 hidden" 
+            class="ml-4 mt-2 space-y-1 border-l-2 border-bg-black/10 dark:border-bg-white/10 pl-4 hidden"
             :class="(open && ((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) ? '!block' : '!hidden')">
 
             @foreach ($items as $item)
