@@ -13,11 +13,8 @@ class BookIssuesService
     {
         return BookIssues::orderBy($orderBy, $order)->latest();
     }
-    public function getBookIssues(string $encryptedId, string $type = 'encrypted'): BookIssues|Collection
+    public function getBookIssues(string $encryptedId): BookIssues|Collection
     {
-        if ($type == 'status') {
-            return BookIssues::where('status', array_search($encryptedId, BookIssues::statusList()))->first();
-        }
         return BookIssues::findOrFail(decrypt($encryptedId));
     }
     public function getDeletedBookIssues(string $encryptedId): BookIssues|Collection
@@ -75,16 +72,34 @@ class BookIssuesService
         ]);
     }
 
-    public function updateReturnBookIssue(string $encryptedId,  array $data): BookIssues
+    public function updateReturnBookIssue(string $encryptedId, array $data): BookIssues
+    {
+        $bookIssue = $this->getBookIssues($encryptedId);
+        
+        $data['status'] = BookIssues::STATUS_RETURNED;
+        $returnDate = \Carbon\Carbon::parse($data['return_date']);
+        $data['return_date'] = $returnDate;
+        $data['fine_amount'] = $data['fine_amount'] ?? 0;
+        $data['fine_status'] = $data['fine_status'] ?? null;
+        $data['updater_id'] = admin()->id;
+        $data['updater_type'] = get_class(admin());
+
+        $bookIssue->update($data);
+
+        return $bookIssue;
+    }
+    public function updateBookLost(string $encryptedId, array $data): BookIssues
     {
         $bookIssue = $this->getBookIssues($encryptedId);
 
-        $data['status'] = BookIssues::STATUS_RETURNED;
-        $data['return_date'] = now();
-        $data['fine_amount'] = $data['fine_amount'];
+        $data['status'] = BookIssues::STATUS_LOST;
+        $data['fine_amount'] = $data['fine_amount'] ?? 0;
+        $data['fine_status'] = $data['fine_status'] ?? null;
         $data['updater_id'] = admin()->id;
         $data['updater_type'] = get_class(admin());
+
         $bookIssue->update($data);
+
         return $bookIssue;
     }
 }

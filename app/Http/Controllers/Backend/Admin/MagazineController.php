@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\MagazineRequest;
 use App\Http\Traits\AuditRelationTraits;
+use App\Models\Magazine;
 use App\Services\Admin\MagazineService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -58,9 +59,12 @@ class MagazineController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
+        $status = $request->get('status');
         if ($request->ajax()) {
             $query = $this->magazineService->getMagazines();
-
+            if ($status) {
+                $query = $query->where('status', array_search($status, Magazine::statusList()));
+            }
             return DataTables::eloquent($query)
                 ->editColumn('status', fn($magazine) => "<span class='badge badge-soft {$magazine->status_color}'>{$magazine->status_label}</span>")
                 ->editColumn('created_by', fn($magazine) => $this->creater_name($magazine))

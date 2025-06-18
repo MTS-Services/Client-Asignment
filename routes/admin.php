@@ -12,13 +12,20 @@ use App\Http\Controllers\Backend\Admin\IssuesManagement\BookIssuesController;
 use App\Http\Controllers\Backend\Admin\UserManagment\UserController;
 use App\Http\Controllers\Backend\Admin\MagazineController;
 use App\Http\Controllers\Backend\Admin\NewspaperController;
+use App\Http\Controllers\Backend\Admin\ProfileController;
 use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
 use App\Http\Controllers\Backend\Admin\RackController;
 use App\Http\Controllers\Backend\Admin\ApplicationSettingController;
 
 Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
-
+    // Profile Management
+    Route::controller(ProfileController::class)->group( function () {
+        Route::get('/profile', 'showProfile')->name('profile');
+        Route::put('/update-profile/{id}', 'updateProfile')->name('update-profile');
+        Route::get('/change-password', 'showPasswordPage')->name('change-password');
+        Route::put('/update-password/{id}', 'updatePassword')->name('update-password');
+    });
     // Admin Management
     Route::group(['as' => 'am.', 'prefix' => 'admin-management'], function () {
         // Admin Routes
@@ -145,6 +152,7 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
             Route::get('/restore/{bookIssue}', 'restore')->name('restore');
             Route::delete('/permanent-delete/{bookIssue}', 'permanentDelete')->name('permanent-delete');
             Route::patch('/update-return/{bookIssue}', 'updateReturn')->name('update-return');
+            Route::post('/update-return/{bookIssue}', 'updateLost')->name('update-lost');
         });
     });
 

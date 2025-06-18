@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\IssuesManagement;
 
+use App\Models\BookIssues;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BookIssuesRequest extends FormRequest
@@ -21,9 +22,7 @@ class BookIssuesRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            
-        ] + (
+        return [] + (
             $this->isMethod('POST') ? $this->store() : ($this->isMethod('PUT') ? $this->update() : ($this->isMethod('PATCH') ? $this->returnUpdate() : [])
             ));
     }
@@ -32,7 +31,7 @@ class BookIssuesRequest extends FormRequest
     protected function store(): array
     {
         return [
-           'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|exists:users,id',
             'book_id' => 'required|exists:books,id', // ✅ fixed typo
             'notes' => 'nullable|string',
             'issue_date' => 'required|date',
@@ -54,7 +53,8 @@ class BookIssuesRequest extends FormRequest
         return [
             'returned_by' => 'required|exists:users,id',
             'return_date' => 'required|date',
-            'fine_amount' => 'nullable|numeric',
+            'fine_amount' => 'sometimes|numeric|min:0|max:999999.99',
+            'fine_status' => 'sometimes|string|in:' . implode(',', array_keys(BookIssues::fineStatusList())),
             'notes' => 'nullable|string',
 
         ];

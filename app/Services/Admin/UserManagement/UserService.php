@@ -30,8 +30,8 @@ class UserService
             if ($file) {
                 $data['image'] = $this->handleFileUpload($file, 'users', $data['name']);
             }
-            $data['creater_id'] = admin()->id;
-            $data['creater_type'] = get_class(admin());
+            $data['creater_id'] = user()->id;
+            $data['creater_type'] = get_class(user());
             $user = User::create($data);
             return $user;
         });
@@ -44,9 +44,11 @@ class UserService
                 $data['image'] = $this->handleFileUpload($file, 'users', $data['name']);
                 $this->fileDelete($user->image);
             }
-            $data['password'] = $data['password'] ?? $user->password;
-            $data['updater_id'] = admin()->id;
-            $data['updater_type'] = get_class(admin());
+            if (isset($data['password'])) {
+                $data['password'] = $data['password'] ?? $user->password;
+            }
+            $data['updater_id'] = user()?->id;
+            $data['updater_type'] = get_class(user());
             $user->update($data);
             return $user;
         });
@@ -54,7 +56,7 @@ class UserService
 
     public function delete(User $user): void
     {
-        $user->update(['deleter_id' => admin()->id, 'deleter_type' => get_class(admin())]);
+        $user->update(['deleter_id' => user()->id, 'deleter_type' => get_class(user())]);
         $this->fileDelete($user->image);
         $user->delete();
     }
@@ -62,7 +64,7 @@ class UserService
     public function restore(string $encryptedId): void
     {
         $user = $this->getDeletedUser($encryptedId);
-        $user->update(['updater_id' => admin()->id, 'updater_type' => get_class(admin())]);
+        $user->update(['updater_id' => user()->id, 'updater_type' => get_class(user())]);
         $user->restore();
     }
 
@@ -76,7 +78,7 @@ class UserService
     {
         $user->update([
             'status' => !$user->status,
-            'updated_by' => admin()->id,'updater_type'=> get_class(admin())
+            'updated_by' => user()->id,'updater_type'=> get_class(user())
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Admin\IssuesManagement;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\IssuesManagement\BookIssuesRequest;
+use App\Http\Requests\Admin\IssuesManagement\BookLostReuest;
 use App\Http\Traits\AuditRelationTraits;
 use App\Models\Book;
 use App\Models\BookIssues;
@@ -72,8 +73,15 @@ class BookIssuesController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         $status = $request->get('status');
+        $fine_status = $request->get('fine_status');
         if ($request->ajax()) {
-            $query = $this->bookIssuesService->getBookIssuess()->where('status', array_search($status, BookIssues::statusList()));
+            $query = $this->bookIssuesService->getBookIssuess();
+            if ($status) {
+                $query = $query->where('status', array_search($status, BookIssues::statusList()));
+            }
+            if ($fine_status) {
+                $query = $query->where('fine_status', array_search($fine_status, BookIssues::fineStatusList()));
+            }
 
             return DataTables::eloquent($query)
                 ->editColumn('user_id', fn($bookIssues) => $bookIssues->user?->name)
@@ -160,31 +168,47 @@ class BookIssuesController extends Controller implements HasMiddleware
         return $items;
     }
 
+    // Book return Issues
 
     public function return($id)
     {
         $data['issue'] = BookIssues::findOrFail(decrypt($id));
         return view('backend.admin.issues-management.book-issues.returned', $data);
     }
-
-
-
+  
     public function updateReturn(BookIssuesRequest $request, string $id): RedirectResponse
     {
+        
         try {
             $validated = $request->validated();
-
             // Update book issue
-            $this->bookIssuesService->updateReturnBookIssue($id, $validated);
-
-            // Update fine_status separately
-            $bookIssue = BookIssues::findOrFail(decrypt($id));
-            $bookIssue->fine_status = $validated['fine_status'] ?? null;
-            $bookIssue->save();
-
+           $this->bookIssuesService->updateReturnBookIssue($id, $validated);
+           
             session()->flash('success', "Book return updated successfully");
         } catch (\Throwable $e) {
             session()->flash('error', 'Book return update failed');
+            throw $e;
+        }
+        return $this->redirectIndex(request('status'));
+    }
+
+    // Book lost Issues
+      public function lost($id)
+    {
+        $data['issue_lost'] = BookIssues::findOrFail(decrypt($id));
+        return view('backend.admin.issues-management.book-issues.lost', $data);
+    }
+    public function updateLost(BookLostReuest $request, string $id): RedirectResponse
+    {
+        
+        try {
+            $validated = $request->validated();
+            // Update book issue
+           $this->bookIssuesService->updateBookLost($id, $validated);
+           
+            session()->flash('success', "Book Lost Information updated successfully");
+        } catch (\Throwable $e) {
+            session()->flash('error', 'Book Lost Information update failed');
             throw $e;
         }
         return $this->redirectIndex(request('status'));
@@ -254,6 +278,7 @@ class BookIssuesController extends Controller implements HasMiddleware
      */
     public function update(BookIssuesRequest $request, string $id)
     {
+        
         try {
             $validated = $request->validated();
             $issue = $this->bookIssuesService->getBookIssues($id);
