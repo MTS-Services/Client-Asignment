@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Admin\BookManagement;
 
+use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Services\Admin\BookService;
 use Illuminate\Contracts\View\View;
@@ -67,9 +68,13 @@ class BookController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
+
+        $status = $request->get('status');
         if ($request->ajax()) {
             $query = $this->bookService->getBooks();
-
+            if ($status) {
+                $query = $query->where('status', array_search($status, Book::statusList()));
+            }
             return DataTables::eloquent($query)
                 ->editColumn('category_id', fn($book) => $book->category?->name)
                 ->editColumn('publisher_id', fn($book) => $book->publisher?->name)

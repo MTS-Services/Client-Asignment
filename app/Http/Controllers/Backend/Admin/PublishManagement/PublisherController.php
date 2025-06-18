@@ -60,8 +60,12 @@ class PublisherController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
+        $status = $request->get('status');
         if ($request->ajax()) {
             $query = $this->publisherService->getPublishers();
+            if ($status) {
+                $query = $query->where('status', array_search($status, Publisher::statusList()));
+            }
 
             return DataTables::eloquent($query)
                 ->editColumn('status', fn($publisher) => "<span class='badge badge-soft {$publisher->status_color}'>{$publisher->status_label}</span>")

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\NewspaperRequest;
 use App\Http\Traits\AuditRelationTraits;
+use App\Models\Newspaper;
 use App\Services\Admin\NewspaperService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -58,9 +59,12 @@ class NewspaperController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
+        $status = $request->get('status');
         if ($request->ajax()) {
             $query = $this->newspaperService->getNewspapers();
-
+            if ($status) {
+                $query = $query->where('status', array_search($status, haystack: Newspaper::statusList()));
+            }
             return DataTables::eloquent($query)
                 ->editColumn('status', fn($newspaper) => "<span class='badge badge-soft {$newspaper->status_color}'>{$newspaper->status_label}</span>")
                 ->editColumn('created_by', fn($newspaper) => $this->creater_name($newspaper))
