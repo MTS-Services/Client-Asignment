@@ -12,7 +12,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web', 'user.verified']], f
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'showProfile')->name('profile');
         Route::get('/edit-profile', 'editProfile')->name('edit-profile');
-        Route::put('/update-profile', 'updateProfile')->name('update-profile');
+        Route::put('/update-profile/{id}', 'updateProfile')->name('update-profile');
         Route::get('/change-password', 'showPasswordPage')->name('change-password');
         Route::put('/update-password', 'updatePassword')->name('update-password');
     });
@@ -29,6 +29,6 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web', 'user.verified']], f
     // Issues 
     Route::controller(UserBookIssuesController::class)->group(function () {
         Route::get('/book-issues-list', 'issuesList')->name('book-issues-list');
-        Route::get('/book-issues-details/{status}', 'issuesShow')->name('book-issues-show');
+        Route::get('/book-issues-details/{id}', 'issuesShow')->name('book-issues-show');
     });
 });
