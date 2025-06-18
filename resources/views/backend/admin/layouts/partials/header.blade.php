@@ -79,7 +79,7 @@
                         :class="open ? '!block' : '!hidden'">
                         <x-user.profile-navlink route="{{ route('profile') }}" name="{{ __('Profile') }}" />
                         <x-user.profile-navlink route="{{ route('change-password') }}"
-                            name="{{ __('Password') }}" />
+                            name="{{ __('Change Password') }}" />
                         @if (isset($not_use))
                             {{-- <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" /> --}}
                         @endif

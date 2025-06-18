@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\PasswordRequest;
 use App\Http\Requests\User\ProfileUpdateRequest;
 use App\Services\Admin\UserManagement\UserService;
 use Illuminate\Http\RedirectResponse;
@@ -41,5 +42,12 @@ class ProfileController extends Controller
     {
         return view('backend.user.profile-management.password');
     }
-    public function updatePassword(Request $request) {}
+    public function updatePassword(PasswordRequest $request)
+    {
+        $admin = $this->userService->getUser(encrypt(user()->id));
+        $validated = $request->validated();
+        $admin->update($validated);
+        session()->flash('success', 'Password updated successfully.');
+        return redirect()->back()->with('success', 'Password updated successfully.');
+    }
 }

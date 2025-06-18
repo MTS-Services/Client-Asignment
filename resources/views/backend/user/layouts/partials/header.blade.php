@@ -85,8 +85,8 @@
                         :class="open ? '!block' : '!hidden'">
                         {{-- @if (isset($not_use)) --}}
                         <x-user.profile-navlink route="{{ route('user.profile') }}" name="{{ __('Profile') }}" />
-                        <x-user.profile-navlink route="{{ route('otp-verification', ['forgot' => true]) }}"
-                            name="{{ __('Password') }}" />
+                        <x-user.profile-navlink route="{{ route('user.change-password') }}"
+                            name="{{ __('Change Password') }}" />
                         {{-- <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" /> --}}
                         {{-- @endif --}}
                         <x-user.profile-navlink route="{{ route('logout') }}" logout='true'
