@@ -143,4 +143,13 @@ class BookIssues extends BaseModel
     {
         return $query->where('user_id', user()->id);
     }
+
+    public function scopePaid(Builder $query): Builder
+    {
+        return $query->where('fine_status', self::FINE_PAID);
+    }
+    public function scopeUnpaid(Builder $query): Builder
+    {
+        return $query->where('fine_status', self::FINE_UNPAID);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Builder;
 
 class Book extends BaseModel
 {
@@ -93,4 +94,15 @@ class Book extends BaseModel
     {
         return $this->belongsTo(Rack::class, 'rack_id');
     }
+
+    public function scopeAvailable(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_AVAILABLE);
+    }
+    public function scopeUnavailable(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_UNAVAILABLE);
+    }
+
+
 }
