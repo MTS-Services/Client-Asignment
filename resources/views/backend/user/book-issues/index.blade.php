@@ -1,7 +1,7 @@
 <x-user::layout>
     <x-slot name="title">{{ __('Book Issues List') }}</x-slot>
     <x-slot name="breadcrumb">{{ __('Book Issues List') }}</x-slot>
-    <x-slot name="page_slug">book_issues_{{ request('status') }}</x-slot>
+    <x-slot name="page_slug">book_issues_{{ request('status') ? request('status') : request('fine-status') }}</x-slot>
     <section>
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
