@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Http\Requests\Backend\Admin;
+
+use App\Models\ApplicationSetting as App;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
+use Illuminate\Validation\Rule;
+
+class ApplicationSettingRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+
+            // General Settings 
+            'institution_name'          => 'sometimes|required|string|min:3|max:255',
+            'library_name'              => 'sometimes|required|string|min:3|max:255',
+            'library_short_name'        => 'sometimes|required|string|max:200',
+            'timezone'                  => 'sometimes|required|string',
+            'date_format'               => 'sometimes|required|string',
+            'time_format'               => 'sometimes|required|string',
+            'favicon'                   => 'sometimes|required|image|mimes:jpeg,png,jpg,webp,svg|max:2048|dimensions:max_width=16,max_height=16',
+            'app_logo'                  => 'sometimes|required|image|mimes:jpeg,png,jpg,webp,svg|max:|dimensions:max_width=400,max_height=150',
+            'theme_mode'                => 'sometimes|required|string',
+            Rule::in([App::THEME_MODE_LIGHT, App::THEME_MODE_DARK, App::THEME_MODE_SYSTEM]),
+            'public_registration'       => 'sometimes|required|integer',
+            Rule::in([App::ALLOW_PUBLIC_REGISTRATION, App::DENY_PUBLIC_REGISTRATION]),
+            'registration_approval'     => 'sometimes|required|integer',
+            Rule::in([App::REGISTRATION_APPROVAL_AUTO, App::REGISTRATION_APPROVAL_MANUAL]),
+            'environment'               => 'sometimes|required|integer',
+            Rule::in([App::ENVIRONMENT_DEVELOPMENT, App::ENVIRONMENT_PRODUCTION]),
+            'app_debug'                 => 'sometimes|required|integer',
+            Rule::in([App::APP_DEBUG_TRUE, App::APP_DEBUG_FALSE]),
+            'debugbar'                  => 'sometimes|required|integer',
+            Rule::in([App::ENABLE_DEBUGBAR, App::DISABLE_DEBUGBAR]),
+
+            // Database Settings
+            'database_driver'           => 'sometimes|required|string',
+            Rule::in([App::DATATBASE_DRIVER_MYSQL, App::DATATBASE_DRIVER_PGSQL, App::DATATBASE_DRIVER_SQLITE, App::DATATBASE_DRIVER_SQLSRV]),
+            'database_host'             => 'sometimes|nullable|string',
+            'database_port'             => 'sometimes|nullable|string',
+            'database_name'             => 'sometimes|nullable|string',
+            'database_username'         => 'sometimes|nullable|string',
+            'database_password'         => 'sometimes|nullable|string',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+
+            // General Settings
+            'institution_name'          => 'Institution Name',
+            'library_name'              => 'Library Name',
+            'library_short_name'        => 'Library Short Name',
+            'timezone'                  => 'Timezone',
+            'date_format'               => 'Date Format',
+            'time_format'               => 'Time Format',
+            'favicon'                   => 'Favicon',
+            'app_logo'                  => 'App Logo',
+            'theme_mode'                => 'Theme Mode',
+            'public_registration'       => 'Public Registration',
+            'registration_approval'     => 'Registration Approval',
+            'environment'               => 'Environment',
+            'app_debug'                 => 'App Debug',
+            'debugbar'                  => 'Debugbar',
+
+            // Database Settings
+            'database_driver'           => 'Database Driver',
+            'database_host'             => 'Database Host',
+            'database_port'             => 'Database Port',
+            'database_name'             => 'Database Name',
+            'database_username'         => 'Database Username',
+            'database_password'         => 'Database Password',
+        ];
+    }
+}
