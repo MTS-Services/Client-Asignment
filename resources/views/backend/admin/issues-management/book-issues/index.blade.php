@@ -1,13 +1,14 @@
 <x-admin::layout>
     <x-slot name="title">{{ __('Book Issues List') }}</x-slot>
     <x-slot name="breadcrumb">{{ __('Book Issues List') }}</x-slot>
-    <x-slot name="page_slug">book_issues_{{ request('status') }}</x-slot>
+    <x-slot name="page_slug">book_issues_{{ request('status') ? request('status') : request('fine-status') }}</x-slot>
     <section>
 
         <div class="glass-card rounded-2xl p-6 mb-6">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between @if( request('fine-status')) justify-center @endif">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Book Issues List') }}</h2>
-                <div class="flex items-center gap-2">
+                
+                <div class="flex items-center gap-2 @if( request('fine-status')) hidden @endif">
                     <x-admin.primary-link secondary="true"
                         href="{{ route('bim.book-issues.trash', ['status' => request('status')]) }}">{{ __('Trash') }}
                         <i data-lucide="trash-2" class="w-4 h-4"></i>

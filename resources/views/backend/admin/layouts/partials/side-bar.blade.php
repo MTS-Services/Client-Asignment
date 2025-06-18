@@ -154,6 +154,18 @@
                         'active' =>
                             'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
                     ],
+                    [
+                        'name' => 'Fine Unpaid',
+                        'route' => route('bim.book-issues.index', [
+                            'fine-status' => App\Models\BookIssues::fineStatusList()[
+                                App\Models\BookIssues::FINE_UNPAID
+                            ],
+                        ]),
+                        'icon' => 'book-check',
+                        'active' =>
+                            'book_issues_' .
+                            App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_UNPAID],
+                    ],
                 ]" />
 
             <x-admin.navlink type="single" icon="notebook-text" name="Magazine" :route="route('magazine.index')" active="magazine"

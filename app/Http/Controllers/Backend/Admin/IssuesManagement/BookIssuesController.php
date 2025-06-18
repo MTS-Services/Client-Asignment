@@ -74,7 +74,8 @@ class BookIssuesController extends Controller implements HasMiddleware
     {
         $status = $request->get('status');
 
-        $fine_status = $request->get('fine_status');
+        $fine_status = $request->get('fine-status') ?? null;
+
         if ($request->ajax()) {
             $query = $this->bookIssuesService->getBookIssuess();
             if ($status) {
@@ -92,7 +93,7 @@ class BookIssuesController extends Controller implements HasMiddleware
                 ->editColumn('creater_id', fn($bookIssues) => $this->creater_name($bookIssues))
                 ->editColumn('created_at', fn($bookIssues) => $bookIssues->created_at_formatted)
                 ->editColumn('action', fn($bookIssues) => view('components.admin.action-buttons', [
-                    'menuItems' => $this->menuItems($bookIssues, $status)
+                    'menuItems' => $this->menuItems($bookIssues, $status, $fine_status)
                 ])->render())
                 ->rawColumns(['created_by', 'issue_date', 'user_id', 'book_id', 'status', 'creater_id', 'action'])
                 ->make(true);
@@ -102,7 +103,7 @@ class BookIssuesController extends Controller implements HasMiddleware
     }
 
 
-    protected function menuItems($model, $status): array
+    protected function menuItems($model, $status, $fine_status = null): array
     {
         $items = [
             [
@@ -113,6 +114,17 @@ class BookIssuesController extends Controller implements HasMiddleware
                 'permissions' => ['book-issues-list', 'book-issues-delete', 'book-issues-status']
             ],
         ];
+
+        if ($model->fine_status == BookIssues::FINE_UNPAID) {
+            $items = array_merge($items, [
+                [
+                    'routeName' => 'bim.book-issues.edit',
+                    'params' => [encrypt($model->id), 'fine_status' => $fine_status],
+                    'label' => 'Make Paid',
+                    'permissions' => ['book-issues-edit']
+                ],
+            ]);
+        }
 
         if ($model->status == BookIssues::STATUS_PENDING) {
             $items = array_merge($items, [
