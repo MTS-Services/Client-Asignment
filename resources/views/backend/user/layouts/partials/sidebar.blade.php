@@ -36,8 +36,10 @@
 
             {{-- 2. SIMPLE DROPDOWN (multiple items under one parent) --}}
 
-            <x-user.navlink type="single" icon="notebook-pen" name="Magazine" :route="route('user.magazine-list')" active="magazine" :page_slug="$active"/>
-            <x-user.navlink type="single" icon="newspaper" name="Newspaper" :route="route('user.newspaper-list')" active="newspaper" :page_slug="$active"/>
+            <x-user.navlink type="single" icon="notebook-pen" name="Magazine" :route="route('user.magazine-list')" active="magazine"
+                :page_slug="$active" />
+            <x-user.navlink type="single" icon="newspaper" name="Newspaper" :route="route('user.newspaper-list')" active="newspaper"
+                :page_slug="$active" />
             <x-admin.navlink type="dropdown" icon="app-window" name="Book Issues" :page_slug="$active" :items="[
                 [
                     'name' => 'Book Issue Requests',
@@ -83,6 +85,15 @@
                     'icon' => 'tags',
                     'active' =>
                         'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
+                ],
+                [
+                    'name' => 'Fine Unpaid',
+                    'route' => route('user.book-issues-list', [
+                        'fine-status' => App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_UNPAID],
+                    ]),
+                    'icon' => 'hand-coins',
+                    'active' =>
+                        'book_issues_' . App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_UNPAID],
                 ],
             ]" />
             {{-- <x-user.navlink type="dropdown" icon="ratio" name="Actions" :page_slug="$active"
