@@ -73,7 +73,7 @@
                         {{-- status --}}
                         <div class="mb-4">
                             <label for="fine_status" class="block font-medium text-sm text-gray-700">Fine Status</label>
-                            <select name="fine_status" id="fine_status" class="form-select mt-1 block w-full">
+                            <select name="fine_status" id="fine_status" class="select mt-1 block w-full">
                                 @foreach (app\Models\BookIssues::fineStatusList() as $key => $label)
                                     <option value="{{ $key }}"
                                         {{ old('fine_status', $issue->fine_status ?? '') == $key ? 'selected' : '' }}>

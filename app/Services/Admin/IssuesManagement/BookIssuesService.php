@@ -72,16 +72,26 @@ class BookIssuesService
         ]);
     }
 
-    public function updateReturnBookIssue(string $encryptedId,  array $data): BookIssues
+    public function updateReturnBookIssue(string $encryptedId, array $data): BookIssues
     {
         $bookIssue = $this->getBookIssues($encryptedId);
 
-        $data['status'] = BookIssues::STATUS_RETURNED;
-        $data['return_date'] = now();
-        $data['fine_amount'] = $data['fine_amount'];
+        $returnDate = \Carbon\Carbon::parse($data['return_date']);
+        $data['return_date'] = $returnDate;
+        $data['fine_amount'] = $data['fine_amount'] ?? 0;
+        $data['fine_status'] = $data['fine_status'] ?? null;
         $data['updater_id'] = admin()->id;
         $data['updater_type'] = get_class(admin());
+
+        // Check if return is after due date
+        if ($returnDate->gt($bookIssue->due_date)) {
+            $data['status'] = BookIssues::STATUS_OVERDUE;
+        } else {
+            $data['status'] = BookIssues::STATUS_RETURNED;
+        }
+
         $bookIssue->update($data);
+
         return $bookIssue;
     }
 }
