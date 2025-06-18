@@ -73,6 +73,7 @@ class BookIssuesController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         $status = $request->get('status');
+
         $fine_status = $request->get('fine_status');
         if ($request->ajax()) {
             $query = $this->bookIssuesService->getBookIssuess();
@@ -175,15 +176,15 @@ class BookIssuesController extends Controller implements HasMiddleware
         $data['issue'] = BookIssues::findOrFail(decrypt($id));
         return view('backend.admin.issues-management.book-issues.returned', $data);
     }
-  
+
     public function updateReturn(BookIssuesRequest $request, string $id): RedirectResponse
     {
-        
+
         try {
             $validated = $request->validated();
             // Update book issue
-           $this->bookIssuesService->updateReturnBookIssue($id, $validated);
-           
+            $this->bookIssuesService->updateReturnBookIssue($id, $validated);
+
             session()->flash('success', "Book return updated successfully");
         } catch (\Throwable $e) {
             session()->flash('error', 'Book return update failed');
@@ -193,19 +194,19 @@ class BookIssuesController extends Controller implements HasMiddleware
     }
 
     // Book lost Issues
-      public function lost($id)
+    public function lost($id)
     {
         $data['issue_lost'] = BookIssues::findOrFail(decrypt($id));
         return view('backend.admin.issues-management.book-issues.lost', $data);
     }
     public function updateLost(BookLostReuest $request, string $id): RedirectResponse
     {
-        
+
         try {
             $validated = $request->validated();
             // Update book issue
-           $this->bookIssuesService->updateBookLost($id, $validated);
-           
+            $this->bookIssuesService->updateBookLost($id, $validated);
+
             session()->flash('success', "Book Lost Information updated successfully");
         } catch (\Throwable $e) {
             session()->flash('error', 'Book Lost Information update failed');
@@ -278,7 +279,7 @@ class BookIssuesController extends Controller implements HasMiddleware
      */
     public function update(BookIssuesRequest $request, string $id)
     {
-        
+
         try {
             $validated = $request->validated();
             $issue = $this->bookIssuesService->getBookIssues($id);
