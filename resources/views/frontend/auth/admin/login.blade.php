@@ -1,19 +1,20 @@
 <x-frontend::layout>
 
-     <x-slot name="title">
-        {{ __('Login') }}
+    <x-slot name="title">
+        {{ __('Admin Login') }}
     </x-slot>
 
     <x-slot name="breadcrumb">
-        {{ __('Login') }}
+        {{ __('Admin Login') }}
     </x-slot>
 
     <x-slot name="page_slug">
-        login
+        admin-login
     </x-slot>
     <section class="min-h-[80vh] flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row bg-white dark:bg-gray-800 border-gray-50 border dark:border-black shadow-xl rounded-2xl overflow-hidden w-[1550px]">
-             <!-- Left: Image -->
+        <div
+            class="flex flex-col md:flex-row bg-white dark:bg-gray-800 border-gray-50 border dark:border-black shadow-xl rounded-2xl overflow-hidden w-[1550px]">
+            <!-- Left: Image -->
             <div class="hidden md:block md:w-7/12">
                 <img src="{{ asset('/frontend/images/admin.jpg') }}" alt="Admin Login Image"
                     class="w-full h-full object-cover">
@@ -30,7 +31,8 @@
                 </div>
 
                 <!-- Session Status -->
-                <x-auth-session-status class="mb-4 text-sm text-green-600 dark:text-green-400 text-center" :status="session('status')" />
+                <x-auth-session-status class="mb-4 text-sm text-green-600 dark:text-green-400 text-center"
+                    :status="session('status')" />
 
                 <!-- Form -->
                 <form method="POST" action="{{ route('admin.login') }}" class="mt-6 space-y-5">
@@ -54,7 +56,8 @@
 
                     <!-- Remember Me -->
                     <div class="flex items-center justify-between">
-                        <label for="remember_me" class="inline-flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <label for="remember_me"
+                            class="inline-flex items-center text-sm text-gray-600 dark:text-gray-400">
                             <input id="remember_me" type="checkbox" name="remember"
                                 class="rounded border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:bg-gray-700 dark:focus:ring-offset-gray-800">
                             <span class="ml-2">{{ __('Remember me') }}</span>
@@ -77,7 +80,7 @@
                 </form>
             </div>
 
-           
+
         </div>
     </section>
-</x-frontend-layout>
+    </x-frontend-layout>

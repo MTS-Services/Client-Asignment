@@ -154,6 +154,30 @@
                         'active' =>
                             'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
                     ],
+                    [
+                        'name' => 'Fine Unpaid',
+                        'route' => route('bim.book-issues.index', [
+                            'fine-status' => App\Models\BookIssues::fineStatusList()[
+                                App\Models\BookIssues::FINE_UNPAID
+                            ],
+                        ]),
+                        'icon' => 'badge-dollar-sign',
+                        'active' =>
+                            'book_issues_' .
+                            App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_UNPAID],
+                    ],
+                    [
+                        'name' => 'Fine Paid',
+                        'route' => route('bim.book-issues.index', [
+                            'fine-status' => App\Models\BookIssues::fineStatusList()[
+                                App\Models\BookIssues::FINE_PAID
+                            ],
+                        ]),
+                        'icon' => 'hand-coins',
+                        'active' =>
+                            'book_issues_' .
+                            App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_PAID],
+                    ],
                 ]" />
 
             <x-admin.navlink type="single" icon="notebook-text" name="Magazine" :route="route('magazine.index')" active="magazine"

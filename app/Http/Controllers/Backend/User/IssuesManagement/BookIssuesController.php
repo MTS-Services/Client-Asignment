@@ -40,9 +40,15 @@ class BookIssuesController extends Controller implements HasMiddleware
     public function issuesList(Request $request)
     {
         $status = $request->get('status');
+        $fine_status = $request->get('fine-status') ?? null;
         if ($request->ajax()) {
-            $query = $this->bookIssuesService->getBookIssuess()->where('status', array_search($status, BookIssues::statusList()))->self();
-
+            $query = $this->bookIssuesService->getBookIssuess()->self();
+            if ($status) {
+                $query->where('status', array_search($status, BookIssues::statusList()));
+            }
+            if ($fine_status) {
+                $query->where('fine_status', array_search($fine_status, BookIssues::fineStatusList()));
+            }
             return DataTables::eloquent($query)
                 ->editColumn('user_id', fn($bookIssues) => $bookIssues->user?->name)
                 ->editColumn('book_id', fn($bookIssues) => $bookIssues->book?->title)
@@ -64,16 +70,16 @@ class BookIssuesController extends Controller implements HasMiddleware
         return [
             [
                 'routeName' => 'user.book-issues-show',
-                'params' => [encrypt($model->id) ,'status' => $status],
+                'params' => [$model->issue_code ,'status' => $status],
                 'className' => 'view',
                 'label' => 'Details',
                 'permissions' => ['permission-list']
             ],
         ];
     }
-    public function issuesShow(Request $request, string $id)
+    public function issuesShow(Request $request,  $issue_code)
     {
-        $book_issue = $this->bookIssuesService->getBookIssues($id);
+        $book_issue = $this->bookIssuesService->getBookIssues($issue_code , 'issue_code');
         return view('backend.user.book-issues.show', compact('book_issue'));
     }
 }

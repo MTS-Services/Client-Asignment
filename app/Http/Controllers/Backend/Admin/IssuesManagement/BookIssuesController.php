@@ -18,6 +18,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
 class BookIssuesController extends Controller implements HasMiddleware
@@ -73,7 +74,9 @@ class BookIssuesController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         $status = $request->get('status');
-        $fine_status = $request->get('fine_status');
+
+        $fine_status = $request->get('fine-status') ?? null;
+
         if ($request->ajax()) {
             $query = $this->bookIssuesService->getBookIssuess();
             if ($status) {
@@ -91,7 +94,7 @@ class BookIssuesController extends Controller implements HasMiddleware
                 ->editColumn('creater_id', fn($bookIssues) => $this->creater_name($bookIssues))
                 ->editColumn('created_at', fn($bookIssues) => $bookIssues->created_at_formatted)
                 ->editColumn('action', fn($bookIssues) => view('components.admin.action-buttons', [
-                    'menuItems' => $this->menuItems($bookIssues, $status)
+                    'menuItems' => $this->menuItems($bookIssues, $status, $fine_status)
                 ])->render())
                 ->rawColumns(['created_by', 'issue_date', 'user_id', 'book_id', 'status', 'creater_id', 'action'])
                 ->make(true);
@@ -101,7 +104,7 @@ class BookIssuesController extends Controller implements HasMiddleware
     }
 
 
-    protected function menuItems($model, $status): array
+    protected function menuItems($model, $status, $fine_status = null): array
     {
         $items = [
             [
@@ -112,6 +115,20 @@ class BookIssuesController extends Controller implements HasMiddleware
                 'permissions' => ['book-issues-list', 'book-issues-delete', 'book-issues-status']
             ],
         ];
+
+        if ($model->fine_status == BookIssues::FINE_UNPAID) {
+            $items = array_merge($items, [
+                [
+                    'routeName' => 'bm.book-issues.fine-status',
+                    'params' => [
+                        encrypt($model->id),
+                        'status' => BookIssues::fineStatusList()[BookIssues::FINE_PAID]
+                    ],
+                    'label' => 'Make Paid',
+                    'permissions' => ['book-issues-edit']
+                ],
+            ]);
+        }
 
         if ($model->status == BookIssues::STATUS_PENDING) {
             $items = array_merge($items, [
@@ -175,15 +192,15 @@ class BookIssuesController extends Controller implements HasMiddleware
         $data['issue'] = BookIssues::findOrFail(decrypt($id));
         return view('backend.admin.issues-management.book-issues.returned', $data);
     }
-  
+
     public function updateReturn(BookIssuesRequest $request, string $id): RedirectResponse
     {
-        
+
         try {
             $validated = $request->validated();
             // Update book issue
-           $this->bookIssuesService->updateReturnBookIssue($id, $validated);
-           
+            $this->bookIssuesService->updateReturnBookIssue($id, $validated);
+
             session()->flash('success', "Book return updated successfully");
         } catch (\Throwable $e) {
             session()->flash('error', 'Book return update failed');
@@ -193,19 +210,19 @@ class BookIssuesController extends Controller implements HasMiddleware
     }
 
     // Book lost Issues
-      public function lost($id)
+    public function lost($id)
     {
         $data['issue_lost'] = BookIssues::findOrFail(decrypt($id));
         return view('backend.admin.issues-management.book-issues.lost', $data);
     }
     public function updateLost(BookLostReuest $request, string $id): RedirectResponse
     {
-        
+
         try {
             $validated = $request->validated();
             // Update book issue
-           $this->bookIssuesService->updateBookLost($id, $validated);
-           
+            $this->bookIssuesService->updateBookLost($id, $validated);
+
             session()->flash('success', "Book Lost Information updated successfully");
         } catch (\Throwable $e) {
             session()->flash('error', 'Book Lost Information update failed');
@@ -278,7 +295,7 @@ class BookIssuesController extends Controller implements HasMiddleware
      */
     public function update(BookIssuesRequest $request, string $id)
     {
-        
+
         try {
             $validated = $request->validated();
             $issue = $this->bookIssuesService->getBookIssues($id);
@@ -381,5 +398,17 @@ class BookIssuesController extends Controller implements HasMiddleware
         };
         session()->flash('success', 'Admin status updated successfully!');
         return redirect()->back();
+    }
+
+    public function fineStatus(string $id, string $status)
+    {
+        try {
+            $this->bookIssuesService->updateFineStatus($id, $status);
+            session()->flash('success', 'Fine status updated successfully!');
+        } catch (Throwable $e) {
+            session()->flash('Something went wrong! Please try again.');
+            throw $e;
+        }
+        return redirect()->back()->with('fine-status', BookIssues::fineStatusList()[BookIssues::FINE_UNPAID]);
     }
 }

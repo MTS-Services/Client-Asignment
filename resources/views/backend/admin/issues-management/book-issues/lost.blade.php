@@ -15,42 +15,49 @@
                         data-lucide="undo-2" class="w-4 h-4"></i></x-admin.primary-link>
             </div>
         </div>
-           <div class="glass-card shadow rounded-xl p-6 mb-6 bg-white dark:bg-[#19221F]">
+        <div class="glass-card shadow rounded-xl p-6 mb-6 bg-white dark:bg-[#19221F]">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white mb-4">📚 Book Issue Details</h2>
 
             <div class="grid grid-cols-2 gap-4 text-sm">
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Issue Code</p>
-                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue_lost->issue_code }}</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue_lost->issue_code }}
+                    </p>
                 </div>
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">User</p>
-                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue_lost->user?->name }}</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">
+                        {{ $issue_lost->user?->name }}</p>
                 </div>
 
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Book</p>
-                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue_lost->book?->title }}</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">
+                        {{ $issue_lost->book?->title }}</p>
                 </div>
 
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Issued By</p>
-                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue_lost->issuedBy?->name }}</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">
+                        {{ $issue_lost->issuedBy?->name }}</p>
                 </div>
 
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Issued Date</p>
-                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue_lost->issue_date }}</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">
+                        {{ $issue_lost->issue_date }}</p>
                 </div>
 
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Due Date</p>
-                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue_lost->due_date }}</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue_lost->due_date }}
+                    </p>
                 </div>
                 @if ($issue_lost->notes)
                     <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg col-span-2">
                         <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Note</p>
-                        <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue_lost->notes }}</p>
+                        <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue_lost->notes }}
+                        </p>
                     </div>
                 @endif
             </div>
@@ -62,7 +69,9 @@
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white mb-4"> Book Lost Form</h2>
 
-                <form action="{{ route('bim.book-issues.update-lost', encrypt($issue_lost->id)) }}" method="POST">
+                <form
+                    action="{{ route('bim.book-issues.update-lost', [encrypt($issue_lost->id), 'status' => request('status')]) }}"
+                    method="POST">
                     @csrf
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
                         <div class="space-y-2">
@@ -105,7 +114,7 @@
                     {{-- Notes --}}
                     <div class="space-y-2 ">
                         <p class="label pt-2.5">{{ __('Notes') }}</p>
-                        <textarea name="notes" rows="4" placeholder="Notes" class="textarea !px-3">{{ old('notes') }}</textarea>
+                        <textarea name="notes" rows="4" placeholder="Notes" class="textarea !px-3 no-ckeditor5">{{ old('notes') }}</textarea>
                         <x-input-error class="mt-2" :messages="$errors->get('notes')" />
                     </div>
                     <div class="flex justify-end mt-5">

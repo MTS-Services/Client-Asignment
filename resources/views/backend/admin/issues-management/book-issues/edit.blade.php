@@ -73,7 +73,7 @@
                         {{-- Notes --}}
                         <div class="space-y-2 sm:col-span-2">
                             <p class="label">{{ __('Notes') }}</p>
-                            <textarea name="notes" rows="4" placeholder="Notes" class="textarea">{{ old('notes', $issue->notes) }}</textarea>
+                            <textarea name="notes" rows="4" placeholder="Notes" class="textarea  !px-3 no-ckeditor5">{{ old('notes', $issue->notes) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('notes')" />
                         </div>
                     </div>
