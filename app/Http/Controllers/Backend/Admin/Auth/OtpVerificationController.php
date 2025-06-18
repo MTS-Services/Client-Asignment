@@ -66,7 +66,8 @@ class OtpVerificationController extends Controller
             }
 
             return redirect()->route('admin.password.reset', [
-                'token' => $this->createPasswordResetToken($admin)
+                'token' => $this->createPasswordResetToken($admin),
+                'email' => $admin->email
             ])->with('success', 'OTP verified. Please reset your password.');
         });
     }

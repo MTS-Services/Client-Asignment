@@ -12,30 +12,36 @@
         reset-password
     </x-slot>
 
-    <section>
-        <div class="min-h-[80vh] flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-            <div
-                class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-                <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                    {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
-                </div>
+    <section class="min-h-[80vh] flex items-center justify-center bg-gray-100 dark:bg-gray-900 py-10 px-4">
+        <div
+            class="flex flex-col md:flex-row  w-[1550px] bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden">
+            <!-- Left: Form Section -->
+            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">
+                    {{ __('Reset Your Password') }}
+                </h2>
+
+                <p class="text-sm text-gray-600 dark:text-gray-400 text-center mb-4">
+                    {{ __('Please enter your email and new password to reset your account access.') }}
+                </p>
+
+                <x-auth-session-status class="mb-4" :status="session('status')" />
+
                 <form method="POST" action="{{ route('password.store') }}">
                     @csrf
-
-                    <!-- Password Reset Token -->
                     <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
                     <!-- Email Address -->
                     <div>
                         <x-input-label for="email" :value="__('Email')" />
                         <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
-                            :value="old('email', $request->email)" required autofocus autocomplete="username" />
+                            :value="old('email', request()->email)" required autofocus autocomplete="username" />
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
                     <!-- Password -->
                     <div class="mt-4">
-                        <x-input-label for="password" :value="__('Password')" />
+                        <x-input-label for="password" :value="__('New Password')" />
                         <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
                             autocomplete="new-password" />
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
@@ -44,21 +50,24 @@
                     <!-- Confirm Password -->
                     <div class="mt-4">
                         <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
                         <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
                             name="password_confirmation" required autocomplete="new-password" />
-
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>
 
-                    <div class="flex items-center justify-end mt-4">
-                        <x-primary-button>
+                    <div class="flex items-center justify-end mt-6">
+                        <x-primary-button class="w-full justify-center">
                             {{ __('Reset Password') }}
                         </x-primary-button>
                     </div>
                 </form>
             </div>
-        </div>
+
+            <!-- Right: Image Section -->
+            <div class="hidden md:block md:w-1/2">
+                <img src="{{ asset('/frontend/images/password.jpg') }}" alt="Reset Password Image"
+                    class="w-full h-full object-cover">
+            </div>
         </div>
     </section>
 </x-frontend::layout>
