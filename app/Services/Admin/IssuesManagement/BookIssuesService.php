@@ -78,7 +78,8 @@ class BookIssuesService
     public function updateReturnBookIssue(string $encryptedId, array $data): BookIssues
     {
         $bookIssue = $this->getBookIssues($encryptedId);
-
+        
+        $data['status'] = BookIssues::STATUS_RETURNED;
         $returnDate = \Carbon\Carbon::parse($data['return_date']);
         $data['return_date'] = $returnDate;
         $data['fine_amount'] = $data['fine_amount'] ?? 0;
