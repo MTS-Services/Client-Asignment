@@ -7,7 +7,8 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Edit Book') }}</h2>
-                <x-admin.primary-link href="{{ route('bm.book.index') }}">{{ __('Back') }} <i data-lucide="undo-2" class="w-4 h-4"></i> </x-admin.primary-link>
+                <x-admin.primary-link href="{{ route('bm.book.index') }}">{{ __('Back') }} <i data-lucide="undo-2"
+                        class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 
@@ -109,13 +110,8 @@
                         <!-- Image -->
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Image') }}</p>
-                            <input type="file" name="image" class="filepond" id="image"
+                            <input type="file" name="cover_image" class="filepond" id="cover_image"
                                 accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
-                            @if ($book->cover_image)
-                                <div class="mt-2">
-                                    <img src="{{ $book->cover_image }}" class="h-24 rounded" alt="Current Cover Image">
-                                </div>
-                            @endif
                             <x-input-error class="mt-2" :messages="$errors->get('cover_image')" />
                         </div>
 

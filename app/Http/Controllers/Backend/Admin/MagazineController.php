@@ -124,8 +124,8 @@ class MagazineController extends Controller implements HasMiddleware
     {
         try {
             $validated = $request->validated();
-
-            $this->magazineService->createMagazine($validated, $request->file('cover_image'));
+            $file = $request->validated('cover_image') && $request->hasFile('cover_image') ? $request->file('cover_image') : null;
+            $this->magazineService->createMagazine($validated, $file);
             session()->flash('success', "Magazine created successfully");
         } catch (\Throwable $e) {
             session()->flash('error', "Magazine creation failed");
@@ -162,7 +162,8 @@ class MagazineController extends Controller implements HasMiddleware
         try {
             $validated = $request->validated();
             $magazine = $this->magazineService->getMagazine($id);
-            $this->magazineService->updateMagazine($magazine, $validated, $request->file('cover_image'));
+            $file = $request->validated('cover_image') && $request->hasFile('cover_image') ? $request->file('cover_image') : null;
+            $this->magazineService->updateMagazine($magazine, $validated, $file);
             session()->flash('success', "Magazine updated successfully");
         } catch (\Throwable $e) {
             session()->flash('error', "Magazine update failed");

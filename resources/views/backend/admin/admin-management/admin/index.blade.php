@@ -89,7 +89,7 @@
                         },
                         {
                             label: '{{ __('Role') }}',
-                            key: 'role_id',
+                            key: 'role_name',
                         },
                         {
                             label: '{{ __('Status') }}',
@@ -102,15 +102,6 @@
                             key: 'modified_image',
                             type: 'image',
                         },
-                        {
-                            label: '{{ __('Video') }}',
-                            key: 'video',
-                            type: 'video',
-                        },
-                        {
-                            label: '{{ __('Desctiption') }}',
-                            key: 'description',
-                        }
                     ];
 
                     showDetailsModal(route, id, '{{ __('Admin Details') }}', details);

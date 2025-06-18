@@ -76,7 +76,7 @@ class AuthBaseModel extends Authenticatable
     }
     public function getStatusLabelAttribute()
     {
-        return $this->status ? self::statusList()[$this->status] : null;
+        return $this->status ? self::statusList()[$this->status] : 'Unknown';
     }
 
     public function getStatusColorAttribute()

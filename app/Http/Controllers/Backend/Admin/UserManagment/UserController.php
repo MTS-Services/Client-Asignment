@@ -126,7 +126,8 @@ class UserController extends Controller implements HasMiddleware
     {
         try {
             $validated = $request->validated();
-            $this->userService->createUser($validated, $request->file('image'));
+            $file = $request->validated('image') && $request->hasFile('image') ? $request->file('image') : null;
+            $this->userService->createUser($validated, $file);
             session()->flash('success', "User created successfully");
         } catch (\Throwable $e) {
             session()->flash('User creation failed');
@@ -169,7 +170,8 @@ class UserController extends Controller implements HasMiddleware
         try {
             $user = $this->userService->getUser($id);
             $validated = $request->validated();
-            $this->userService->updateUser($user, $validated, $request->file('image'));
+            $file = $request->validated('image') && $request->hasFile('image') ? $request->file('image') : null;
+            $this->userService->updateUser($user, $validated, $file);
             session()->flash('success', "User updated successfully");
         } catch (\Throwable $e) {
             session()->flash('User update failed');

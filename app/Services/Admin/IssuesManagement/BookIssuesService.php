@@ -25,11 +25,6 @@ class BookIssuesService
     public function createBookIssues(array $data): BookIssues
     {
         return DB::transaction(function () use ($data) {
-
-            $data['issue_code'] = generateBookIssueNumber();
-            $data['issued_by'] = admin()->id;
-            $data['creater_id'] = admin()->id;
-            $data['creater_type'] = get_class(admin());
             $bookIssues = BookIssues::create($data);
             return $bookIssues;
         });
@@ -38,8 +33,6 @@ class BookIssuesService
     public function updateBookIssues(BookIssues $bookIssues, array $data): BookIssues
     {
         return DB::transaction(function () use ($bookIssues, $data) {
-            $data['updater_id'] = admin()->id;
-            $data['updater_type'] = get_class(admin());
             $bookIssues->update($data);
             return $bookIssues;
         });
