@@ -6,8 +6,7 @@
         'fixed top-0 left-0 h-full': !desktop,
         'w-72 translate-x-0': !desktop && mobile_menu_open,
         'w-72 -translate-x-full': !desktop && !mobile_menu_open,
-    }"
-    >
+    }">
 
     <div class="sidebar-glass-card h-full custom-scrollbar rounded-xl overflow-y-auto">
         <!-- Sidebar Header -->
@@ -23,13 +22,14 @@
                     x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition-all duration-200"
                     x-transition:leave-start="opacity-100 translate-x-0"
                     x-transition:leave-end="opacity-0 -translate-x-4">
-                    <h1 class="text-xl font-bold text-text-light-primary dark:text-text-white">{{__('MakTech')}}</h1>
-                    <p class="text-text-light-secondary dark:text-text-dark-primary text-sm">{{__('Admin Dashboard')}}</p>
+                    <h1 class="text-xl font-bold text-text-light-primary dark:text-text-white">{{ __('MakTech') }}</h1>
+                    <p class="text-text-light-secondary dark:text-text-dark-primary text-sm">{{ __('Admin Dashboard') }}
+                    </p>
                 </div>
             </div>
         </a>
-       
-         
+
+
 
         <!-- Navigation Menu -->
         <nav class="p-2 space-y-2 ">
@@ -156,13 +156,27 @@
                     ],
                 ]" />
 
-
-
             <x-admin.navlink type="single" icon="notebook-text" name="Magazine" :route="route('magazine.index')" active="magazine"
                 :page_slug="$active" />
 
-            <x-admin.navlink type="single" icon="newspaper" name="Newspaper" :route="route('newspaper.index')"
-                active="newspaper" :page_slug="$active" />
+            <x-admin.navlink type="single" icon="newspaper" name="Newspaper" :route="route('newspaper.index')" active="newspaper"
+                :page_slug="$active" />
+
+            <x-admin.navlink type="dropdown" icon="cog" name="Application Settings" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'General Settings',
+                        'route' => route('app-settings.general'),
+                        'icon' => 'settings',
+                        'active' => 'app-general-settings',
+                    ],
+                    // [
+                    //     'name' => 'Database Settings',
+                    //     'route' => route('app-settings.database'),
+                    //     'icon' => 'database',
+                    //     'active' => 'app-database-settings',
+                    // ],
+                ]" />
 
             @if (isset($not_use))
                 {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}

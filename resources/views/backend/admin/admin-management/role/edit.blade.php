@@ -21,7 +21,7 @@
                     @csrf
                     @method('PUT')
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                        <div class="space-y-2 col-span-2">
+                        <div class="space-y-2 sm:col-span-2">
                             <p class="label">{{ __('Role Name') }}</p>
                             <label class="input relative flex items-center gap-2">
                                 <input type="text" placeholder="Role" value="{{ $role->name }}" name="name"
@@ -29,7 +29,7 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                         </div>
-                        <div class="col-span-2">
+                        <div class="sm:col-span-2 space-y-2">
                             <h2 class="text-lg font-bold mb-3">{{ __('Permissions') }}</h2>
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                                 @foreach ($groupedPermissions->chunk(1) as $chunks)

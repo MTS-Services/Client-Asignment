@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\Admin\UserManagment\UserController;
 use App\Http\Controllers\Backend\Admin\MagazineController;
 use App\Http\Controllers\Backend\Admin\NewspaperController;
 use App\Http\Controllers\Backend\Admin\ProfileController;
+use App\Http\Controllers\Backend\Admin\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\BookManagement\PublisherController;
 use App\Http\Controllers\Backend\Admin\BookManagement\RackController;
 
@@ -153,6 +154,13 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
             Route::patch('/update-return/{bookIssue}', 'updateReturn')->name('update-return');
             Route::post('/update-return/{bookIssue}', 'updateLost')->name('update-lost');
         });
+    });
 
+
+    // Application Settings 
+    Route::controller(ApplicationSettingController::class)->name('app-settings.')->prefix('application-settings')->group(function () {
+        Route::get('/', 'general')->name('general');
+        Route::post('/update-settings', 'updateSettings')->name('update-settings');
+        Route::get('/database', 'database')->name('database');
     });
 });
