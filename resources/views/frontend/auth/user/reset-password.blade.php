@@ -12,7 +12,7 @@
         reset-password
     </x-slot>
 
-    <section class="min-h-[80vh] flex items-center justify-center  py-10 px-4">
+    <section class="min-h-screen flex items-center justify-center ">
         <div
             class="flex flex-col md:flex-row max-h-[65vh]  w-[1550px] bg-white dark:bg-gray-800 border-t border-gray-100 shadow-lg rounded-2xl overflow-hidden">
             <!-- Left: Form Section -->

@@ -11,8 +11,8 @@
         admin-reset-password
     </x-slot>
 
-    <section class="py-20">
-        <div class="min-h-[80vh] flex items-center justify-center">
+    <section>
+        <div class="min-h-screen flex items-center justify-center">
             <div
                 class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border shadow-top rounded-2xl overflow-hidden w-[1550px]">
 

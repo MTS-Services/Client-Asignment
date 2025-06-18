@@ -11,10 +11,9 @@
     <x-slot name="page_slug">
         admin-login
     </x-slot>
-    <section class="min-h-[80vh] flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
-        <div
-            class="flex flex-col md:flex-row bg-white dark:bg-gray-800 border-gray-50 border dark:border-black shadow-xl rounded-2xl overflow-hidden w-[1550px]">
-            <!-- Left: Image -->
+    <section class="min-h-screen flex items-center justify-center ">
+        <div class="flex flex-col md:flex-row bg-white dark:bg-gray-800 border-gray-50 border dark:border-black shadow-xl rounded-2xl overflow-hidden w-[1550px]">
+             <!-- Left: Image -->
             <div class="hidden md:block md:w-7/12">
                 <img src="{{ asset('/frontend/images/admin.jpg') }}" alt="Admin Login Image"
                     class="w-full h-full object-cover">
@@ -39,20 +38,32 @@
                     @csrf
 
                     <!-- Email -->
-                    <div>
-                        <x-input-label for="email" :value="__('Email')" />
-                        <x-text-input id="email" name="email" type="email" :value="old('email')" required autofocus
-                            class="block mt-1 w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/50 sm:text-sm" />
-                        <x-input-error :messages="$errors->get('email')" class="mt-1" />
-                    </div>
+                     <div>
+                            <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                {{ __('Email') }}
+                            </label>
+                            <input type="text" name="login" placeholder="Enter your Email"
+                                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
+                            <x-input-error class="mt-2" :messages="$errors->get('login')" />
+                        </div>
+
 
                     <!-- Password -->
-                    <div>
-                        <x-input-label for="password" :value="__('Password')" />
-                        <x-text-input id="password" name="password" type="password" required
-                            class="block mt-1 w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/50 sm:text-sm" />
-                        <x-input-error :messages="$errors->get('password')" class="mt-1" />
-                    </div>
+                   <div>
+                            <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                {{ __('Password') }}
+                            </label>
+                            <div class="relative">
+                                <input type="password" name="password" placeholder="Password"
+                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
+                                <button type="button"
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white">
+                                    <i class="fa-regular fa-eye-slash"></i>
+                                </button>
+                            </div>
+                            <x-input-error class="mt-2" :messages="$errors->get('password')" />
+                        </div>
+
 
                     <!-- Remember Me -->
                     <div class="flex items-center justify-between">
