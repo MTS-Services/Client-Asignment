@@ -2,11 +2,6 @@
     <x-slot name="title">{{ __('Create Admin') }}</x-slot>
     <x-slot name="breadcrumb">{{ __('Create Admin') }}</x-slot>
     <x-slot name="page_slug">admin</x-slot>
-
-    @push('css')
-        {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css"> --}}
-    @endpush
-
     <section>
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
@@ -82,7 +77,7 @@
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                                 @endforeach
                             </select>
-                            <x-input-error class="mt-2" :messages="$errors->get('password_confirmation')" />
+                            <x-input-error class="mt-2" :messages="$errors->get('role')" />
                         </div>
                         <div class="space-y-2 col-span-2">
                             <p class="label">{{ __('Image') }}</p>

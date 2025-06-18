@@ -14,6 +14,7 @@ use App\Http\Controllers\Backend\Admin\MagazineController;
 use App\Http\Controllers\Backend\Admin\NewspaperController;
 use App\Http\Controllers\Backend\Admin\PublishManagement\PublisherController;
 use App\Http\Controllers\Backend\Admin\RackController;
+use App\Http\Controllers\Backend\Admin\ApplicationSettingController;
 
 Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
@@ -146,5 +147,11 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
             Route::patch('/update-return/{bookIssue}', 'updateReturn')->name('update-return');
         });
 
+    });
+
+
+    // Application Settings 
+    Route::controller(ApplicationSettingController::class)->name('app-settings.')->prefix('application-settings')->group(function () {
+        Route::get('/', 'general')->name('general');
     });
 });
