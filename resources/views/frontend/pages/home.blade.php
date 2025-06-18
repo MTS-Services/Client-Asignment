@@ -29,12 +29,12 @@
     <x-slot name="title">Home</x-slot>
     <x-slot name="page_slug">home</x-slot>
 
-    <div class="relative min-h-screen flex items-center justify-center bg-fixed bg-cover bg-center"
+    <div class="relative min-h-screen flex items-center justify-center bg-fixed bg-cover bg-center" {{-- style="background-image: url({{ asset('frontend/images/admin.jpg') }}); animation: bgMove 20s infinite linear;"> --}}
         style="background-image: url({{ asset('frontend/images/admin.jpg') }}); animation: bgMove 20s infinite linear;">
 
         <div class="absolute inset-0  backdrop-blur-sm"></div>
 
-        <div class="relative z-10 text-slate-700 dark:text-slate-200 text-center px-6 ">
+        <div class="relative z-10 text-gray-100 dark:text-slate-200 text-center px-6 ">
             <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-6 drop-shadow-lg">
                 Welcome to {{ config('app.name', 'Dashboard') }}
             </h1>

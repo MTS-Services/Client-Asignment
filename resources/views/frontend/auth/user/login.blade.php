@@ -35,11 +35,11 @@
 
                         <div>
                             <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                {{ __('Username or Email') }}
+                                {{ __('Email') }}
                             </label>
-                            <input type="text" name="login" placeholder="Username or Email"
+                            <input type="text" name="email" placeholder="Email"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
-                            <x-input-error class="mt-2" :messages="$errors->get('login')" />
+                            <x-input-error class="mt-2" :messages="$errors->get('email')" />
                         </div>
 
                         <div>
