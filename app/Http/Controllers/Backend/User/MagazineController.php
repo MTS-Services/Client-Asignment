@@ -30,12 +30,7 @@ class MagazineController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            'auth:admin', // Applies 'auth:admin' to all methods
-
-            // Permission middlewares using the Middleware class
-            new Middleware('permission:magazine-list', only: ['magazineList']),
-            new Middleware('permission:magazine-details', only: ['magazineShow']),
-            //add more permissions if needed
+            'auth:web',
         ];
     }
 
@@ -87,4 +82,3 @@ class MagazineController extends Controller implements HasMiddleware
     }
 }
 
-   

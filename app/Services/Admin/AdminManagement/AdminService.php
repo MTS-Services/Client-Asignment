@@ -30,6 +30,7 @@ class AdminService
             if ($file) {
                 $data['image'] = $this->handleFileUpload($file, 'admins', $data['name']);
             }
+            $data['status'] = Admin::STATUS_ACTIVE;
             $data['created_by'] = admin()->id;
             $admin = Admin::create($data);
             $admin->assignRole($admin->role->name);
