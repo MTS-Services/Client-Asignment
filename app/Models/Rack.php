@@ -6,9 +6,8 @@ use App\Models\BaseModel;
 
 class Rack extends BaseModel
 {
-     protected $fillable = [
+    protected $fillable = [
         'sort_order',
-        'status',
         'rack_number',
         'location',
         'description',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -7,8 +8,7 @@ use App\Http\Traits\AuditColumnsTrait;
 use App\Models\AuthBaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-return new class extends Migration
-{
+return new class extends Migration {
     use SoftDeletes, AuditColumnsTrait;
     /**
      * Run the migrations.
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->longText('description')->nullable();
-            $table->tinyInteger('status')->default(AuthBaseModel::STATUS_ACTIVE);
+            $table->tinyInteger('status')->default(Category::STATUS_ACTIVE);
 
             $table->timestamps();
             $table->softDeletes();

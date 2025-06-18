@@ -59,9 +59,13 @@ class CategoryController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
+
+        $status = $request->get('status');
         if ($request->ajax()) {
             $query = $this->categoryService->getCategories();
-
+            if ($status) {
+                $query = $query->where('status', array_search($status, Category::statusList()));
+            }
             return DataTables::eloquent($query)
                 ->editColumn('status', fn($category) => "<span class='badge badge-soft {$category->status_color}'>{$category->status_label}</span>")
                 ->editColumn('created_by', fn($category) => $this->creater_name($category))
@@ -121,7 +125,7 @@ class CategoryController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CategoryRequest  $request)
+    public function store(CategoryRequest $request)
     {
         try {
             $validated = $request->validated();

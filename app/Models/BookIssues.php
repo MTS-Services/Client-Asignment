@@ -139,8 +139,17 @@ class BookIssues extends BaseModel
             default => 'badge-secondary',
         };
     }
-   public function scopeSelf(Builder $query): Builder
+    public function scopeSelf(Builder $query): Builder
     {
-        return $query->where('user_id',user()->id);
+        return $query->where('user_id', user()->id);
+    }
+
+    public function scopePaid(Builder $query): Builder
+    {
+        return $query->where('fine_status', self::FINE_PAID);
+    }
+    public function scopeUnpaid(Builder $query): Builder
+    {
+        return $query->where('fine_status', self::FINE_UNPAID);
     }
 }

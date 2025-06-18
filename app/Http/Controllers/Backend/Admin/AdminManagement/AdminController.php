@@ -61,8 +61,12 @@ class AdminController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
+        $status = $request->get('status');
         if ($request->ajax()) {
             $query = $this->adminService->getAdmins();
+            if ($status) {
+                $query = $query->where('status', array_search($status, Admin::statusList()))->verified();
+            }
             return DataTables::eloquent($query)
                 ->editColumn('role_id', fn($admin) => $admin->role?->name)
                 ->editColumn('email_verified_at', fn($admin) => "<span class='badge badge-soft {$admin->verify_color}'>{$admin->verify_label}</span>")
