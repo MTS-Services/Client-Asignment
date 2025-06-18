@@ -23,14 +23,14 @@ class BookIssuesController extends Controller implements HasMiddleware
 {
     use AuditRelationTraits;
 
-    protected function redirectIndex(): RedirectResponse
+    protected function redirectIndex($status): RedirectResponse
     {
-        return redirect()->route('bim.book-issues.index');
+        return redirect()->route('bim.book-issues.index', ['status' => $status]);
     }
 
-    protected function redirectTrashed(): RedirectResponse
+    protected function redirectTrashed($status): RedirectResponse
     {
-        return redirect()->route('bim.book-issues.trash');
+        return redirect()->route('bim.book-issues.trash', ['status' => $status]);
     }
 
     protected BookIssuesService $bookIssuesService;
@@ -78,15 +78,14 @@ class BookIssuesController extends Controller implements HasMiddleware
             return DataTables::eloquent($query)
                 ->editColumn('user_id', fn($bookIssues) => $bookIssues->user?->name)
                 ->editColumn('book_id', fn($bookIssues) => $bookIssues->book?->title)
-                ->editColumn('issued_by', fn($bookIssues) => $bookIssues->issuedBy?->name)
-                ->editColumn('returned_by', fn($bookIssues) => $bookIssues->returnedBy?->name)
+                ->editColumn('issue_date', fn($bookIssues) => dateFormat($bookIssues->issue_date))
                 ->editColumn('status', fn($bookIssues) => "<span class='badge badge-soft {$bookIssues->status_color}'>{$bookIssues->status_label}</span>")
                 ->editColumn('creater_id', fn($bookIssues) => $this->creater_name($bookIssues))
                 ->editColumn('created_at', fn($bookIssues) => $bookIssues->created_at_formatted)
                 ->editColumn('action', fn($bookIssues) => view('components.admin.action-buttons', [
                     'menuItems' => $this->menuItems($bookIssues, $status)
                 ])->render())
-                ->rawColumns(['created_by', 'issued_by', 'returned_by', 'user_id', 'book_id', 'status', 'creater_id', 'action'])
+                ->rawColumns(['created_by', 'issue_date', 'user_id', 'book_id', 'status', 'creater_id', 'action'])
                 ->make(true);
         }
 
@@ -170,21 +169,27 @@ class BookIssuesController extends Controller implements HasMiddleware
 
 
 
-    public function updateReturn(Request $request, string $id): RedirectResponse
+    public function updateReturn(BookIssuesRequest $request, string $id): RedirectResponse
     {
-
         try {
-            $validated = $request->validate([
-                'returned_by' => 'required|exists:users,id',
-            ]);
+            $validated = $request->validated();
+
+            // Update book issue
             $this->bookIssuesService->updateReturnBookIssue($id, $validated);
+
+            // Update fine_status separately
+            $bookIssue = BookIssues::findOrFail(decrypt($id));
+            $bookIssue->fine_status = $validated['fine_status'] ?? null;
+            $bookIssue->save();
+
             session()->flash('success', "Book return updated successfully");
         } catch (\Throwable $e) {
-            session()->flash('Book return update failed');
+            session()->flash('error', 'Book return update failed');
             throw $e;
         }
-        return $this->redirectIndex();
+        return $this->redirectIndex(request('status'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -205,13 +210,17 @@ class BookIssuesController extends Controller implements HasMiddleware
         try {
             $validated = $request->validated();
             $validated['status'] = BookIssues::STATUS_ISSUED;
+            $validated['issue_code'] = generateBookIssueNumber();
+            $validated['issued_by'] = admin()->id;
+            $validated['creater_id'] = admin()->id;
+            $validated['creater_type'] = get_class(admin());
             $this->bookIssuesService->createBookIssues($validated);
             session()->flash('success', "Book issues created successfully");
         } catch (\Throwable $e) {
             session()->flash('Book Issues creation failed');
             throw $e;
         }
-        return $this->redirectIndex();
+        return $this->redirectIndex(BookIssues::statusList()[BookIssues::STATUS_ISSUED]);
     }
 
     /**
@@ -254,7 +263,7 @@ class BookIssuesController extends Controller implements HasMiddleware
             session()->flash('Book Issues update failed');
             throw $e;
         }
-        return $this->redirectIndex();
+        return $this->redirectIndex(request('status'));
     }
 
     /**
@@ -270,42 +279,42 @@ class BookIssuesController extends Controller implements HasMiddleware
             session()->flash('Book Issues delete failed');
             throw $e;
         }
-        return $this->redirectIndex();
+        return $this->redirectIndex(request('status'));
     }
 
     public function trash(Request $request)
     {
+        $status = request('status');
         if ($request->ajax()) {
             $query = $this->bookIssuesService->getBookIssuess()->onlyTrashed();
             return DataTables::eloquent($query)
                 ->editColumn('user_id', fn($bookIssues) => $bookIssues->user?->name)
                 ->editColumn('book_id', fn($bookIssues) => $bookIssues->book?->title)
-                ->editColumn('issued_by', fn($bookIssues) => $bookIssues->issuedBy?->name)
-                ->editColumn('returned_by', fn($bookIssues) => $bookIssues->returnedBy?->name)
+                ->editColumn('issue_date', fn($bookIssues) => dateFormat($bookIssues->issue_date))
                 ->editColumn('status', fn($bookIssues) => "<span class='badge badge-soft {$bookIssues->status_color}'>{$bookIssues->status_label}</span>")
                 ->editColumn('deleted_by', fn($bookIssues) => $this->deleter_name($bookIssues))
                 ->editColumn('deleted_at', fn($bookIssues) => $bookIssues->deleted_at_formatted)
                 ->editColumn('action', fn($bookIssues) => view('components.admin.action-buttons', [
-                    'menuItems' => $this->trashedMenuItems($bookIssues),
+                    'menuItems' => $this->trashedMenuItems($bookIssues, $status),
                 ])->render())
-                ->rawColumns(['created_by', 'issued_by', 'returned_by', 'user_id', 'book_id', 'status', 'deleter_id', 'action'])
+                ->rawColumns(['created_by', 'issue_date', 'user_id', 'book_id', 'status', 'deleter_id', 'action'])
                 ->make(true);
         }
         return view('backend.admin.issues-management.book-issues.trash');
     }
 
-    protected function trashedMenuItems($model): array
+    protected function trashedMenuItems($model, $status): array
     {
         return [
             [
                 'routeName' => 'bim.book-issues.restore',
-                'params' => [encrypt($model->id)],
+                'params' => [encrypt($model->id), 'status' => $status],
                 'label' => 'Restore',
                 'permissions' => ['book-issues-restore']
             ],
             [
                 'routeName' => 'bim.book-issues.permanent-delete',
-                'params' => [encrypt($model->id)],
+                'params' => [encrypt($model->id), 'status' => $status],
                 'label' => 'Permanent Delete',
                 'p-delete' => true,
                 'permissions' => ['book-issues-permanent-delete']
@@ -323,7 +332,7 @@ class BookIssuesController extends Controller implements HasMiddleware
             session()->flash('Book Issues restore failed');
             throw $e;
         }
-        return $this->redirectTrashed();
+        return $this->redirectTrashed(request('status'));
     }
 
     public function permanentDelete(string $id): RedirectResponse
@@ -336,7 +345,7 @@ class BookIssuesController extends Controller implements HasMiddleware
             session()->flash('Book Issues permanent delete failed');
             throw $e;
         }
-        return $this->redirectTrashed();
+        return $this->redirectTrashed(request('status'));
     }
     public function status(string $id, string $status)
     {

@@ -22,30 +22,41 @@ class BookIssuesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
-            'book_id' => 'required|exists:books,id', // ✅ fixed typo
-            'notes' => 'nullable|string',
-            'issue_date' => 'required|date',
-            'due_date' => 'required|date|after_or_equal:issue_date',
-        ] + ($this->isMethod('POST') ? $this->store() : ($this->isMethod('PUT') ? $this->update() : $this->returnUpdate()));
+            
+        ] + (
+            $this->isMethod('POST') ? $this->store() : ($this->isMethod('PUT') ? $this->update() : ($this->isMethod('PATCH') ? $this->returnUpdate() : [])
+            ));
     }
 
 
     protected function store(): array
     {
         return [
-            //
+           'user_id' => 'required|exists:users,id',
+            'book_id' => 'required|exists:books,id', // ✅ fixed typo
+            'notes' => 'nullable|string',
+            'issue_date' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:issue_date',
         ];
     }
     protected function update(): array
     {
         return [
+            'user_id' => 'required|exists:users,id',
+            'book_id' => 'required|exists:books,id', // ✅ fixed typo
+            'notes' => 'nullable|string',
+            'issue_date' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:issue_date',
         ];
     }
     protected function returnUpdate(): array
     {
         return [
             'returned_by' => 'required|exists:users,id',
+            'return_date' => 'required|date',
+            'fine_amount' => 'nullable|numeric',
+            'notes' => 'nullable|string',
+
         ];
     }
 }

@@ -6,11 +6,12 @@
         'fixed top-0 left-0 h-full': !desktop,
         'w-72 translate-x-0': !desktop && mobile_menu_open,
         'w-72 -translate-x-full': !desktop && !mobile_menu_open,
-    }">
+    }"
+    >
 
-    <div class="glass-card h-full custom-scrollbar rounded-xl ">
+    <div class="sidebar-glass-card h-full custom-scrollbar rounded-xl overflow-y-auto">
         <!-- Sidebar Header -->
-        <a href="{{ route('admin.dashboard') }}" class="p-3 border-b border-white/10 inline-block">
+        <a href="{{ route('admin.dashboard') }}" class="p-4 border-b border-white/10 inline-block">
             <div class="flex items-center gap-4">
                 <div
                     class="w-10 h-10 glass-card shadow inset-shadow-lg bg-bg-white dark:bg-bg-black p-0 rounded-xl flex items-center justify-center">
@@ -22,14 +23,18 @@
                     x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition-all duration-200"
                     x-transition:leave-start="opacity-100 translate-x-0"
                     x-transition:leave-end="opacity-0 -translate-x-4">
-                    <h1 class="text-xl font-bold text-text-light-primary dark:text-text-white">Dashboard</h1>
-                    <p class="text-text-light-secondary dark:text-text-dark-primary text-sm">Dashboard Pro</p>
+                    <h1 class="text-xl font-bold text-text-light-primary dark:text-text-white">{{__('MakTech')}}</h1>
+                    <p class="text-text-light-secondary dark:text-text-dark-primary text-sm">{{__('Admin Dashboard')}}</p>
                 </div>
             </div>
         </a>
+       
+         
+
         <!-- Navigation Menu -->
-        <nav class="p-2 space-y-2">
+        <nav class="p-2 space-y-2 ">
             <!-- Dashboard -->
+
             {{-- 1. SINGLE NAVLINK (replaces your original single-navlink) --}}
             <x-admin.navlink type="single" icon="layout-dashboard" name="Dashboard" :route="route('admin.dashboard')"
                 active="admin-dashboard" :page_slug="$active" />
@@ -67,94 +72,96 @@
                         'active' => 'user',
                     ],
                 ]" />
-            <x-admin.navlink type="dropdown" icon="app-window" name="Book Management" :page_slug="$active"
+            <x-admin.navlink type="dropdown" icon="book-open-text" name="Book Management" :page_slug="$active"
                 :items="[
                     [
                         'name' => 'Book',
                         'route' => route('bm.book.index'),
-                        'icon' => 'tags',
+                        'icon' => 'book-text',
                         'active' => 'book',
                     ],
                     [
                         'name' => 'Category',
                         'route' => route('bm.category.index'),
-                        'icon' => 'tags',
+                        'icon' => 'book-lock',
                         'active' => 'category',
                     ],
                     [
                         'name' => 'Author',
                         'route' => route('bm.author.index'),
-                        'icon' => 'user',
+                        'icon' => 'shield-user',
                         'active' => 'author',
                     ],
                     [
                         'name' => 'Publisher',
                         'route' => route('bm.publisher.index'),
-                        // 'icon' => 'user',
+                        'icon' => 'book-user',
                         'active' => 'publisher',
                     ],
                     [
                         'name' => 'Rack',
                         'route' => route('bm.rack.index'),
-                        // 'icon' => 'rack',
+                        'icon' => 'layers',
                         'active' => 'rack',
                     ],
                 ]" />
 
-            <x-admin.navlink type="dropdown" icon="app-window" name="Book Issues" :page_slug="$active" :items="[
-                [
-                    'name' => 'Book Issue Requests',
-                    'route' => route('bim.book-issues.index', [
-                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_PENDING],
-                    ]),
-                    'icon' => 'tags',
-                    'active' =>
-                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_PENDING],
-                ],
-                [
-                    'name' => 'Book Issued',
-                    'route' => route('bim.book-issues.index', [
-                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_ISSUED],
-                    ]),
-                    'icon' => 'tags',
-                    'active' =>
-                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_ISSUED],
-                ],
-                [
-                    'name' => 'Book Returned',
-                    'route' => route('bim.book-issues.index', [
-                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
-                    ]),
-                    'icon' => 'tags',
-                    'active' =>
-                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
-                ],
-                [
-                    'name' => 'Book Overdue',
-                    'route' => route('bim.book-issues.index', [
-                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
-                    ]),
-                    'icon' => 'tags',
-                    'active' =>
-                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
-                ],
-                [
-                    'name' => 'Book Lost',
-                    'route' => route('bim.book-issues.index', [
-                        'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
-                    ]),
-                    'icon' => 'tags',
-                    'active' =>
-                        'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
-                ],
-            ]" />
+            <x-admin.navlink type="dropdown" icon="book-marked" name="Book Issues" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Book Issue Requests',
+                        'route' => route('bim.book-issues.index', [
+                            'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_PENDING],
+                        ]),
+                        'icon' => 'book',
+                        'active' =>
+                            'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_PENDING],
+                    ],
+                    [
+                        'name' => 'Book Issued',
+                        'route' => route('bim.book-issues.index', [
+                            'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_ISSUED],
+                        ]),
+                        'icon' => 'book-lock',
+                        'active' =>
+                            'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_ISSUED],
+                    ],
+                    [
+                        'name' => 'Book Returned',
+                        'route' => route('bim.book-issues.index', [
+                            'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
+                        ]),
+                        'icon' => 'book-check',
+                        'active' =>
+                            'book_issues_' .
+                            App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
+                    ],
+                    [
+                        'name' => 'Book Overdue',
+                        'route' => route('bim.book-issues.index', [
+                            'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
+                        ]),
+                        'icon' => 'book-dashed',
+                        'active' =>
+                            'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
+                    ],
+                    [
+                        'name' => 'Book Lost',
+                        'route' => route('bim.book-issues.index', [
+                            'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
+                        ]),
+                        'icon' => 'book-x',
+                        'active' =>
+                            'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
+                    ],
+                ]" />
 
 
 
-            <x-admin.navlink type="single" icon="layout-dashboard" name="Magazine" :route="route('magazine.index')" active="magazine"
+            <x-admin.navlink type="single" icon="notebook-text" name="Magazine" :route="route('magazine.index')" active="magazine"
                 :page_slug="$active" />
 
-            <x-admin.navlink type="single" icon="layout-dashboard" name="Newspaper" :route="route('newspaper.index')"
+            <x-admin.navlink type="single" icon="newspaper" name="Newspaper" :route="route('newspaper.index')"
                 active="newspaper" :page_slug="$active" />
 
             @if (isset($not_use))

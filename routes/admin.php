@@ -145,5 +145,6 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
             Route::delete('/permanent-delete/{bookIssue}', 'permanentDelete')->name('permanent-delete');
             Route::patch('/update-return/{bookIssue}', 'updateReturn')->name('update-return');
         });
+
     });
 });

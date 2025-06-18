@@ -9,13 +9,18 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Create Book Issue') }}</h2>
                 <x-admin.primary-link
-                    href="{{ route('bim.book-issues.index', ['status' => request('status')]) }}">{{ __('Back') }}
-                </x-admin.primary-link>
+                    href="{{ route('bim.book-issues.index', ['status' => request('status')]) }}">{{ __('Back') }} <i
+                        data-lucide="undo-2" class="w-4 h-4"></i> </x-admin.primary-link>
             </div>
         </div>
 
         <div
             class="grid grid-cols-1 gap-4 sm:grid-cols-1  {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
+
+
+            <div>
+
+            </div>
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
                 <form action="{{ route('bim.book-issues.store') }}" method="POST" enctype="multipart/form-data">
