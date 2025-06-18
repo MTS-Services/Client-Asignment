@@ -15,9 +15,9 @@
     <section class="min-h-screen flex items-center justify-center ">
         <div
             class="flex flex-col md:flex-row max-h-[65vh]  w-[1550px] bg-white dark:bg-gray-800 border-t border-gray-100 shadow-lg rounded-2xl overflow-hidden relative">
-            <a href="{{ url('/') }}"
-                class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
-                <i data-lucide="home"></i>
+             <a href="{{ url('/') }}"
+                class="flex items-center justify-center absolute top-3 left-3  px-5 py-3 rounded-md animate-scalePulse text-gray-700 gap-2">
+                <i data-lucide="arrow-left"></i>
                 <span>Back To Home</span>
             </a>
             <!-- Left: Form Section -->
@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="flex items-center justify-end mt-6">
-                        <x-primary-button class="w-full justify-center">
+                        <x-primary-button class="w-full justify-center py-6">
                             {{ __('Reset Password') }}
                         </x-primary-button>
                     </div>

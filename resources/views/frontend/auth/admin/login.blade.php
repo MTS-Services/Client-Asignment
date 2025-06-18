@@ -91,7 +91,7 @@
 
                     <!-- Submit -->
                     <div>
-                        <x-primary-button class="w-full py-2 justify-center">
+                        <x-primary-button class="w-full py-6 justify-center">
                             {{ __('Log in') }}
                         </x-primary-button>
                     </div>

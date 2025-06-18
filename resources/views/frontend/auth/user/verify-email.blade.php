@@ -17,8 +17,8 @@
             <div
                 class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg relative">
                 <a href="{{ url('/') }}"
-                    class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
-                    <i data-lucide="home"></i>
+                    class="flex items-center justify-center absolute top-3 left-3  px-5 py-3 rounded-md animate-scalePulse text-gray-700 gap-2">
+                    <i data-lucide="arrow-left"></i>
                     <span>Back To Home</span>
                 </a>
                 <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
@@ -39,7 +39,7 @@
                         @csrf
 
                         <div>
-                            <x-primary-button>
+                            <x-primary-button class="py-6">
                                 {{ __('Resend Verification Email') }}
                             </x-primary-button>
                         </div>

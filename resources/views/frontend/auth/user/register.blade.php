@@ -93,7 +93,7 @@
 
                     <!-- Submit -->
                     <div>
-                        <x-primary-button class=" text-base !py-3 !w-full">
+                        <x-primary-button class="text-base !w-full py-6">
                             {{ __('Register') }}
                         </x-primary-button>
                     </div>

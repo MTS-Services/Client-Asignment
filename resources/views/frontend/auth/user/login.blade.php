@@ -75,7 +75,7 @@
                         </div>
 
                         <div>
-                            <x-primary-button class="text-base !w-full">
+                            <x-primary-button class="text-base !w-full py-6">
                                 {{ __('Log in') }}
                             </x-primary-button>
                         </div>

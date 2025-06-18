@@ -16,9 +16,9 @@
         class="flex items-center justify-center min-h-[80vh] bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
         <div
             class="max-w-md w-full space-y-8 p-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative">
-            <a href="{{ url('/') }}"
-                class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
-                <i data-lucide="home"></i>
+             <a href="{{ url('/') }}"
+                class="flex items-center justify-center absolute top-3 left-3  px-5 py-3 rounded-md animate-scalePulse text-gray-700 gap-2">
+                <i data-lucide="arrow-left"></i>
                 <span>Back To Home</span>
             </a>
             <form method="POST" action="{{ route('verify-otp', ['email' => $email]) }}" class="space-y-6" id="otp-form">
@@ -81,7 +81,7 @@
                     </button>
 
                     {{-- Assuming x-primary-button is a Blade component you have --}}
-                    <button type="submit"
+                    <button type="submit py-6"
                         class="w-full sm:w-auto flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200">
                         {{ __('Verify') }}
                     </button>
