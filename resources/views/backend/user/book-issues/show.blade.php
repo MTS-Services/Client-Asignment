@@ -16,7 +16,7 @@
                         </p>
                     </div>
                     <div class="flex items-center gap-2 pe-6">
-                        <x-user.primary-link href="{{ route('user.book-issues-list', ['status' => request('status')]) }}">{{ __('Back') }} <i
+                        <x-user.primary-link href="{{ route('user.book-issues-list', [encrypt($book_issue->id), 'status' => request('status')]) }}">{{ __('Back') }} <i
                                 data-lucide="undo-2" class="w-4 h-4"></i>
                         </x-user.primary-link>
                     </div>
