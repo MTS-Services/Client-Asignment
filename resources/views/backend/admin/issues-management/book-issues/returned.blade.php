@@ -15,42 +15,42 @@
                         data-lucide="undo-2" class="w-4 h-4"></i></x-admin.primary-link>
             </div>
         </div>
-        <div class="glass-card shadow rounded-xl p-6 mb-6">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">📚 Book Issue Details</h2>
+           <div class="glass-card shadow rounded-xl p-6 mb-6 bg-white dark:bg-[#19221F]">
+            <h2 class="text-xl font-bold text-text-black dark:text-text-white mb-4">📚 Book Issue Details</h2>
 
-            <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
-                <div class="bg-gray-100 p-4 rounded-lg">
-                    <p class="text-xs text-gray-500 uppercase font-semibold">Issue Code</p>
-                    <p class="text-base font-medium mt-1">{{ $issue->issue_code }}</p>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Issue Code</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->issue_code }}</p>
                 </div>
-                <div class="bg-gray-100 p-4 rounded-lg">
-                    <p class="text-xs text-gray-500 uppercase font-semibold">User</p>
-                    <p class="text-base font-medium mt-1">{{ $issue->user?->name }}</p>
-                </div>
-
-                <div class="bg-gray-100 p-4 rounded-lg">
-                    <p class="text-xs text-gray-500 uppercase font-semibold">Book</p>
-                    <p class="text-base font-medium mt-1">{{ $issue->book?->title }}</p>
+                <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">User</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->user?->name }}</p>
                 </div>
 
-                <div class="bg-gray-100 p-4 rounded-lg">
-                    <p class="text-xs text-gray-500 uppercase font-semibold">Issued By</p>
-                    <p class="text-base font-medium mt-1">{{ $issue->issuedBy?->name }}</p>
+                <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Book</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->book?->title }}</p>
                 </div>
 
-                <div class="bg-gray-100 p-4 rounded-lg">
-                    <p class="text-xs text-gray-500 uppercase font-semibold">Issued Date</p>
-                    <p class="text-base font-medium mt-1">{{ $issue->issue_date }}</p>
+                <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Issued By</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->issuedBy?->name }}</p>
                 </div>
 
-                <div class="bg-gray-100 p-4 rounded-lg">
-                    <p class="text-xs text-gray-500 uppercase font-semibold">Due Date</p>
-                    <p class="text-base font-medium mt-1">{{ $issue->due_date }}</p>
+                <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Issued Date</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->issue_date }}</p>
+                </div>
+
+                <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Due Date</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->due_date }}</p>
                 </div>
                 @if ($issue->notes)
-                    <div class="bg-gray-100 p-4 rounded-lg col-span-2">
-                        <p class="text-xs text-gray-500 uppercase font-semibold">Note</p>
-                        <p class="text-base font-medium mt-1">{{ $issue->notes }}</p>
+                    <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg col-span-2">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Note</p>
+                        <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->notes }}</p>
                     </div>
                 @endif
             </div>
@@ -60,7 +60,7 @@
             class="grid grid-cols-1 gap-4 sm:grid-cols-1 {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
-                <h2 class="text-xl font-bold text-gray-800 mb-4"> Book Return Form</h2>
+                <h2 class="text-xl font-bold text-text-black dark:text-text-white mb-4"> Book Return Form</h2>
 
                 <form action="{{ route('bim.book-issues.update-return', encrypt($issue->id)) }}" method="POST">
                     @csrf
