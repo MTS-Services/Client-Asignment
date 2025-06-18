@@ -146,19 +146,19 @@
                 ],
 
                 // Methods
-                init() {
-                    this.handleResize();
-                    this.initChart();
-                    window.addEventListener('resize', () => this.handleResize());
+                // init() {
+                //     this.handleResize();
+                //     this.initChart();
+                //     window.addEventListener('resize', () => this.handleResize());
 
-                    // Keyboard shortcuts
-                    document.addEventListener('keydown', (e) => {
-                        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                            e.preventDefault();
-                            this.focusSearch();
-                        }
-                    });
-                },
+                //     // Keyboard shortcuts
+                //     document.addEventListener('keydown', (e) => {
+                //         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                //             e.preventDefault();
+                //             this.focusSearch();
+                //         }
+                //     });
+                // },
 
                 handleResize() {
                     this.desktop = window.innerWidth >= 1024;

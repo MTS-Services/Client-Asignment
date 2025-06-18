@@ -94,21 +94,22 @@
                             <label class="input flex items-center gap-2">
                                 <input type="number" name="fine_amount" value="{{ old('fine_amount') }}"
                                     step="0.01" min="0" class="flex-1" placeholder="Enter fine amount" />
-                                <x-input-error class="mt-2" :messages="$errors->get('fine_amount')" />
                             </label>
+                            <x-input-error class="mt-2" :messages="$errors->get('fine_amount')" />
                         </div>
                         {{-- status --}}
                         <div class="space-y-2 hidden" id="status-field">
-                            <p class="label">{{ __('Returned By') }}</p>
-                             <select name="fine_status" id="fine_status" class="select  block w-full">
+                            <p class="label">{{ __('Fine Status') }}</p>
+                            <select name="fine_status" id="fine_status" class="select  block w-full">
+                                <option value="" selected>{{ __('Select Status') }}</option>
                                 @foreach (app\Models\BookIssues::fineStatusList() as $key => $label)
                                     <option value="{{ $key }}"
-                                        {{ old('fine_status', $issue->fine_status ?? '') == $key ? 'selected' : '' }}>
+                                        {{ old('fine_status', $issue->fine_status) }}>
                                         {{ $label }}
                                     </option>
                                 @endforeach
                             </select>
-                            <x-input-error class="mt-2" :messages="$errors->get('fine_status')" />
+                            <x-input-error class="mt-2" :messages="$errors->first('fine_status')" />
                         </div>
                     </div>
                     {{-- Notes --}}
@@ -129,20 +130,29 @@
     </section>
     @push('js')
         <script src="{{ asset('assets/js/filepond.js') }}"></script>
-        @push('js')
-            <script>
-                const input = document.querySelector('input[name="return_date"]');
-                const fine = document.getElementById('fine-field');
-                const status = document.getElementById('status-field');
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const $input = $('input[name="return_date"]');
+                const $fine = $('#fine-field');
+                const $status = $('#status-field');
                 const due = new Date("{{ $issue->due_date }}").toISOString().split('T')[0];
 
-                input.addEventListener('change', e => {
-                    const ret = new Date(e.target.value).toISOString().split('T')[0];
-                    fine.classList.toggle('hidden', ret <= due || isNaN(new Date(e.target.value)));
-                    status.classList.toggle('hidden', ret <= due || isNaN(new Date(e.target.value)));
-                });
-            </script>
-        @endpush
+                function filedShow(value) {
+                    const ret = new Date(value).toISOString().split('T')[0];
+                    const isInvalidDate = isNaN(new Date(value));
+                    $fine.toggleClass('hidden', ret <= due || isInvalidDate);
+                    $status.toggleClass('hidden', ret <= due || isInvalidDate);
+                }
 
+                $input.on('change', function() {
+                    filedShow($(this).val());
+                });
+
+                // Trigger on page load if value exists
+                if ($input.val()) {
+                    filedShow($input.val());
+                }
+            });
+        </script>
     @endpush
 </x-admin::layout>
