@@ -15,7 +15,12 @@
     <section>
         <div class=" min-h-screen flex items-center justify-center  ">
             <div
-                class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border  rounded-2xl overflow-hidden  w-[1550px] items-center">
+                class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border  rounded-2xl overflow-hidden  w-[1550px] items-center relative">
+                <a href="{{ url('/') }}"
+                    class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
+                    <i data-lucide="home"></i>
+                    <span>Back To Home</span>
+                </a>
 
                 <!-- Left Side: Form -->
                 <div class="w-full md:w-1/2 p-8 md:p-12">

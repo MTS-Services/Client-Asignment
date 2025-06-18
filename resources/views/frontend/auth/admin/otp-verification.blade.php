@@ -16,7 +16,12 @@
     <section
         class="flex items-center justify-center min-h-[80vh] bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
         <div
-            class="max-w-md w-full space-y-8 p-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+            class="max-w-md w-full space-y-8 p-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative">
+            <a href="{{ url('/') }}"
+                class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
+                <i data-lucide="home"></i>
+                <span>Back To Home</span>
+            </a>
             <form method="POST" action="{{ route('admin.verify-otp', ['email' => $email]) }}" class="space-y-6"
                 id="otp-form">
                 @csrf

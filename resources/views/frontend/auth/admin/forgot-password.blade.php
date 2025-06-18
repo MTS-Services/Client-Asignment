@@ -13,7 +13,13 @@
 
     <section>
         <div class="min-h-screen flex items-center justify-center">
-            <div class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border dark:border-black shadow-top rounded-2xl overflow-hidden w-[1550px]">
+            <div
+                class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border dark:border-black shadow-top rounded-2xl overflow-hidden w-[1550px] relative">
+                <a href="{{ url('/') }}"
+                    class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
+                    <i data-lucide="home"></i>
+                    <span>Back To Home</span>
+                </a>
 
                 <!-- Left Side: Form -->
                 <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
@@ -33,12 +39,15 @@
                         <div>
                             <label class="input px-0 pl-2">
                                 <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+                                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
+                                        stroke="currentColor">
                                         <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                                     </g>
                                 </svg>
-                                <input type="email" name="email" placeholder="Enter Your Email" value="{{ old('email') }}" required autofocus class="w-full bg-transparent focus:outline-none ml-2">
+                                <input type="email" name="email" placeholder="Enter Your Email"
+                                    value="{{ old('email') }}" required autofocus
+                                    class="w-full bg-transparent focus:outline-none ml-2">
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('email')" />
                         </div>
@@ -49,7 +58,8 @@
                             </x-primary-button>
 
                             <p class="text-center text-sm mt-4">
-                                {{ __('Remember password?') }} <a href="{{ route('admin.login') }}" class="text-primary font-medium">
+                                {{ __('Remember password?') }} <a href="{{ route('admin.login') }}"
+                                    class="text-primary font-medium">
                                     {{ __('Sign in') }}
                                 </a>
                             </p>
@@ -59,7 +69,8 @@
 
                 <!-- Right Side: Image -->
                 <div class="hidden md:block md:w-1/2">
-                    <img src="{{ asset('/frontend/images/admin.jpg') }}" alt="Admin Reset Image" class="w-full h-full object-cover">
+                    <img src="{{ asset('/frontend/images/admin.jpg') }}" alt="Admin Reset Image"
+                        class="w-full h-full object-cover">
                 </div>
             </div>
         </div>

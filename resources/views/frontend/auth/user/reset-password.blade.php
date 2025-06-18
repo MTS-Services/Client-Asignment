@@ -14,7 +14,12 @@
 
     <section class="min-h-screen flex items-center justify-center ">
         <div
-            class="flex flex-col md:flex-row max-h-[65vh]  w-[1550px] bg-white dark:bg-gray-800 border-t border-gray-100 shadow-lg rounded-2xl overflow-hidden">
+            class="flex flex-col md:flex-row max-h-[65vh]  w-[1550px] bg-white dark:bg-gray-800 border-t border-gray-100 shadow-lg rounded-2xl overflow-hidden relative">
+            <a href="{{ url('/') }}"
+                class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
+                <i data-lucide="home"></i>
+                <span>Back To Home</span>
+            </a>
             <!-- Left: Form Section -->
             <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
                 <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">

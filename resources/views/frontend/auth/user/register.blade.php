@@ -14,7 +14,12 @@
 
     <section class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 ">
         <div
-            class="flex flex-col md:flex-row w-[1550px] bg-white dark:bg-gray-800 shadow-xl rounded-2xl overflow-hidden">
+            class="flex flex-col md:flex-row w-[1550px] bg-white dark:bg-gray-800 shadow-xl rounded-2xl overflow-hidden relative">
+            <a href="{{ url('/') }}"
+                class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
+                <i data-lucide="home"></i>
+                <span>Back To Home</span>
+            </a>
             <!-- Left: Image / Branding -->
             <div class="hidden md:block md:w-1/2">
                 <img src="{{ asset('/frontend/images/register (2).png') }}" alt="Login Image"
@@ -38,12 +43,12 @@
                         <label for="name" class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
                             {{ __('Name') }}
                         </label>
-                        <input id="name" name="name" type="text" placeholder="Enter your name" autocomplete="name" required
-                            value="{{ old('name') }}"
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"/>
+                        <input id="name" name="name" type="text" placeholder="Enter your name"
+                            autocomplete="name" required value="{{ old('name') }}"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
                         <x-input-error :messages="$errors->get('name')" class="mt-1" />
                     </div>
-                       {{-- <div>
+                    {{-- <div>
                             <label class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
                                 {{ __('Username or Email') }}
                             </label>
@@ -57,8 +62,8 @@
                         <label for="email" class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
                             {{ __('Email Address') }}
                         </label>
-                        <input id="email" name="email" type="email" autocomplete="email" required placeholder="Enter your email"
-                            value="{{ old('email') }}"
+                        <input id="email" name="email" type="email" autocomplete="email" required
+                            placeholder="Enter your email" value="{{ old('email') }}"
                             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
                         <x-input-error :messages="$errors->get('email')" class="mt-1" />
                     </div>
@@ -68,7 +73,8 @@
                         <label for="password" class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
                             {{ __('Password') }}
                         </label>
-                        <input id="password" name="password" type="password" autocomplete="new-password" required placeholder="Enter your password"
+                        <input id="password" name="password" type="password" autocomplete="new-password" required
+                            placeholder="Enter your password"
                             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
                         <x-input-error :messages="$errors->get('password')" class="mt-1" />
                     </div>
@@ -79,8 +85,8 @@
                             class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
                             {{ __('Confirm Password') }}
                         </label>
-                        <input id="password_confirmation" name="password_confirmation" type="password" placeholder="Confirm Password"
-                            autocomplete="new-password" required
+                        <input id="password_confirmation" name="password_confirmation" type="password"
+                            placeholder="Confirm Password" autocomplete="new-password" required
                             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
                     </div>
