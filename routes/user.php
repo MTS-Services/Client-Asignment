@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\User\NewspaperController as UserNewspaperController;
 use App\Http\Controllers\Backend\User\MagazineController as UserMagazineController;
 use App\Http\Controllers\Backend\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\Backend\User\IssuesManagement\BookIssuesController as UserBookIssuesController;
 use App\Http\Controllers\Backend\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,5 +25,10 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web', 'user.verified']], f
     Route::controller(UserNewspaperController::class)->group(function () {
         Route::get('/newspaper-list', 'newspaperList')->name('newspaper-list');
         Route::get('/newspaper-details/{slug}', 'newspaperShow')->name('newspaper-show');
+    });
+    // Issues 
+    Route::controller(UserBookIssuesController::class)->group(function () {
+        Route::get('/book-issues-list', 'issuesList')->name('book-issues-list');
+        Route::get('/book-issues-details/{status}', 'issuesShow')->name('book-issues-show');
     });
 });
