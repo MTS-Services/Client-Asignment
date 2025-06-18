@@ -46,8 +46,8 @@ class BookRequest extends FormRequest
     protected function update(): array
     {
         return [
-            'slug' => 'nullable|string|max:255|unique:books,slug,' . $this->route('book'),
-            'isbn' => 'required|string|max:20|unique:books,isbn,' . $this->route('book'),
+            'slug' => 'nullable|string|max:255|unique:books,slug,' . decrypt($this->route('book')),
+            'isbn' => 'required|string|max:20|unique:books,isbn,' . decrypt($this->route('book')),
         ];
     }
 }
