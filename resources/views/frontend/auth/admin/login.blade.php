@@ -13,12 +13,7 @@
     </x-slot>
     <section class="min-h-screen flex items-center justify-center ">
         <div
-            class="flex flex-col md:flex-row bg-white dark:bg-gray-800 border-gray-50 border dark:border-black shadow-xl rounded-2xl overflow-hidden w-[1550px] relative">
-            <a href="{{ url('/') }}"
-                class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
-                <i data-lucide="home"></i>
-                <span>Back To Home</span>
-            </a>
+            class="flex flex-col md:flex-row bg-white dark:bg-gray-800 border-gray-50 border dark:border-black shadow-xl rounded-2xl overflow-hidden w-[1550px]">
             <!-- Left: Image -->
             <div class="hidden md:block md:w-7/12">
                 <img src="{{ asset('/frontend/images/admin.jpg') }}" alt="Admin Login Image"
@@ -48,7 +43,7 @@
                         <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
                             {{ __('Email') }}
                         </label>
-                        <input type="text" name="login" placeholder="Enter your Email"
+                        <input type="text" name="email" placeholder="Enter your Email"
                             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
                         <x-input-error class="mt-2" :messages="$errors->get('login')" />
                     </div>
