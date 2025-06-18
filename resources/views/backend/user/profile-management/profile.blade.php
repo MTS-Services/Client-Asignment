@@ -7,7 +7,7 @@
             <div class="">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <!-- Profile Header -->
-                    <div class="header-glass-card px-8 py-12 text-text-black dark:text-text-white">
+                    <div class="glass-card px-8 py-12 text-text-black dark:text-text-white">
                         <div class="flex items-center space-x-6">
                             <div class="relative">
                                 <div class="w-24 h-24 rounded-full flex items-center justify-center overflow-hidden">
