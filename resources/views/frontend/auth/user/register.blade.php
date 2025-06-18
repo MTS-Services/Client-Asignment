@@ -21,7 +21,7 @@
                 <span>Back To Home</span>
             </a>
             <!-- Left: Image / Branding -->
-            <div class="hidden md:block md:w-1/2">
+            <div class="hidden md:block md:w-1/2 max-h-[70vh]">
                 <img src="{{ asset('/frontend/images/register (2).png') }}" alt="Login Image"
                     class="w-full h-full object-cover">
             </div>
