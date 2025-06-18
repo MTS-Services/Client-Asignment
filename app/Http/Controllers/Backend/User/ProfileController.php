@@ -3,29 +3,51 @@
 namespace App\Http\Controllers\Backend\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\PasswordRequest;
+use App\Http\Requests\User\ProfileUpdateRequest;
+use App\Services\Admin\UserManagement\UserService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    public function showProfile()
+    protected UserService $userService;
+    protected function redirectIndex(): RedirectResponse
     {
-        return view('backend.user.profile-management.profile');
+        return redirect()->route('user.profile');
     }
 
-    public function editProfile(Request $request)
+    public function __construct(UserService $userService)
     {
-        return view('backend.user.profile-management.profile');
+        $this->userService = $userService;
     }
-    public function updateProfile(Request $request)
+    public function showProfile()
     {
-        return view('backend.user.profile-management.profile');
+        $data['user'] = $this->userService->getUser(encrypt(user()->id));
+        return view('backend.user.profile-management.profile', $data);
+    }
+    public function updateProfile(ProfileUpdateRequest $request, string $id)
+    {
+        try {
+            $validated = $request->validated();
+            $this->userService->updateUser($this->userService->getUser($id), $validated, $request->file('image'));
+            session()->flash('success', 'Profile updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        return $this->redirectIndex();
     }
 
     public function showPasswordPage()
     {
         return view('backend.user.profile-management.password');
     }
-    public function updatePassword(Request $request)
+    public function updatePassword(PasswordRequest $request)
     {
+        $admin = $this->userService->getUser(encrypt(user()->id));
+        $validated = $request->validated();
+        $admin->update($validated);
+        session()->flash('success', 'Password updated successfully.');
+        return redirect()->back()->with('success', 'Password updated successfully.');
     }
 }

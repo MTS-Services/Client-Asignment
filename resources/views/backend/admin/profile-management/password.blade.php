@@ -1,4 +1,4 @@
-<x-user::layout>
+<x-admin::layout>
     <x-slot name="title">Change Password</x-slot>
     <x-slot name="breadcrumb">Change Password</x-slot>
     <x-slot name="page_slug">change-password</x-slot>
@@ -7,7 +7,7 @@
         <div class="glass-card rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Change Password') }}</h2>
-                <x-user.primary-link href="{{ route('user.dashboard') }}">{{ __('Back') }} <i data-lucide="undo-2"
+                <x-user.primary-link href="{{ route('admin.dashboard') }}">{{ __('Back') }} <i data-lucide="undo-2"
                         class="w-4 h-4"></i> </x-user.primary-link>
             </div>
         </div>
@@ -16,7 +16,7 @@
             class="grid grid-cols-1 gap-4 sm:grid-cols-1 }}">
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
-                <form action="{{ route('user.update-password', encrypt(user()->id)) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('update-password', encrypt(admin()->id)) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="grid grid-cols-1 gap-5 ">
@@ -103,4 +103,4 @@
 
         </div>
     </section>
-</x-user::layout>
+</x-admin::layout>

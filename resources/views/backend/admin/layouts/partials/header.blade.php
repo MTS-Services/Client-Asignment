@@ -77,7 +77,9 @@
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                         class="hidden absolute right-0 mt-2 w-fit min-w-40 glass-card bg-bg-white dark:bg-bg-dark-tertiary rounded-xl shadow-lg py-2 z-50"
                         :class="open ? '!block' : '!hidden'">
-                        <x-admin.profile-navlink route="javascript:void(0)" name="{{ __('Profile') }}" />
+                        <x-user.profile-navlink route="{{ route('profile') }}" name="{{ __('Profile') }}" />
+                        <x-user.profile-navlink route="{{ route('change-password') }}"
+                            name="{{ __('Change Password') }}" />
                         @if (isset($not_use))
                             {{-- <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" /> --}}
                         @endif
