@@ -47,10 +47,15 @@
         </div>
     </section> --}}
 
-        <section >
+    <section>
         <div class=" min-h-screen flex items-center justify-center ">
             <div
-                class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border shadow-top rounded-2xl overflow-hidden  w-[1550px] ">
+                class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border shadow-top rounded-2xl overflow-hidden  w-[1550px] relative">
+                <a href="{{ url('/') }}"
+                    class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
+                    <i data-lucide="home"></i>
+                    <span>Back To Home</span>
+                </a>
 
                 <!-- Left Side: Form -->
                 <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
@@ -80,19 +85,19 @@
                                 </svg>
                                 <input type="text" placeholder="Enter Your Email" name="email" />
                             </label>
-                            <x-input-error class="mt-2" :messages="$errors->get('email')"  />
+                            <x-input-error class="mt-2" :messages="$errors->get('email')" />
                         </div>
 
                         <div class="mt-5 flex justify-center sm:justify-between items-center gap-5 flex-wrap">
                             <x-primary-button class="ms-3">
-                            {{ __('Verify Email') }}
-                        </x-primary-button>
+                                {{ __('Verify Email') }}
+                            </x-primary-button>
                             <p class="text-center text-sm mt-4">
                                 {{ __('Remember password?') }} <a href="{{ route('login') }}"
                                     class="text-primary font-medium">
                                     {{ __('Sign in') }} </a>
                             </p>
-                            
+
                         </div>
                     </form>
                 </div>
