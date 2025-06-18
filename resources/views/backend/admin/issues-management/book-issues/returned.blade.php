@@ -15,7 +15,7 @@
                         data-lucide="undo-2" class="w-4 h-4"></i></x-admin.primary-link>
             </div>
         </div>
-           <div class="glass-card shadow rounded-xl p-6 mb-6 bg-white dark:bg-[#19221F]">
+        <div class="glass-card shadow rounded-xl p-6 mb-6 bg-white dark:bg-[#19221F]">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white mb-4">📚 Book Issue Details</h2>
 
             <div class="grid grid-cols-2 gap-4 text-sm">
@@ -30,12 +30,14 @@
 
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Book</p>
-                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->book?->title }}</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->book?->title }}
+                    </p>
                 </div>
 
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Issued By</p>
-                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->issuedBy?->name }}</p>
+                    <p class="text-base font-medium mt-1 text-gray-800 dark:text-gray-200">{{ $issue->issuedBy?->name }}
+                    </p>
                 </div>
 
                 <div class="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg">
@@ -62,7 +64,9 @@
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white mb-4"> Book Return Form</h2>
 
-                <form action="{{ route('bim.book-issues.update-return', encrypt($issue->id)) }}" method="POST">
+                <form
+                    action="{{ route('bim.book-issues.update-return', [encrypt($issue->id), 'status' => request('status')]) }}"
+                    method="POST">
                     @csrf
                     @method('PATCH')
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-4">
@@ -92,7 +96,7 @@
                         <div id="fine-field" class="space-y-2 hidden">
                             <p class="label">{{ __('Fine') }}</p>
                             <label class="input flex items-center gap-2">
-                                <input type="number" name="fine_amount" value="{{ old('fine_amount') }}"
+                                <input type="number" name="fine_amount" value="{{ old('fine_amount') }}" disabled
                                     step="0.01" min="0" class="flex-1" placeholder="Enter fine amount" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('fine_amount')" />
@@ -100,11 +104,10 @@
                         {{-- status --}}
                         <div class="space-y-2 hidden" id="status-field">
                             <p class="label">{{ __('Fine Status') }}</p>
-                            <select name="fine_status" id="fine_status" class="select  block w-full">
+                            <select name="fine_status" id="fine_status" class="select  block w-full" disabled>
                                 <option value="" selected>{{ __('Select Status') }}</option>
                                 @foreach (app\Models\BookIssues::fineStatusList() as $key => $label)
-                                    <option value="{{ $key }}"
-                                        {{ old('fine_status', $issue->fine_status) }}>
+                                    <option value="{{ $key }}" {{ old('fine_status', $issue->fine_status) }}>
                                         {{ $label }}
                                     </option>
                                 @endforeach
@@ -140,10 +143,14 @@
                 function filedShow(value) {
                     const ret = new Date(value).toISOString().split('T')[0];
                     const isInvalidDate = isNaN(new Date(value));
-                    $fine.toggleClass('hidden', ret <= due || isInvalidDate);
-                    $status.toggleClass('hidden', ret <= due || isInvalidDate);
-                }
+                    const shouldHide = ret <= due || isInvalidDate;
 
+                    $fine.toggleClass('hidden', shouldHide);
+                    $fine.find('input').prop('disabled', shouldHide);
+
+                    $status.toggleClass('hidden', shouldHide);
+                    $status.find('select').prop('disabled', shouldHide);
+                }
                 $input.on('change', function() {
                     filedShow($(this).val());
                 });
