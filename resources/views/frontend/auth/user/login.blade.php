@@ -17,8 +17,8 @@
             <div
                 class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border  rounded-2xl overflow-hidden  w-[1550px] items-center relative">
                 <a href="{{ url('/') }}"
-                    class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
-                    <i data-lucide="home"></i>
+                    class="flex items-center justify-center absolute top-3 left-3  px-5 py-3 rounded-md animate-scalePulse text-gray-700 gap-2">
+                    <i data-lucide="arrow-left"></i>
                     <span>Back To Home</span>
                 </a>
 
