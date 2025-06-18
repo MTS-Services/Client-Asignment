@@ -55,19 +55,61 @@
     </script>
 
     @stack('css')
+{{-- 
+    <style>
+        .bg-animated {
+            background-color: hsla(0, 100%, 50%, 1);
+            background-image:
+                radial-gradient(at 40% 20%, hsla(28, 100%, 74%, 1) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(189, 100%, 56%, 1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 1) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, hsla(340, 100%, 76%, 1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(22, 100%, 77%, 1) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, hsla(242, 100%, 70%, 1) 0px, transparent 50%),
+                radial-gradient(at 0% 0%, hsla(343, 100%, 76%, 1) 0px, transparent 50%);
+        }
+
+        .gradientBG: gradientBG 15s ease infinite;
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style> --}}
+
 </head>
 
-<body x-data>
+<body>
 
     {{-- Header --}}
-    <x-frontend::header :page="$page_slug" />
+    {{-- <x-frontend::header :page="$page_slug" /> --}}
 
-    <x-frontend.theme-toggle />
+    {{-- <x-frontend.theme-toggle /> --}}
 
     <main>
         {{ $slot }}
     </main>
 
+
+    {{-- <x-frontend::footer :page="$page_slug" /> --}}
+
+    <script src="{{ asset('assets/js/lucide-icon.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+            // }
+        });
+    </script>
     @stack('js')
 </body>
 

@@ -12,62 +12,92 @@
         register
     </x-slot>
 
-    <section>
-        <div class="min-h-[80vh] flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-            <div
-                class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-                <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                    {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+    <section class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 ">
+        <div
+            class="flex flex-col md:flex-row w-[1550px] bg-white dark:bg-gray-800 shadow-xl rounded-2xl overflow-hidden">
+            <!-- Left: Image / Branding -->
+            <div class="hidden md:block md:w-1/2">
+                <img src="{{ asset('/frontend/images/register (2).png') }}" alt="Login Image"
+                    class="w-full h-full object-cover">
+            </div>
+
+            <!-- Right: Form -->
+            <div class="w-full md:w-1/2 p-8 sm:p-10 md:p-12">
+                <div class="text-center mb-6">
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-white">
+                        {{ __('Let’s Get Started') }}
+                    </h2>
+
                 </div>
-                <form method="POST" action="{{ route('register') }}">
+
+                <form method="POST" action="{{ route('register') }}" class="space-y-5">
                     @csrf
 
                     <!-- Name -->
                     <div>
-                        <x-input-label for="name" :value="__('Name')" />
-                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
-                            :value="old('name')" required autofocus autocomplete="name" />
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        <label for="name" class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
+                            {{ __('Name') }}
+                        </label>
+                        <input id="name" name="name" type="text" placeholder="Enter your name" autocomplete="name" required
+                            value="{{ old('name') }}"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"/>
+                        <x-input-error :messages="$errors->get('name')" class="mt-1" />
                     </div>
+                       {{-- <div>
+                            <label class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
+                                {{ __('Username or Email') }}
+                            </label>
+                            <input type="text" name="login" placeholder="Username or Email"
+                                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
+                            <x-input-error class="mt-2" :messages="$errors->get('login')" />
+                        </div> --}}
 
-                    <!-- Email Address -->
-                    <div class="mt-4">
-                        <x-input-label for="email" :value="__('Email')" />
-                        <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
-                            :value="old('email')" required autocomplete="username" />
-                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
+                            {{ __('Email Address') }}
+                        </label>
+                        <input id="email" name="email" type="email" autocomplete="email" required placeholder="Enter your email"
+                            value="{{ old('email') }}"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
+                        <x-input-error :messages="$errors->get('email')" class="mt-1" />
                     </div>
 
                     <!-- Password -->
-                    <div class="mt-4">
-                        <x-input-label for="password" :value="__('Password')" />
-
-                        <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                            autocomplete="new-password" />
-
-                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    <div>
+                        <label for="password" class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
+                            {{ __('Password') }}
+                        </label>
+                        <input id="password" name="password" type="password" autocomplete="new-password" required placeholder="Enter your password"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
+                        <x-input-error :messages="$errors->get('password')" class="mt-1" />
                     </div>
 
                     <!-- Confirm Password -->
-                    <div class="mt-4">
-                        <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                        <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                    <div>
+                        <label for="password_confirmation"
+                            class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
+                            {{ __('Confirm Password') }}
+                        </label>
+                        <input id="password_confirmation" name="password_confirmation" type="password" placeholder="Confirm Password"
+                            autocomplete="new-password" required
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
+                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
                     </div>
 
-                    <div class="flex items-center justify-end mt-4">
-                        <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                            href="{{ route('login') }}">
-                            {{ __('Already registered?') }}
-                        </a>
-
-                        <x-primary-button class="ms-4">
+                    <!-- Submit -->
+                    <div>
+                        <x-primary-button class=" text-base !py-3 !w-full">
                             {{ __('Register') }}
                         </x-primary-button>
                     </div>
+                    <p class="mt-2 text-base text-gray-600 dark:text-gray-400">
+                        {{ __('Already registered?') }}
+                        <a href="{{ route('login') }}"
+                            class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
+                            {{ __('Login here') }}
+                        </a>
+                    </p>
                 </form>
             </div>
         </div>

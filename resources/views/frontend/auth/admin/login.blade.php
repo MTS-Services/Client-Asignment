@@ -3,60 +3,95 @@
     <x-slot name="title">
         {{ __('Admin Login') }}
     </x-slot>
+
     <x-slot name="breadcrumb">
         {{ __('Admin Login') }}
     </x-slot>
+
     <x-slot name="page_slug">
         admin-login
     </x-slot>
+    <section class="min-h-screen flex items-center justify-center ">
+        <div class="flex flex-col md:flex-row bg-white dark:bg-gray-800 border-gray-50 border dark:border-black shadow-xl rounded-2xl overflow-hidden w-[1550px]">
+             <!-- Left: Image -->
+            <div class="hidden md:block md:w-7/12">
+                <img src="{{ asset('/frontend/images/admin.jpg') }}" alt="Admin Login Image"
+                    class="w-full h-full object-cover">
+            </div>
+            <!-- Right: Login Form -->
+            <div class="w-full md:w-2/5 p-8 md:p-12">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-white">
+                        {{ __('Admin Login') }}
+                    </h2>
+                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        {{ __('Login to manage the dashboard') }}
+                    </p>
+                </div>
+
+                <!-- Session Status -->
+                <x-auth-session-status class="mb-4 text-sm text-green-600 dark:text-green-400 text-center"
+                    :status="session('status')" />
+
+                <!-- Form -->
+                <form method="POST" action="{{ route('admin.login') }}" class="mt-6 space-y-5">
+                    @csrf
+
+                    <!-- Email -->
+                     <div>
+                            <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                {{ __('Email') }}
+                            </label>
+                            <input type="text" name="login" placeholder="Enter your Email"
+                                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
+                            <x-input-error class="mt-2" :messages="$errors->get('login')" />
+                        </div>
 
 
-    <!-- Session Status -->
+                    <!-- Password -->
+                   <div>
+                            <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                {{ __('Password') }}
+                            </label>
+                            <div class="relative">
+                                <input type="password" name="password" placeholder="Password"
+                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
+                                <button type="button"
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white">
+                                    <i class="fa-regular fa-eye-slash"></i>
+                                </button>
+                            </div>
+                            <x-input-error class="mt-2" :messages="$errors->get('password')" />
+                        </div>
 
-    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('admin.login') }}">
-        @csrf
-        <h1>{{ __('Admin Login') }}</h1>
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
-                autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    <!-- Remember Me -->
+                    <div class="flex items-center justify-between">
+                        <label for="remember_me"
+                            class="inline-flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <input id="remember_me" type="checkbox" name="remember"
+                                class="rounded border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:bg-gray-700 dark:focus:ring-offset-gray-800">
+                            <span class="ml-2">{{ __('Remember me') }}</span>
+                        </label>
+
+                        @if (Route::has('admin.password.request'))
+                            <a class="text-sm text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 underline"
+                                href="{{ route('admin.password.request') }}">
+                                {{ __('Forgot your password?') }}
+                            </a>
+                        @endif
+                    </div>
+
+                    <!-- Submit -->
+                    <div>
+                        <x-primary-button class="w-full py-2 justify-center">
+                            {{ __('Log in') }}
+                        </x-primary-button>
+                    </div>
+                </form>
+            </div>
+
+
         </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox"
-                    class="rounded-sm dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-xs focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
-                    name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('admin.password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                    href="{{ route('admin.password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-    </x-fronlayout>
+    </section>
+    </x-frontend-layout>
