@@ -1,5 +1,9 @@
-@props(['otp', 'name'])
+ @props(['otp', 'name'])
 
+ name : {{ $name }}
+ OTP : {{ $otp }}
+
+{{--
 <!DOCTYPE html>
 <html lang="en">
 
@@ -208,4 +212,4 @@
 
 </body>
 
-</html>
+</html> --}}
