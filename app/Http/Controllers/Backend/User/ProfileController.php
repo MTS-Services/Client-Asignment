@@ -25,11 +25,6 @@ class ProfileController extends Controller
         $data['user'] = $this->userService->getUser(encrypt(user()->id));
         return view('backend.user.profile-management.profile', $data);
     }
-
-    public function editProfile(Request $request)
-    {
-        return view('backend.user.profile-management.profile');
-    }
     public function updateProfile(ProfileUpdateRequest $request, string $id)
     {
         try {
@@ -42,13 +37,6 @@ class ProfileController extends Controller
         return $this->redirectIndex();
     }
 
-    /*************  ✨ Windsurf Command ⭐  *************/
-    /**
-     * Display the password update page.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    /*******  5160aed3-0690-4075-a51c-9564a5f83239  *******/
     public function showPasswordPage()
     {
         return view('backend.user.profile-management.password');
