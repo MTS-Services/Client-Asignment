@@ -78,9 +78,9 @@
                         class="hidden absolute right-0 mt-2 w-fit min-w-40 glass-card bg-bg-white dark:bg-bg-dark-tertiary rounded-xl shadow-lg py-2 z-50"
                         :class="open ? '!block' : '!hidden'">
                         <x-user.profile-navlink route="{{ route('profile') }}" name="{{ __('Profile') }}" />
+                        <x-user.profile-navlink route="{{ route('change-password') }}"
+                            name="{{ __('Password') }}" />
                         @if (isset($not_use))
-                        {{-- <x-user.profile-navlink route="{{ route('otp-verification', ['forgot' => true]) }}"
-                            name="{{ __('Password') }}" /> --}}
                             {{-- <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" /> --}}
                         @endif
                         <x-admin.profile-navlink route="{{ route('admin.logout') }}" logout='true'

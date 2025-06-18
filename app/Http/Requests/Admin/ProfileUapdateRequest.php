@@ -4,7 +4,6 @@ namespace App\Http\Requests\Admin;
 
 use App\Models\Admin;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class ProfileUapdateRequest extends FormRequest
 {

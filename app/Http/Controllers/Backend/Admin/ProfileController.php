@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\PasswordRequest;
 use App\Http\Requests\Admin\ProfileUapdateRequest;
 use App\Http\Traits\AuditRelationTraits;
+use App\Models\Admin;
 use App\Services\Admin\AdminManagement\AdminService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -54,8 +56,12 @@ class ProfileController extends Controller implements HasMiddleware
     {
         return view('backend.admin.profile-management.password');
     }
-    public function updatePassword(Request $request)
+    public function updatePassword(PasswordRequest $request)
     {
-
+        $admin = Admin::findOrFail(admin()->id);
+        $validated = $request->validated();
+        $admin->update($validated);
+        session()->flash('success', 'Password updated successfully.');
+        return redirect()->back()->with('success', 'Password updated successfully.');
     }
 }
