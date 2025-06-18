@@ -15,30 +15,57 @@
                         data-lucide="undo-2" class="w-4 h-4"></i></x-admin.primary-link>
             </div>
         </div>
-        <div class="glass-card">
-            <h2 class="text-xl font-bold pl-4 pt-4">Book Issue Details</h2>
-            <div class=" grid grid-cols-2 gap-4 p-4 rounded-xl mb-4 space-y-4">
-                <div class="space-y-2">
-                    <p><strong>User:</strong> {{ $issue->user?->name }}</p>
-                    <p><strong>Book:</strong> {{ $issue->book?->title }}</p>
-                    <p><strong>Issued By:</strong> {{ $issue->issuedBy?->name }}</p>
-                </div>
-                <div class="space-y-2">
-                    <p><strong>Issued Date:</strong> {{ $issue->issue_date }}</p>
-                    <p><strong>Due Date:</strong> {{ $issue->due_date }}</p>
+        <div class="glass-card shadow rounded-xl p-6 mb-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">📚 Book Issue Details</h2>
 
+            <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 uppercase font-semibold">Issue Code</p>
+                    <p class="text-base font-medium mt-1">{{ $issue->issue_code }}</p>
                 </div>
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 uppercase font-semibold">User</p>
+                    <p class="text-base font-medium mt-1">{{ $issue->user?->name }}</p>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 uppercase font-semibold">Book</p>
+                    <p class="text-base font-medium mt-1">{{ $issue->book?->title }}</p>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 uppercase font-semibold">Issued By</p>
+                    <p class="text-base font-medium mt-1">{{ $issue->issuedBy?->name }}</p>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 uppercase font-semibold">Issued Date</p>
+                    <p class="text-base font-medium mt-1">{{ $issue->issue_date }}</p>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <p class="text-xs text-gray-500 uppercase font-semibold">Due Date</p>
+                    <p class="text-base font-medium mt-1">{{ $issue->due_date }}</p>
+                </div>
+                @if ($issue->notes)
+                    <div class="bg-gray-100 p-4 rounded-lg col-span-2">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">Note</p>
+                        <p class="text-base font-medium mt-1">{{ $issue->notes }}</p>
+                    </div>
+                @endif
             </div>
         </div>
+
         <div
             class="grid grid-cols-1 gap-4 sm:grid-cols-1 {{ isset($documentation) && $documentation ? 'md:grid-cols-7' : '' }}">
             <!-- Form Section -->
             <div class="glass-card rounded-2xl p-6 md:col-span-5">
+                <h2 class="text-xl font-bold text-gray-800 mb-4"> Book Return Form</h2>
 
                 <form action="{{ route('bim.book-issues.update-return', encrypt($issue->id)) }}" method="POST">
                     @csrf
                     @method('PATCH')
-                    <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                    <div class="grid grid-cols-1 gap-5 sm:grid-cols-4">
                         <div class="space-y-2">
                             <p class="label">{{ __('Returned By') }}</p>
                             <select name="returned_by" id="" class="w-1/2 select select2">
@@ -71,9 +98,9 @@
                             </label>
                         </div>
                         {{-- status --}}
-                        <div class="mb-4">
-                            <label for="fine_status" class="block font-medium text-sm text-gray-700">Fine Status</label>
-                            <select name="fine_status" id="fine_status" class="select mt-1 block w-full">
+                        <div class="space-y-2 hidden" id="status-field">
+                            <p class="label">{{ __('Returned By') }}</p>
+                             <select name="fine_status" id="fine_status" class="select  block w-full">
                                 @foreach (app\Models\BookIssues::fineStatusList() as $key => $label)
                                     <option value="{{ $key }}"
                                         {{ old('fine_status', $issue->fine_status ?? '') == $key ? 'selected' : '' }}>
@@ -81,6 +108,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <x-input-error class="mt-2" :messages="$errors->get('fine_status')" />
                         </div>
                     </div>
                     {{-- Notes --}}
@@ -102,16 +130,16 @@
     @push('js')
         <script src="{{ asset('assets/js/filepond.js') }}"></script>
         @push('js')
-            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
             <script>
                 const input = document.querySelector('input[name="return_date"]');
                 const fine = document.getElementById('fine-field');
+                const status = document.getElementById('status-field');
                 const due = new Date("{{ $issue->due_date }}").toISOString().split('T')[0];
 
                 input.addEventListener('change', e => {
                     const ret = new Date(e.target.value).toISOString().split('T')[0];
                     fine.classList.toggle('hidden', ret <= due || isNaN(new Date(e.target.value)));
+                    status.classList.toggle('hidden', ret <= due || isNaN(new Date(e.target.value)));
                 });
             </script>
         @endpush

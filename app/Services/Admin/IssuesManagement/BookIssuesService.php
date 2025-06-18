@@ -87,11 +87,11 @@ class BookIssuesService
         $data['updater_type'] = get_class(admin());
 
         // Check if return is after due date
-        if ($returnDate->gt($bookIssue->due_date)) {
-            $data['status'] = BookIssues::STATUS_OVERDUE;
-        } else {
-            $data['status'] = BookIssues::STATUS_RETURNED;
-        }
+        // if ($returnDate->gt($bookIssue->due_date)) {
+        //     $data['status'] = BookIssues::STATUS_OVERDUE;
+        // } else {
+        //     $data['status'] = BookIssues::STATUS_RETURNED;
+        // }
 
         $bookIssue->update($data);
 
