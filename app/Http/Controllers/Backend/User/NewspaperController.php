@@ -30,12 +30,7 @@ class NewspaperController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            'auth:admin', // Applies 'auth:admin' to all methods
-
-            // Permission middlewares using the Middleware class
-            new Middleware('permission:newspaper-list', only: ['newspaperList']),
-            new Middleware('permission:newspaper-details', only: ['newspaperShow']),
-            //add more permissions if needed
+            'auth:web',
         ];
     }
 
@@ -89,5 +84,5 @@ class NewspaperController extends Controller implements HasMiddleware
         return view('backend.user.newspaper.show', compact('newspaper'));
     }
 
-   
+
 }

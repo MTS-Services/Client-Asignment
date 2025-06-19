@@ -12,12 +12,24 @@
     </x-slot>
 
     <section>
-        <div class="min-h-screen flex items-center justify-center">
+        <div
+            class="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center ">
+            <!-- Animated Background Elements -->
+            <div class="absolute inset-0 opacity-40 dark:opacity-20">
+                <div class="floating-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                    <div class="shape shape-4"></div>
+                    <div class="shape shape-5"></div>
+                    <div class="shape shape-6"></div>
+                </div>
+            </div>
             <div
-                class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border shadow-top rounded-2xl overflow-hidden w-[1550px] relative">
+                class="flex login-card flex-col md:flex-row bg-white dark:bg-gray-800 shadow-xl border-gray-50 border shadow-top rounded-2xl overflow-hidden w-[1550px] relative">
                 <a href="{{ url('/') }}"
-                    class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
-                    <i data-lucide="home"></i>
+                    class="flex items-center justify-center absolute top-3 left-3  px-5 py-3 rounded-md animate-scalePulse text-gray-700 gap-2">
+                    <i data-lucide="arrow-left"></i>
                     <span>Back To Home</span>
                 </a>
 
@@ -69,7 +81,7 @@
                         </div>
 
                         <div class="mt-5">
-                            <x-primary-button class=" !w-full">
+                            <x-primary-button class=" !w-full py-6">
                                 {{ __('Reset Password') }}
                             </x-primary-button>
                         </div>

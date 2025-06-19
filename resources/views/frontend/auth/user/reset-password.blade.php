@@ -12,12 +12,25 @@
         reset-password
     </x-slot>
 
-    <section class="min-h-screen flex items-center justify-center ">
+    <section
+        class="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center ">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 opacity-40 dark:opacity-20">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+                <div class="shape shape-5"></div>
+                <div class="shape shape-6"></div>
+            </div>
+        </div>
+
         <div
-            class="flex flex-col md:flex-row max-h-[65vh]  w-[1550px] bg-white dark:bg-gray-800 border-t border-gray-100 shadow-lg rounded-2xl overflow-hidden relative">
+            class="flex flex-col md:flex-row max-h-[60vh] login-card  w-[1550px] bg-white dark:bg-gray-800 border-t border-gray-100 shadow-lg rounded-2xl overflow-hidden relative">
             <a href="{{ url('/') }}"
-                class="flex items-center justify-center absolute top-3 left-3 bg-teal-300 px-5 py-3 rounded-md animate-scalePulse text-gray-700 font-semibold gap-2">
-                <i data-lucide="home"></i>
+                class="flex items-center justify-center absolute top-3 left-3  px-5 py-3 rounded-md animate-scalePulse text-gray-700 gap-2">
+                <i data-lucide="arrow-left"></i>
                 <span>Back To Home</span>
             </a>
             <!-- Left: Form Section -->
@@ -39,29 +52,34 @@
                     <!-- Email Address -->
                     <div>
                         <x-input-label for="email" :value="__('Email')" />
-                        <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
-                            :value="old('email', request()->email)" required autofocus autocomplete="username" />
+                        <input id="email" name="email" type="email" placeholder="Enter your email"
+                            autocomplete="email" required value="{{ request()->email }}"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
                     <!-- Password -->
                     <div class="mt-4">
                         <x-input-label for="password" :value="__('New Password')" />
-                        <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                            autocomplete="new-password" />
+                        <input id="password" name="password" type="password" placeholder="Enter your password"
+                            autocomplete="password" required value="{{ old('password') }}"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
                     <!-- Confirm Password -->
                     <div class="mt-4">
                         <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-                        <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+
+                        <input id="password_confirmation" name="password_confirmation" type="password"
+                            placeholder="Enter your confirm password" autocomplete="password_confirmation" required
+                            value="{{ old('password_confirmation') }}"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600" />
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>
 
                     <div class="flex items-center justify-end mt-6">
-                        <x-primary-button class="w-full justify-center">
+                        <x-primary-button class="w-full justify-center py-6">
                             {{ __('Reset Password') }}
                         </x-primary-button>
                     </div>
