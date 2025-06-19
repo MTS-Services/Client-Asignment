@@ -2,7 +2,8 @@
     <x-slot name="title">Home</x-slot>
     <x-slot name="page_slug">home</x-slot>
 
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div
+        class="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <!-- Animated Background Elements -->
         <div class="absolute inset-0 opacity-40 dark:opacity-20">
             <div class="floating-shapes">
@@ -24,7 +25,8 @@
 
                 <!-- Hero Title with Animation -->
                 <div class="mb-12 animate-fade-in">
-                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-slate-800 via-blue-700 to-indigo-800 bg-clip-text text-transparent dark:from-white dark:via-blue-100 dark:to-indigo-200 drop-shadow-sm">
+                    <h1
+                        class="text-4xl md:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-slate-800 via-blue-700 to-indigo-800 bg-clip-text text-transparent dark:from-white dark:via-blue-100 dark:to-indigo-200 drop-shadow-sm">
                         Welcome to <span class="text-gradient">{{ config('app.name', 'Dashboard') }}</span>
                     </h1>
                     <p class="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
@@ -36,7 +38,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
                     <!-- Student Login Card -->
-                    <a href="{{ url('/login') }}" class="login-card group">
+                    <a href="{{ url('/login') }}" class="login-card group py-10">
                         <div class="card-glow"></div>
                         <div class="card-content">
                             <div class="icon-container mb-6">
@@ -46,22 +48,25 @@
                                 <div class="icon-ring"></div>
                             </div>
 
-                            <h2 class="text-2xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
+                            <h2
+                                class="text-2xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
                                 Student Portal
                             </h2>
-                            <p class="text-slate-600 dark:text-slate-300 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors duration-300 mb-6">
+                            <p
+                                class="text-slate-600 dark:text-slate-300 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors duration-300 mb-6">
                                 Access your personalized dashboard
                             </p>
 
                             <div class="cta-button">
                                 <span>Continue as Student</span>
-                                <i data-lucide="arrow-right" class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"></i>
+                                <i data-lucide="arrow-right"
+                                    class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"></i>
                             </div>
                         </div>
                     </a>
 
                     <!-- Admin Login Card -->
-                    <a href="{{ url('/admin/login') }}" class="login-card group">
+                    <a href="{{ url('/admin/login') }}" class="login-card group  py-10">
                         <div class="card-glow admin-glow"></div>
                         <div class="card-content">
                             <div class="icon-container mb-6">
@@ -71,16 +76,19 @@
                                 <div class="icon-ring admin-ring"></div>
                             </div>
 
-                            <h2 class="text-2xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300">
+                            <h2
+                                class="text-2xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300">
                                 Admin Dashboard
                             </h2>
-                            <p class="text-slate-600 dark:text-slate-300 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors duration-300 mb-6">
+                            <p
+                                class="text-slate-600 dark:text-slate-300 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors duration-300 mb-6">
                                 Access admin control panel
                             </p>
 
                             <div class="cta-button admin-cta">
                                 <span>Continue as Admin</span>
-                                <i data-lucide="arrow-right" class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"></i>
+                                <i data-lucide="arrow-right"
+                                    class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"></i>
                             </div>
                         </div>
                     </a>
@@ -89,15 +97,18 @@
                 <!-- Additional Features Section -->
                 <div class="mt-16 animate-fade-in-up">
                     <div class="flex flex-wrap justify-center gap-6 text-slate-600 dark:text-slate-300">
-                        <div class="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-full px-4 py-2 border border-blue-200 dark:border-slate-600">
+                        <div
+                            class="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-full px-4 py-2 border border-blue-200 dark:border-slate-600">
                             <i data-lucide="shield-check" class="w-4 h-4 text-green-500"></i>
                             <span class="text-sm font-medium">Secure Login</span>
                         </div>
-                        <div class="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-full px-4 py-2 border border-blue-200 dark:border-slate-600">
+                        <div
+                            class="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-full px-4 py-2 border border-blue-200 dark:border-slate-600">
                             <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i>
                             <span class="text-sm font-medium">Lightning Fast</span>
                         </div>
-                        <div class="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-full px-4 py-2 border border-blue-200 dark:border-slate-600">
+                        <div
+                            class="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-full px-4 py-2 border border-blue-200 dark:border-slate-600">
                             <i data-lucide="smartphone" class="w-4 h-4 text-blue-500"></i>
                             <span class="text-sm font-medium">Mobile Friendly</span>
                         </div>
@@ -109,98 +120,12 @@
 
     <style>
         /* Floating Background Shapes */
-        .floating-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
 
-        .shape {
-            position: absolute;
-            background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.05));
-            border-radius: 50%;
-            animation: float 20s infinite ease-in-out;
-        }
 
-        .shape-1 {
-            width: 80px;
-            height: 80px;
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .shape-2 {
-            width: 120px;
-            height: 120px;
-            top: 60%;
-            right: 15%;
-            animation-delay: -5s;
-        }
-
-        .shape-3 {
-            width: 60px;
-            height: 60px;
-            top: 80%;
-            left: 20%;
-            animation-delay: -10s;
-        }
-
-        .shape-4 {
-            width: 100px;
-            height: 100px;
-            top: 10%;
-            right: 30%;
-            animation-delay: -15s;
-        }
-
-        .shape-5 {
-            width: 140px;
-            height: 140px;
-            top: 70%;
-            right: 40%;
-            animation-delay: -8s;
-        }
-
-        .shape-6 {
-            width: 90px;
-            height: 90px;
-            top: 40%;
-            left: 5%;
-            animation-delay: -12s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px) rotate(0deg);
-                opacity: 0.5;
-            }
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-                opacity: 0.8;
-            }
-        }
-
-        /* Text Gradient Animation */
-        .text-gradient {
-            background: linear-gradient(45deg, #3b82f6, #6366f1, #8b5cf6);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientShift 3s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
 
         /* Login Cards */
-        .login-card {
+        /* .login-card {
+
             position: relative;
             display: block;
             background: rgba(255, 255, 255, 0.85);
@@ -229,7 +154,7 @@
         .dark .login-card:hover {
             border-color: rgba(99, 102, 241, 0.4);
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-        }
+        } */
 
         .card-glow {
             position: absolute;
@@ -301,10 +226,12 @@
                 transform: scale(1);
                 opacity: 0.5;
             }
+
             50% {
                 transform: scale(1.1);
                 opacity: 0.3;
             }
+
             100% {
                 transform: scale(1);
                 opacity: 0.5;
@@ -372,6 +299,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -383,6 +311,7 @@
                 opacity: 0;
                 transform: translateY(50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);

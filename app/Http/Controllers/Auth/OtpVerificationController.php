@@ -33,7 +33,7 @@ class OtpVerificationController extends Controller
 
         $this->conditionallySendOtp($user, $isForgot);
 
-        return view('auth.otp-verification', [
+        return view('frontend.auth.user.otp-verification', [
             'isForgot' => $isForgot,
             'lastOtpSentAt' => $user->last_otp_sent_at?->timestamp,
             'email' => $user->email,
@@ -157,7 +157,7 @@ class OtpVerificationController extends Controller
 
     protected function validateOtpCode(User $user, string $otp): void
     {
-        if ((string)$user->email_otp !== $otp) {
+        if ((string) $user->email_otp !== $otp) {
             throw ValidationException::withMessages(['otp' => 'Invalid verification code.']);
         }
 
