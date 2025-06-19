@@ -7,7 +7,6 @@ use App\Http\Requests\User\PasswordRequest;
 use App\Http\Requests\User\ProfileUpdateRequest;
 use App\Services\Admin\UserManagement\UserService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -30,6 +29,8 @@ class ProfileController extends Controller
     {
         try {
             $validated = $request->validated();
+            $validated['creater_id'] = user()->id;
+            $validated['creater_type'] = get_class(user());
             $this->userService->updateUser($this->userService->getUser($id), $validated, $request->file('image'));
             session()->flash('success', 'Profile updated successfully!');
         } catch (\Exception $e) {
@@ -44,9 +45,11 @@ class ProfileController extends Controller
     }
     public function updatePassword(PasswordRequest $request)
     {
-        $admin = $this->userService->getUser(encrypt(user()->id));
+        $user = $this->userService->getUser(encrypt(user()->id));
         $validated = $request->validated();
-        $admin->update($validated);
+        $validated['creater_id'] = user()->id;
+        $validated['creater_type'] = get_class(user());
+        $user->update($validated);
         session()->flash('success', 'Password updated successfully.');
         return redirect()->back()->with('success', 'Password updated successfully.');
     }

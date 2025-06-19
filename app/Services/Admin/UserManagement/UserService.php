@@ -30,8 +30,6 @@ class UserService
             if ($file) {
                 $data['image'] = $this->handleFileUpload($file, 'users', $data['name']);
             }
-            $data['creater_id'] = user()->id;
-            $data['creater_type'] = get_class(user());
             $user = User::create($data);
             return $user;
         });
