@@ -40,8 +40,8 @@ class ApplicationSetting extends BaseModel
     //     return $this->key == 'registration_approval' ? self::getRegistrationApprovalInfos()[$this->value] : 'Unknown';
     // }
 
-    public const ENVIRONMENT_PRODUCTION = 1;
-    public const ENVIRONMENT_DEVELOPMENT = 2;
+    public const ENVIRONMENT_PRODUCTION = 'production';
+    public const ENVIRONMENT_DEVELOPMENT = 'local';
 
     public static function getEnvironmentInfos()
     {
@@ -57,7 +57,7 @@ class ApplicationSetting extends BaseModel
     // }
 
     public const APP_DEBUG_TRUE = 1;
-    public const APP_DEBUG_FALSE = 2;
+    public const APP_DEBUG_FALSE = 0;
 
     public static function getAppDebugInfos()
     {
