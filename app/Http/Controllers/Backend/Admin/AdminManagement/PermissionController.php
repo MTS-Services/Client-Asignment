@@ -182,6 +182,7 @@ class PermissionController extends Controller implements HasMiddleware
             $query = $this->permissionService->getPermissions()->onlyTrashed();
 
             return DataTables::eloquent($query)
+                ->editColumn('deleted_by', fn($permission) => $this->deleter_name($permission))
                 ->editColumn('action', fn($permission) => view('components.admin.action-buttons', [
                     'menuItems' => $this->trashedMenuItems($permission),
                 ])->render())

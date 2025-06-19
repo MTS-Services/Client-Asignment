@@ -66,7 +66,7 @@ class AuthBaseModel extends Authenticatable
 
 
     public const STATUS_ACTIVE = 1;
-    public const STATUS_INACTIVE = 0;
+    public const STATUS_INACTIVE = 2;
 
     public static function statusList(): array
     {

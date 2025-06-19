@@ -33,6 +33,7 @@ class BookRequest extends FormRequest
             'price' => 'nullable|numeric|min:0',
             'total_copies' => 'required|integer|min:1',
             'available_copies' => 'required|integer',
+            'file' => 'nullable|mimes:pdf|max:2048',
         ] + ($this->isMethod('POST') ? $this->store() : $this->update());
     }
 

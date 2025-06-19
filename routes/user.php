@@ -30,5 +30,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web', 'user.verified']], f
     Route::controller(UserBookIssuesController::class)->group(function () {
         Route::get('/book-issues-list', 'issuesList')->name('book-issues-list');
         Route::get('/book-issues-details/{code}', 'issuesShow')->name('book-issues-show');
+        Route::get('/book-issues-create', 'issuesCreate')->name('book-issues-create');
+        Route::post('/book-issues-request', 'issuesRequest')->name('book-issues-request');
     });
 });

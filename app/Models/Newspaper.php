@@ -14,6 +14,7 @@ class Newspaper extends BaseModel
         'description',
         'cover_image',
         'status',
+        'url',
 
         'created_by',
         'updated_by',

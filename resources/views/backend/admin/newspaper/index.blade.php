@@ -84,6 +84,11 @@
                             icon: 'shield-check',
                         },
                         {
+                            label: '{{ __('Url') }}',
+                            key: 'url',
+                            icon: 'link',
+                        },
+                        {
                             label: '{{ __('Status') }}',
                             key: 'status_label',
                             label_color: 'status_color',
