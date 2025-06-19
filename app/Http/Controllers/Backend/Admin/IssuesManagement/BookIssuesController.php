@@ -56,6 +56,14 @@ class BookIssuesController extends Controller implements HasMiddleware
 
             // Permission middlewares using the Middleware class
             new Middleware('permission:book-issues-list', only: ['index']),
+            new Middleware('permission:book-issues-list-pending', only: ['index']),
+            new Middleware('permission:book-issues-list-issued', only: ['index']),
+            new Middleware('permission:book-issues-list-returned', only: ['index']),
+            new Middleware('permission:book-issues-list-overdue', only: ['index']),
+            new Middleware('permission:book-issues-list-lost', only: ['index']),
+            new Middleware('permission:book-issues-list-unpaid', only: ['index']),
+            new Middleware('permission:book-issues-list-paid', only: ['index']),
+
             new Middleware('permission:book-issues-details', only: ['show']),
             new Middleware('permission:book-issues-create', only: ['create', 'store']),
             new Middleware('permission:book-issues-edit', only: ['edit', 'update']),
@@ -71,6 +79,8 @@ class BookIssuesController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
+
+
     public function index(Request $request)
     {
         $status = $request->get('status');

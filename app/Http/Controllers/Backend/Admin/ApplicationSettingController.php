@@ -30,7 +30,8 @@ class ApplicationSettingController extends Controller implements HasMiddleware
             'auth:admin', // Applies 'auth:admin' to all methods
 
             // Permission middlewares using the Middleware class
-            new Middleware('permission:application-settings-general', only: ['general']),
+            new Middleware('permission:application-setting-general', only: ['general']),
+            new Middleware('permission:application-setting-database', only: ['database']),
             //add more permissions if needed
         ];
     }
