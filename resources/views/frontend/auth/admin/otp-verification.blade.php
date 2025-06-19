@@ -14,11 +14,22 @@
 
     {{-- Otp Verification --}}
     <section
-        class="flex items-center justify-center min-h-[80vh] bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+        class="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center ">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 opacity-40 dark:opacity-20">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+                <div class="shape shape-5"></div>
+                <div class="shape shape-6"></div>
+            </div>
+        </div>
         <div
             class="max-w-md w-full space-y-8 p-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative">
             <a href="{{ url('/') }}"
-                class="flex items-center justify-center absolute top-3 left-3  px-5 py-3 rounded-md animate-scalePulse text-gray-700 gap-2">
+                class="flex items-center justify-center absolute -top-15 left-0  py-3 rounded-md animate-scalePulse text-gray-700 gap-2">
                 <i data-lucide="arrow-left"></i>
                 <span>Back To Home</span>
             </a>
@@ -84,7 +95,7 @@
 
                     {{-- Assuming x-primary-button is a Blade component you have --}}
                     <button type="submit"
-                        class="w-full py-6 sm:w-auto flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200">
+                        class="w-full py-3 sm:w-auto flex justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200">
                         {{ __('Verify') }}
                     </button>
                 </div>
