@@ -48,18 +48,21 @@
                         'route' => route('am.admin.index'),
                         'icon' => 'user',
                         'active' => 'admin',
+                        'permission' => 'admin-list',
                     ],
                     [
                         'name' => 'Role',
                         'route' => route('am.role.index'),
                         'icon' => 'shield',
                         'active' => 'role',
+                        'permission' => 'role-list',
                     ],
                     [
                         'name' => 'Permission',
                         'route' => route('am.permission.index'),
                         'icon' => 'shield-check',
                         'active' => 'permission',
+                        'permission' => 'permission-list',
                     ],
                 ]" />
 
@@ -70,6 +73,7 @@
                         'route' => route('um.user.index'),
                         'icon' => 'user',
                         'active' => 'user',
+                        'permission' => 'user-list',
                     ],
                 ]" />
             <x-admin.navlink type="dropdown" icon="book-open-text" name="Book Management" :page_slug="$active"
@@ -79,30 +83,35 @@
                         'route' => route('bm.book.index'),
                         'icon' => 'book-text',
                         'active' => 'book',
+                        'permission' => 'book-list',
                     ],
                     [
                         'name' => 'Category',
                         'route' => route('bm.category.index'),
                         'icon' => 'book-lock',
                         'active' => 'category',
+                        'permission' => 'category-list',
                     ],
                     [
                         'name' => 'Author',
                         'route' => route('bm.author.index'),
                         'icon' => 'shield-user',
                         'active' => 'author',
+                        'permission' => 'author-list',
                     ],
                     [
                         'name' => 'Publisher',
                         'route' => route('bm.publisher.index'),
                         'icon' => 'book-user',
                         'active' => 'publisher',
+                        'permission' => 'publisher-list',
                     ],
                     [
                         'name' => 'Rack',
                         'route' => route('bm.rack.index'),
                         'icon' => 'layers',
                         'active' => 'rack',
+                        'permission' => 'rack-list',
                     ],
                 ]" />
 
@@ -116,6 +125,7 @@
                         'icon' => 'book',
                         'active' =>
                             'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_PENDING],
+                        'permission' => 'book-issue-list-pending',
                     ],
                     [
                         'name' => 'Book Issued',
@@ -125,6 +135,7 @@
                         'icon' => 'book-lock',
                         'active' =>
                             'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_ISSUED],
+                        'permission' => 'book-issue-list-issued',
                     ],
                     [
                         'name' => 'Book Returned',
@@ -135,6 +146,7 @@
                         'active' =>
                             'book_issues_' .
                             App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
+                        'permission' => 'book-issue-list-returned',
                     ],
                     [
                         'name' => 'Book Overdue',
@@ -144,6 +156,7 @@
                         'icon' => 'book-dashed',
                         'active' =>
                             'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
+                        'permission' => 'book-issue-list-overdue',
                     ],
                     [
                         'name' => 'Book Lost',
@@ -153,6 +166,7 @@
                         'icon' => 'book-x',
                         'active' =>
                             'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_LOST],
+                        'permission' => 'book-issue-list-lost',
                     ],
                     [
                         'name' => 'Fine Unpaid',
@@ -165,119 +179,40 @@
                         'active' =>
                             'book_issues_' .
                             App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_UNPAID],
+                        'permission' => 'book-issue-list-fine-unpaid',
                     ],
                     [
                         'name' => 'Fine Paid',
                         'route' => route('bim.book-issues.index', [
-                            'fine-status' => App\Models\BookIssues::fineStatusList()[
-                                App\Models\BookIssues::FINE_PAID
-                            ],
+                            'fine-status' => App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_PAID],
                         ]),
                         'icon' => 'hand-coins',
                         'active' =>
-                            'book_issues_' .
-                            App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_PAID],
+                            'book_issues_' . App\Models\BookIssues::fineStatusList()[App\Models\BookIssues::FINE_PAID],
+                        'permission' => 'book-issue-list-fine-paid',
                     ],
                 ]" />
 
             <x-admin.navlink type="single" icon="notebook-text" name="Magazine" :route="route('magazine.index')" active="magazine"
-                :page_slug="$active" />
+                :page_slug="$active" permission="magazine-list" />
 
             <x-admin.navlink type="single" icon="newspaper" name="Newspaper" :route="route('newspaper.index')" active="newspaper"
-                :page_slug="$active" />
+                :page_slug="$active" permission="newspaper-list" />
 
-            <x-admin.navlink type="dropdown" icon="cog" name="Application Settings" :page_slug="$active"
-                :items="[
-                    [
-                        'name' => 'General Settings',
-                        'route' => route('app-settings.general'),
-                        'icon' => 'settings',
-                        'active' => 'app-general-settings',
-                    ],
-                    // [
-                    //     'name' => 'Database Settings',
-                    //     'route' => route('app-settings.database'),
-                    //     'icon' => 'database',
-                    //     'active' => 'app-database-settings',
-                    // ],
-                ]" />
-
-            @if (isset($not_use))
-                {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}
-                {{-- <x-admin.navlink type="dropdown" icon="shopping-cart" name="E-commerce" :page_slug="$active"
-                :items="[
-                    [
-                        'type' => 'single',
-                        'name' => 'Dashboard',
-                        'route' => '#',
-                        'icon' => 'bar-chart-3',
-                        'active' => 'admin-ecommerce-dashboard',
-                    ],
-                    [
-                        'name' => 'Products',
-                        'icon' => 'package',
-                        'subitems' => [
-                            [
-                                'name' => 'All Products',
-                                'route' => '#',
-                                'icon' => 'list',
-                                'active' => 'admin-products-index',
-                            ],
-                            [
-                                'name' => 'Add Product',
-                                'route' => '#',
-                                'icon' => 'plus',
-                                'active' => 'admin-products-create',
-                            ],
-                            [
-                                'name' => 'Categories',
-                                'route' => '#',
-                                'icon' => 'tag',
-                                'active' => 'admin-products-categories',
-                            ],
-                        ],
-                    ],
-                    [
-                        'type' => 'single',
-                        'name' => 'Inventory',
-                        'route' => '#',
-                        'icon' => 'warehouse',
-                        'active' => 'admin-inventory-index',
-                    ],
-                    [
-                        'name' => 'Orders',
-                        'icon' => 'shopping-bag',
-                        'subitems' => [
-                            [
-                                'name' => 'All Orders',
-                                'route' => '#',
-                                'icon' => 'list',
-                                'active' => 'admin-orders-index',
-                            ],
-                            [
-                                'name' => 'Pending Orders',
-                                'route' => '#',
-                                'icon' => 'clock',
-                                'active' => 'admin-orders-pending',
-                            ],
-                        ],
-                    ],
-                    [
-                        'type' => 'single',
-                        'name' => 'Reports',
-                        'route' => '#',
-                        'icon' => 'file-text',
-                        'active' => 'admin-ecommerce-reports',
-                    ],
-                ]" /> --}}
-
-                {{-- Mixed Dropdown (Single + Multi items in same dropdown) --}}
-                {{-- <x-admin.navlink icon="settings" name="Settings" :page_slug="$active" :items="[
+            <x-admin.navlink icon="settings" name="Settings" :page_slug="$active" :items="[
                 [
                     'name' => 'General Settings',
-                    'route' => '#',
+                    'route' => route('app-settings.general'),
                     'icon' => 'sliders',
-                    'active' => 'admin-settings-general',
+                    'active' => 'app-general-settings',
+                    'permission' => 'application-setting-general',
+                ],
+                [
+                    'name' => 'Database Settings',
+                    'route' => route('app-settings.database'),
+                    'icon' => 'database',
+                    'active' => 'app-database-settings',
+                    'permission' => 'application-setting-database',
                 ],
                 [
                     'name' => 'Email Settings',
@@ -288,25 +223,100 @@
                             'route' => '#',
                             'icon' => 'server',
                             'active' => 'admin-settings-email-smtp',
+                            'permission' => 'application-setting-email',
                         ],
                         [
                             'name' => 'Email Templates',
                             'route' => '#',
                             'icon' => 'file-text',
                             'active' => 'admin-settings-email-templates',
+                            'permission' => 'application-setting-email-template',
                         ],
                     ],
                 ],
-                [
-                    'name' => 'Security',
-                    'route' => '#',
-                    'icon' => 'lock',
-                    'active' => 'admin-settings-security',
-                ],
+            ]" />
+            {{-- @if (isset($not_use)) --}}
+            {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}
+
+            {{-- <x-admin.navlink type="dropdown" icon="shopping-cart" name="E-commerce" :page_slug="$active"
+                :items="[
+                    [
+                        'type' => 'single',
+                        'name' => 'Dashboard',
+                        'route' => '#',
+                        'icon' => 'bar-chart-3',
+                        'active' => 'admin-ecommerce-dashboard',
+                        'permission' => 'ecommerce-dashboard',
+                    ],
+                    [
+                        'name' => 'Products',
+                        'icon' => 'package',
+                        'subitems' => [
+                            [
+                                'name' => 'All Products',
+                                'route' => '#',
+                                'icon' => 'list',
+                                'active' => 'admin-products-index',
+                                'permission' => 'product-list',
+                            ],
+                            [
+                                'name' => 'Add Product',
+                                'route' => '#',
+                                'icon' => 'plus',
+                                'active' => 'admin-products-create',
+                                'permission' => 'product-create',
+                            ],
+                            [
+                                'name' => 'Categories',
+                                'route' => '#',
+                                'icon' => 'tag',
+                                'active' => 'admin-products-categories',
+                                'permission' => 'product-category-list',
+                            ],
+                        ],
+                    ],
+                    [
+                        'type' => 'single',
+                        'name' => 'Inventory',
+                        'route' => '#',
+                        'icon' => 'warehouse',
+                        'active' => 'admin-inventory-index',
+                        'permission' => 'inventory-list',
+                    ],
+                    [
+                        'name' => 'Orders',
+                        'icon' => 'shopping-bag',
+                        'subitems' => [
+                            [
+                                'name' => 'All Orders',
+                                'route' => '#',
+                                'icon' => 'list',
+                                'active' => 'admin-orders-index',
+                                'permission' => 'order-list',
+                            ],
+                            [
+                                'name' => 'Pending Orders',
+                                'route' => '#',
+                                'icon' => 'clock',
+                                'active' => 'admin-orders-pending',
+                                'permission' => 'order-pending',
+                            ],
+                        ],
+                    ],
+                    [
+                        'type' => 'single',
+                        'name' => 'Reports',
+                        'route' => '#',
+                        'icon' => 'file-text',
+                        'active' => 'admin-ecommerce-reports',
+                        'permission' => 'ecommerce-reports',
+                    ],
                 ]" /> --}}
 
-                {{-- Using with Boxicons instead of Lucide --}}
-                {{-- <x-admin.navlink icon="monitor-cog" name="System" :page_slug="$active" :items="[
+            {{-- Mixed Dropdown (Single + Multi items in same dropdown) --}}
+
+            {{-- Using with Boxicons instead of Lucide --}}
+            {{-- <x-admin.navlink icon="monitor-cog" name="System" :page_slug="$active" :items="[
                     [
                         'name' => 'Cache Management',
                         'route' => '#',
@@ -323,10 +333,10 @@
                     ],
                 ]" /> --}}
 
-                {{-- <x-admin.navlink type="single" icon="help-circle" name="Help &
+            {{-- <x-admin.navlink type="single" icon="help-circle" name="Help &
                     Support"
                 :page_slug="$active" /> --}}
-            @endif
+            {{-- @endif --}}
 
         </nav>
     </div>
