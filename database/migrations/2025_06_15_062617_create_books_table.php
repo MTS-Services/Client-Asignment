@@ -33,6 +33,7 @@ return new class extends Migration
             $table->integer('total_copies')->default(1);
             $table->integer('available_copies')->default(1);
             $table->tinyInteger('status')->default(Book::STATUS_AVAILABLE); // 1: Available, 2: Checked Out, 3: Reserved
+            $table->string('file')->nullable();
 
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
