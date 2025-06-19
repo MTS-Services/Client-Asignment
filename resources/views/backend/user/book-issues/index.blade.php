@@ -8,6 +8,9 @@
                 <h2 class="text-xl font-bold text-text-black dark:text-text-white">Book {{ request('status') == 'Pending' ? 'Request' : request('status') }} List
                 </h2>
                 <div class="flex items-center gap-2">
+                    <x-admin.primary-link href="{{ route('user.book-issues-create') }}">{{ __('Book Request') }}<i
+                            data-lucide="plus" class="w-4 h-4"></i>
+                    </x-admin.primary-link>
                 </div>
             </div>
         </div>

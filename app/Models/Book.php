@@ -25,6 +25,7 @@ class Book extends BaseModel
         'total_copies',
         'available_copies',
         'status', // 1: Available, 2: Maintenance, 3: Retired
+        'file',
 
         'created_by',
         'updated_by',
@@ -78,6 +79,10 @@ class Book extends BaseModel
     public function getModifiedImageAttribute()
     {
         return storage_url($this->cover_image);
+    }
+    public function getModifiedFileAttribute()
+    {
+        return $this->file ? asset('storage/' . $this->file) : Null ;
     }
 
 
