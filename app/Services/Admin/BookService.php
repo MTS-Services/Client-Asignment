@@ -24,11 +24,14 @@ class BookService
         return Book::onlyTrashed()->findOrFail(decrypt($encryptedId));
     }
 
-    public function createBook(array $data, $file = null): Book
+    public function createBook(array $data, $file = null, $pdf = null): Book
     {
-        return DB::transaction(function () use ($data, $file) {
+        return DB::transaction(function () use ($data, $file, $pdf) {
             if ($file) {
                 $data['cover_image'] = $this->handleFileUpload($file, 'books');
+            }
+            if ($pdf) {
+                $data['file'] = $this->handleFileUpload($pdf, 'books');
             }
             $data['created_by'] = admin()->id;
             $book = Book::create($data);
@@ -36,12 +39,16 @@ class BookService
         });
     }
 
-    public function updateBook(Book $book, array $data, $file = null): Book
+    public function updateBook(Book $book, array $data, $file = null, $pdf = null): Book
     {
-        return DB::transaction(function () use ($book, $data, $file) {
+        return DB::transaction(function () use ($book, $data, $file , $pdf) {
             if ($file) {
                 $data['cover_image'] = $this->handleFileUpload($file, 'books');
                 $this->fileDelete($book->cover_image);
+            }
+            if ($pdf) {
+                $data['file'] = $this->handleFileUpload($pdf, 'books');
+                $this->fileDelete($book->file);
             }
             $data['updated_by'] = admin()->id;
             $book->update($data);

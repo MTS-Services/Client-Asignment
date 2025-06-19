@@ -80,6 +80,10 @@ class Book extends BaseModel
     {
         return storage_url($this->cover_image);
     }
+    public function getModifiedFileAttribute()
+    {
+        return $this->file ? asset('storage/' . $this->file) : Null ;
+    }
 
 
 

@@ -108,6 +108,13 @@
                                 accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
                             <x-input-error class="mt-2" :messages="$errors->get('cover_image')" />
                         </div>
+                        {{-- File --}}
+                        <div class="space-y-2 sm:col-span-2">
+                            <p class="label">{{ __('File') }}</p>
+                            <input type="file" name="file" class="filepond" id="file"
+                                accept="application/pdf">
+                            <x-input-error class="mt-2" :messages="$errors->get('file')" />
+                        </div>
                         <!-- Language -->
                         <div class="space-y-2">
                             <p class="label">{{ __('Language') }}</p>
@@ -171,6 +178,7 @@
             document.addEventListener('DOMContentLoaded', function() {
 
                 file_upload(["#cover_image"], ["image/jpeg", "image/png", "image/jpg, image/webp, image/svg"]);
+                file_upload(["#file"], ["application/pdf"]);
             });
         </script>
     @endpush
