@@ -53,6 +53,13 @@ class ApplicationSettingController extends Controller implements HasMiddleware
         return view('backend.admin.application-settings.database', $data);
     }
 
+    public function smtp(): View
+    {
+
+        $data['smtp_settings'] = ApplicationSetting::whereIn('key', ['smtp_driver', 'smtp_host', 'smtp_port', 'smtp_encryption', 'smtp_username', 'smtp_password', 'smtp_from_address', 'smtp_from_name'])->pluck('value', 'key')->all();
+        return view('backend.admin.application-settings.smtp', $data);
+    }
+
     public function updateSettings(ApplicationSettingRequest $request): RedirectResponse
     {
         try {

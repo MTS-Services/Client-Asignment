@@ -223,24 +223,31 @@
                 ],
                 [
                     'name' => 'Email Settings',
-                    'icon' => 'mail',
-                    'subitems' => [
-                        [
-                            'name' => 'SMTP Config',
-                            'route' => '#',
-                            'icon' => 'server',
-                            'active' => 'admin-settings-email-smtp',
-                            'permission' => 'application-setting-email',
-                        ],
-                        [
-                            'name' => 'Email Templates',
-                            'route' => '#',
-                            'icon' => 'file-text',
-                            'active' => 'admin-settings-email-templates',
-                            'permission' => 'application-setting-email-template',
-                        ],
-                    ],
+                    'route' => route('app-settings.smtp'),
+                    'icon' => 'server',
+                    'active' => 'app-smtp-settings',
+                    'permission' => 'application-smtp-database',
                 ],
+                // [
+                //     'name' => 'Email Settings',
+                //     'icon' => 'mail',
+                //     'subitems' => [
+                //         [
+                //             'name' => 'SMTP Config',
+                //             'route' => '#',
+                //             'icon' => 'server',
+                //             'active' => 'admin-settings-email-smtp',
+                //             'permission' => 'application-setting-email',
+                //         ],
+                //         [
+                //             'name' => 'Email Templates',
+                //             'route' => '#',
+                //             'icon' => 'file-text',
+                //             'active' => 'admin-settings-email-templates',
+                //             'permission' => 'application-setting-email-template',
+                //         ],
+                //     ],
+                // ],
             ]" />
             {{-- @if (isset($not_use)) --}}
             {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}

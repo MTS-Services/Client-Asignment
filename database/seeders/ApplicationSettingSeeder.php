@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\ApplicationSetting;
+use Illuminate\Console\Application;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -116,6 +117,48 @@ class ApplicationSettingSeeder extends Seeder
             'key' => 'database_password',
             'value' => '1',
             'env_key' => 'DB_PASSWORD',
+        ]);
+
+        // SMTP Setting
+        ApplicationSetting::create([
+            'key' => 'smtp_driver',
+            'value' => 'smtp',
+            'env_key' => 'MAIL_DRIVER',
+        ]);
+        ApplicationSetting::create([
+            'key' => 'smtp_host',
+            'value' => '1',
+            'env_key' => 'MAIL_HOST',
+        ]);
+        ApplicationSetting::create([
+            'key' => 'smtp_port',
+            'value' => '1',
+            'env_key' => 'MAIL_PORT',
+        ]);
+        ApplicationSetting::create([
+            'key' => 'smtp_encryption',
+            'value' => 'tls',
+            'env_key' => 'MAIL_ENCRYPTION',
+        ]);
+        ApplicationSetting::create([
+            'key' => 'smtp_username',
+            'value' => '123456',
+            'env_key' => 'MAIL_USERNAME',
+        ]);
+        ApplicationSetting::create([
+            'key' => 'smtp_password',
+            'value' => '123',
+            'env_key' => 'MAIL_PASSWORD',
+        ]);
+        ApplicationSetting::create([
+            'key' => 'smtp_from_address',
+            'value' => 'superadmin@gmail.com',
+            'env_key' => 'MAIL_FROM_ADDRESS',
+        ]);
+        ApplicationSetting::create([
+            'key' => 'smtp_from_name',
+            'value' => 'Super Admin',
+            'env_key' => 'MAIL_FROM_NAME',
         ]);
     }
 }

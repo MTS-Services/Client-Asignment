@@ -56,6 +56,19 @@ class ApplicationSettingRequest extends FormRequest
             'database_name'             => 'sometimes|nullable|string',
             'database_username'         => 'sometimes|nullable|string',
             'database_password'         => 'sometimes|nullable|string',
+
+
+            // SMTP Setup Settings
+            'smtp_host'                 => 'sometimes|nullable|string',
+            'smtp_port'                 => 'sometimes|nullable|string',
+            'smtp_username'             => 'sometimes|nullable|string',
+            'smtp_password'             => 'sometimes|nullable|string',
+            'smtp_encryption'           => 'sometimes|nullable|string',
+            Rule::in([App::SMTP_ENCRYPTION_TLS, App::SMTP_ENCRYPTION_SSL, App::SMTP_ENCRYPTION_NONE]),
+            'smtp_driver'               => 'sometimes|nullable|string',
+            Rule::in([App::SMTP_DRIVER_MAILER, App::SMTP_DRIVER_MAILGUN, App::SMTP_DRIVER_SES, App::SMTP_DRIVER_POSTMARK, App::SMTP_DRIVER_SENDMAIL]),
+            'smtp_from_address'         => 'sometimes|nullable|string',
+            'smtp_from_name'            => 'sometimes|nullable|string',
         ];
     }
 
@@ -86,6 +99,16 @@ class ApplicationSettingRequest extends FormRequest
             'database_name'             => 'Database Name',
             'database_username'         => 'Database Username',
             'database_password'         => 'Database Password',
+
+            // SMTP Setup Settings
+            'smtp_host'                 => 'SMTP Host',
+            'smtp_port'                 => 'SMTP Port',
+            'smtp_username'             => 'SMTP Username',
+            'smtp_password'             => 'SMTP Password',
+            'smtp_encryption'           => 'SMTP Encryption',
+            'smtp_driver'               => 'SMTP Driver',
+            'smtp_from_address'         => 'SMTP From Address',
+            'smtp_from_name'            => 'SMTP From Name',
         ];
     }
 }

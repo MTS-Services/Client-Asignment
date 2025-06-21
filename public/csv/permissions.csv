@@ -128,8 +128,8 @@ newspaper-permanent-delete,admin,Newspaper
 query-list,admin,Query
 
 application-setting-general,admin,Application Settings
-application-setting-email,admin,Application Settings
-application-setting-email-template,admin,Application Settings
+application-setting-smtp,admin,Application Settings
+application-setting-smtp-template,admin,Application Settings
 application-setting-database,admin,Application Settings
 application-setting-circulation-policies,admin,Application Settings
 application-setting-contact-info,admin,Application Settings

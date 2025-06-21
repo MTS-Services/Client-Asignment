@@ -165,8 +165,9 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
 
     // Application Settings 
     Route::controller(ApplicationSettingController::class)->name('app-settings.')->prefix('application-settings')->group(function () {
-        Route::get('/', 'general')->name('general');
         Route::post('/update-settings', 'updateSettings')->name('update-settings');
+        Route::get('/', 'general')->name('general');
         Route::get('/database', 'database')->name('database');
+        Route::get('/smtp', 'smtp')->name('smtp');
     });
 });

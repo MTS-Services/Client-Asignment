@@ -154,4 +154,34 @@ class ApplicationSetting extends BaseModel
             self::DATATBASE_DRIVER_SQLSRV => 'SQL Server',
         ];
     }
+
+    public const SMTP_DRIVER_MAILER = 'smtp';
+    public const SMTP_DRIVER_SENDMAIL = 'sendmail';
+    public const SMTP_DRIVER_MAILGUN = 'mailgun';
+    public const SMTP_DRIVER_SES = 'ses';
+    public const SMTP_DRIVER_POSTMARK = 'postmark';
+
+    public static function getSmtpDriverInfos()
+    {
+        return [
+            self::SMTP_DRIVER_MAILER => 'SMTP Mailer',
+            self::SMTP_DRIVER_SENDMAIL => 'Sendmail Mailer',
+            self::SMTP_DRIVER_MAILGUN => 'Mailgun Mailer',
+            self::SMTP_DRIVER_SES => 'Amazon SES',
+            self::SMTP_DRIVER_POSTMARK => 'Postmark Mailer',
+        ];
+    }
+
+    public const SMTP_ENCRYPTION_NONE = 'none';
+    public const SMTP_ENCRYPTION_TLS = 'tls';
+    public const SMTP_ENCRYPTION_SSL = 'ssl';
+
+    public static function getSmtpEncryptionInfos()
+    {
+        return [
+            self::SMTP_ENCRYPTION_NONE => 'None',
+            self::SMTP_ENCRYPTION_TLS => 'TLS',
+            self::SMTP_ENCRYPTION_SSL => 'SSL',
+        ];
+    }
 }
