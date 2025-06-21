@@ -138,6 +138,16 @@
                         'permission' => 'book-issue-list-issued',
                     ],
                     [
+                        'name' => 'Book Overdue',
+                        'route' => route('bim.book-issues.index', [
+                            'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
+                        ]),
+                        'icon' => 'book-dashed',
+                        'active' =>
+                            'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
+                        'permission' => 'book-issue-list-overdue',
+                    ],
+                    [
                         'name' => 'Book Returned',
                         'route' => route('bim.book-issues.index', [
                             'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
@@ -147,16 +157,6 @@
                             'book_issues_' .
                             App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_RETURNED],
                         'permission' => 'book-issue-list-returned',
-                    ],
-                    [
-                        'name' => 'Book Overdue',
-                        'route' => route('bim.book-issues.index', [
-                            'status' => App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
-                        ]),
-                        'icon' => 'book-dashed',
-                        'active' =>
-                            'book_issues_' . App\Models\BookIssues::statusList()[App\Models\BookIssues::STATUS_OVERDUE],
-                        'permission' => 'book-issue-list-overdue',
                     ],
                     [
                         'name' => 'Book Lost',

@@ -246,9 +246,8 @@ class BookIssuesController extends Controller implements HasMiddleware
      */
     public function create(): View
     {
-        $data['users'] = $this->userService->getUsers()->select(['id', 'name'])->get();
-        $data['issueds'] = $this->adminService->getAdmins()->select(['id', 'name'])->get();
-        $data['books'] = $this->bookService->getBooks()->select(['id', 'title'])->get();
+        $data['users'] = $this->userService->getUsers()->active()->select(['id', 'name'])->get();
+        $data['books'] = $this->bookService->getBooks()->available()->select(['id', 'title'])->get();
         return view('backend.admin.issues-management.book-issues.create', $data);
     }
 
@@ -295,8 +294,8 @@ class BookIssuesController extends Controller implements HasMiddleware
     public function edit(string $id): View
     {
         $data['issue'] = $this->bookIssuesService->getBookIssues($id);
-        $data['users'] = $this->userService->getUsers()->select(['id', 'name'])->get();
-        $data['books'] = $this->bookService->getBooks()->select(['id', 'title'])->get();
+        $data['users'] = $this->userService->getUsers()->active()->select(['id', 'name'])->get();
+        $data['books'] = $this->bookService->getBooks()->available()->select(['id', 'title'])->get();
         return view('backend.admin.issues-management.book-issues.edit', $data);
     }
 
