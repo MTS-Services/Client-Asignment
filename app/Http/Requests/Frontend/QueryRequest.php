@@ -61,6 +61,8 @@ class QueryRequest extends FormRequest
         return trim($sanitized);
     }
 
+
+
     private function sanitizeEmail($email)
     {
         return filter_var(trim($email), FILTER_SANITIZE_EMAIL);

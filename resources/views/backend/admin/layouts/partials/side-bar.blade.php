@@ -77,7 +77,7 @@
                     ],
                     [
                         'name' => 'Queries',
-                        'route' => route('um.user.index'),
+                        'route' => route('um.query.index'),
                         'icon' => 'message-circle-more',
                         'active' => 'query-list',
                         'permission' => 'query-list',

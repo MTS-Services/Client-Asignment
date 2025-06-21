@@ -44,7 +44,7 @@
                     <!-- Left Side: Form -->
                     <div class="w-full lg:w-1/2 p-8 lg:p-12">
                         <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">
-                            {{ __('Enquiry Form') }}
+                            {{ __('Query Form') }}
                         </h2>
 
                         <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -93,7 +93,7 @@
 
                             <div>
                                 <x-primary-button class="text-base !w-full py-6">
-                                    {{ __('Enquiry Now') }}
+                                    {{ __('Send Now') }}
                                 </x-primary-button>
                             </div>
                         </form>

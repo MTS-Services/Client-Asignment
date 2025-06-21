@@ -23,6 +23,17 @@ class Query extends BaseModel
         'updated_at' => 'datetime',
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->appends = array_merge(parent::getAppends(), [
+            'decrypted_email',
+            'decrypted_contact',
+            'decrypted_address',
+            'decrypted_message',
+        ]);
+    }
+
     // Accessor to decrypt email when accessed
     public function getDecryptedEmailAttribute()
     {

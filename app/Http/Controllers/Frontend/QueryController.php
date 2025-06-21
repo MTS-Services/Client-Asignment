@@ -27,8 +27,8 @@ class QueryController extends Controller
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
             return back()->withErrors([
-                'message' => 'Too many enquiry submissions. Please try again later.'
-            ]);
+                'message' => 'Too many Query submissions. Please try again later.'
+            ])->with('warning', 'Too many Query submissions. Please try again later.');
         }
 
         RateLimiter::hit($key, 300); // Block for 5 minutes after 5 attempts
