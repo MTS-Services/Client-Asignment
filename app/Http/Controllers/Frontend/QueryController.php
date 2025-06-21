@@ -22,16 +22,29 @@ class QueryController extends Controller
 
     public function store(QueryRequest $request): RedirectResponse
     {
-        // Rate limiting for enquiry submissions
-        $key = 'enquiry-submit:' . $request->ip();
+        $lockoutKey = 'enquiry-lockout:' . $request->ip();
+        $attemptsKey = 'enquiry-attempts:' . $request->ip();
 
-        if (RateLimiter::tooManyAttempts($key, 5)) {
+        // Check if user is already locked out
+        if (RateLimiter::tooManyAttempts($lockoutKey, 1)) {
+            $seconds = RateLimiter::availableIn($lockoutKey);
             return back()->withErrors([
-                'message' => 'Too many Query submissions. Please try again later.'
-            ])->with('warning', 'Too many Query submissions. Please try again later.');
+                'message' => "Too many Query submissions. Try again in {$seconds} seconds."
+            ])->with('error', 'Too many Query submissions. Try again in ' . $seconds . ' seconds.');
         }
 
-        RateLimiter::hit($key, 300); // Block for 5 minutes after 5 attempts
+        // Check recent submission attempts (1 minute window)
+        if (RateLimiter::tooManyAttempts($attemptsKey, 5)) {
+            // Set lockout for 5 minutes when exceeding 5 attempts
+            RateLimiter::hit($lockoutKey, 300); // 5 minute lockout
+
+            return back()->withErrors([
+                'message' => 'Too many Query submissions. You are locked out for 5 minutes.'
+            ])->with('error', 'Too many Query submissions. You are locked out for 5 minutes.');
+        }
+
+        // Record new attempt (1 minute decay)
+        RateLimiter::hit($attemptsKey, 60);
 
         try {
             // Create enquiry with encrypted sensitive data
