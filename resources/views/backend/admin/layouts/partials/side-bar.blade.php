@@ -231,7 +231,7 @@
                     'route' => route('app-settings.smtp'),
                     'icon' => 'server',
                     'active' => 'app-smtp-settings',
-                    'permission' => 'application-smtp-database',
+                    'permission' => 'application-setting-smtp',
                 ],
                 // [
                 //     'name' => 'Email Settings',
