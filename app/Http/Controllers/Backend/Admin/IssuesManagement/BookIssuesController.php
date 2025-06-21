@@ -403,7 +403,7 @@ class BookIssuesController extends Controller implements HasMiddleware
         $bookIssues = $this->bookIssuesService->getBookIssues($id);
         match ($status) {
             BookIssues::statusList()[BookIssues::STATUS_ISSUED] => $bookIssues->update(['status' => BookIssues::STATUS_ISSUED, 'issued_by' => admin()->id, 'updater_id' => admin()->id, 'updater_type' => get_class(admin())]),
-            BookIssues::statusList()[BookIssues::STATUS_PENDING] => $bookIssues->update(['status' => BookIssues::STATUS_PENDING, 'updater_id' => admin()->id, 'updater_type' => get_class(admin()), 'issued_by' => null]),
+            BookIssues::statusList()[BookIssues::STATUS_PENDING] => $bookIssues->update(['status' => BookIssues::STATUS_PENDING, 'updater_id' => admin()->id, 'updater_type' => get_class(admin())]),
         };
         session()->flash('success', 'Admin status updated successfully!');
         return redirect()->back();
