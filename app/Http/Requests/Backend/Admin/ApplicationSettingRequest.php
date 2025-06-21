@@ -34,7 +34,7 @@ class ApplicationSettingRequest extends FormRequest
             'date_format'               => 'sometimes|required|string',
             'time_format'               => 'sometimes|required|string',
             'favicon' => 'sometimes|required|image|mimes:jpeg,png,jpg,webp,svg|max:2048|dimensions:max_width=16,max_height=16',
-            'app_logo' => 'sometimes|required|image|mimes:jpeg,png,jpg,webp,svg|max:2048|dimensions:max_width=400,max_height=150',
+            'app_logo' => 'sometimes|required|image|mimes:jpeg,png,jpg,webp,svg|max:2048|dimensions:max_width=400,max_height=400',
             'theme_mode'                => 'sometimes|required|string',
             Rule::in([App::THEME_MODE_LIGHT, App::THEME_MODE_DARK, App::THEME_MODE_SYSTEM]),
             'public_registration'       => 'sometimes|required|integer',

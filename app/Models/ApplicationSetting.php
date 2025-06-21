@@ -73,7 +73,7 @@ class ApplicationSetting extends BaseModel
     // }
 
     public const ENABLE_DEBUGBAR = 1;
-    public const DISABLE_DEBUGBAR = 2;
+    public const DISABLE_DEBUGBAR = 0;
 
     public static function getDebugbarInfos()
     {
