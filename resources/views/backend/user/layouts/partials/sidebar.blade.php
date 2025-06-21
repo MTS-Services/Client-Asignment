@@ -27,7 +27,7 @@
                     x-transition:leave-start="opacity-100 translate-x-0"
                     x-transition:leave-end="opacity-0 -translate-x-4">
                     <h1 class="text-xl font-bold text-text-light-primary dark:text-text-white">
-                        {{ env('APP_SORT_NAME') }}</h1>
+                        {{ env('APP_SORT_NAME', 'Student Portal') }}</h1>
                     <p class="text-text-light-secondary dark:text-text-dark-primary text-sm">{{ __('Student Portal') }}
                 </div>
             </div>
