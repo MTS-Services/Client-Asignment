@@ -32,6 +32,27 @@ class BookIssues extends BaseModel
         'deleter_type',
     ];
 
+    protected static function booted()
+    {
+        static::updated(function ($bookIssue) {
+            if ($bookIssue->isDirty('status')) {
+                if ($bookIssue->status === self::STATUS_ISSUED) {
+                    $bookIssue->book?->decrement('available_copies');
+                } elseif ($bookIssue->status === self::STATUS_RETURNED) {
+                    $bookIssue->book?->increment('available_copies');
+                } elseif ($bookIssue->status === self::STATUS_PENDING && $bookIssue->issued_by !== null) {
+                    $bookIssue->book?->increment('available_copies');
+                }
+            }
+        });
+        static::created(function ($bookIssue) {
+            // No need for isDirty here, just check the status
+            if ($bookIssue->status === self::STATUS_ISSUED) {
+                $bookIssue->book?->decrement('available_copies');
+            }
+        });
+    }
+
 
     public function __construct(array $attributes = [])
     {

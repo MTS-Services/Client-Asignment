@@ -82,7 +82,7 @@ class Book extends BaseModel
     }
     public function getModifiedFileAttribute()
     {
-        return $this->file ? asset('storage/' . $this->file) : Null ;
+        return $this->file ? asset('storage/' . $this->file) : Null;
     }
 
 
@@ -102,7 +102,7 @@ class Book extends BaseModel
 
     public function scopeAvailable(Builder $query): Builder
     {
-        return $query->where('status', self::STATUS_AVAILABLE);
+        return $query->where('status', self::STATUS_AVAILABLE)->where('available_copies', '>', 0);
     }
     public function scopeUnavailable(Builder $query): Builder
     {

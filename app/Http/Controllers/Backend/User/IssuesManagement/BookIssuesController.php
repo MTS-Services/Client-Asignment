@@ -75,21 +75,21 @@ class BookIssuesController extends Controller implements HasMiddleware
         return [
             [
                 'routeName' => 'user.book-issues-show',
-                'params' => [$model->issue_code ,'status' => $status],
+                'params' => [$model->issue_code, 'status' => $status],
                 'className' => 'view',
                 'label' => 'Details',
                 'permissions' => ['permission-list']
             ],
         ];
     }
-    public function issuesShow(Request $request,  $issue_code)
+    public function issuesShow(Request $request, $issue_code)
     {
-        $book_issue = $this->bookIssuesService->getBookIssues($issue_code , 'issue_code');
+        $book_issue = $this->bookIssuesService->getBookIssues($issue_code, 'issue_code');
         return view('backend.user.book-issues.show', compact('book_issue'));
     }
     public function issuesCreate(Request $request)
     {
-        $data['books'] = $this->bookService->getBooks()->select(['id', 'title'])->get();
+        $data['books'] = $this->bookService->getBooks()->available()->select(['id', 'title'])->get();
         return view('backend.user.book-issues.create', $data);
     }
     public function issuesRequest(BookIssuesRequest $request)

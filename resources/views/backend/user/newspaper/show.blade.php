@@ -24,8 +24,16 @@
 
                 <!-- Details Card -->
                 <div class="px-6">
+                    <img src="{{ $newspaper->modified_image }}" class="w-full h-[300px] object-contain" alt="">
                     <p class="text-text-light-primary dark:text-text-dark-primary">{{ $newspaper->description }}</p>
+                    @if ($newspaper->url)
+                        <p class="mt-5">For More Details <a class="text-primary" target="_blank"
+                                href="{{ $newspaper->url }}">Click
+                                Here</a>
+                        </p>
+                    @endif
                 </div>
+
             </div>
 
         </div>
