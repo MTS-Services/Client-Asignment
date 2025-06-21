@@ -33,6 +33,9 @@
                 <i data-lucide="arrow-left"></i>
                 <span>Back To Home</span>
             </a>
+            @auth('web')
+                <x-user.profile-navlink route="{{ route('logout') }}" logout='true' name="{{ __('Sign Out') }}" />
+            @endauth
             <form method="POST" action="{{ route('verify-otp', ['email' => $email]) }}" class="space-y-6"
                 id="otp-form">
                 @csrf
