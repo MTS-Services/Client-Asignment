@@ -62,13 +62,13 @@
                         'active' => 'role',
                         'permission' => 'role-list',
                     ],
-                    [
-                        'name' => 'Permission',
-                        'route' => route('am.permission.index'),
-                        'icon' => 'shield-check',
-                        'active' => 'permission',
-                        'permission' => 'permission-list',
-                    ],
+                    // [
+                    //     'name' => 'Permission',
+                    //     'route' => route('am.permission.index'),
+                    //     'icon' => 'shield-check',
+                    //     'active' => 'permission',
+                    //     'permission' => 'permission-list',
+                    // ],
                 ]" />
 
             <x-admin.navlink type="dropdown" icon="users" name="User Management" :page_slug="$active"
