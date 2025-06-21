@@ -9,7 +9,7 @@ use App\Http\Controllers\Backend\Admin\BookManagement\BookController;
 use App\Http\Controllers\Backend\Admin\BookManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\IssuesManagement\BookIssuesController;
-use App\Http\Controllers\Backend\Admin\UserManagment\UserController;
+use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\MagazineController;
 use App\Http\Controllers\Backend\Admin\NewspaperController;
 use App\Http\Controllers\Backend\Admin\ProfileController;

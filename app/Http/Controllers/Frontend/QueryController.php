@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Frontend\EnquiryRequest;
-use App\Models\Enquiry;
+use App\Http\Requests\Frontend\QueryRequest;
+use App\Models\Query;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 
-class EnquiryController extends Controller
+class QueryController extends Controller
 {
     public function enquiry(): View
     {
         return view('frontend.pages.enquiry');
     }
 
-    public function store(EnquiryRequest $request): RedirectResponse
+    public function store(QueryRequest $request): RedirectResponse
     {
         // Rate limiting for enquiry submissions
         $key = 'enquiry-submit:' . $request->ip();
@@ -35,7 +35,7 @@ class EnquiryController extends Controller
 
         try {
             // Create enquiry with encrypted sensitive data
-            Enquiry::create([
+            Query::create([
                 'name' => $request->name,
                 'email' => Crypt::encryptString($request->email),
                 'contact' => Crypt::encryptString($request->contact),

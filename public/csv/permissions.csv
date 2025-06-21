@@ -125,6 +125,8 @@ newspaper-trash,admin,Newspaper
 newspaper-restore,admin,Newspaper
 newspaper-permanent-delete,admin,Newspaper
 
+query-list,admin,Query
+
 application-setting-general,admin,Application Settings
 application-setting-email,admin,Application Settings
 application-setting-email-template,admin,Application Settings

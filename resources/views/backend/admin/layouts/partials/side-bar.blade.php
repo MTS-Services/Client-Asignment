@@ -75,6 +75,13 @@
                         'active' => 'user',
                         'permission' => 'user-list',
                     ],
+                    [
+                        'name' => 'Queries',
+                        'route' => route('um.user.index'),
+                        'icon' => 'message-circle-more',
+                        'active' => 'query-list',
+                        'permission' => 'query-list',
+                    ],
                 ]" />
             <x-admin.navlink type="dropdown" icon="book-open-text" name="Book Management" :page_slug="$active"
                 :items="[

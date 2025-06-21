@@ -56,21 +56,24 @@
                                 <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     {{ __('Name') }}
                                 </label>
-                                <input type="text" name="name" placeholder="Name" class="input" value="{{ old('name') }}"/>
+                                <input type="text" name="name" placeholder="Name" class="input"
+                                    value="{{ old('name') }}" />
                                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
                             </div>
                             <div>
                                 <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     {{ __('Email') }}
                                 </label>
-                                <input type="email" name="email" placeholder="Email" class="input" value="{{ old('email') }}"/>
+                                <input type="email" name="email" placeholder="Email" class="input"
+                                    value="{{ old('email') }}" />
                                 <x-input-error class="mt-2" :messages="$errors->get('email')" />
                             </div>
                             <div>
                                 <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     {{ __('Contact Number') }}
                                 </label>
-                                <input type="number" name="contact" placeholder="Contact" class="input" value="{{ old('contact') }}"/>
+                                <input type="number" name="contact" placeholder="Contact" class="input"
+                                    value="{{ old('contact') }}" />
                                 <x-input-error class="mt-2" :messages="$errors->get('contact')" />
                             </div>
                             <div>
@@ -82,7 +85,7 @@
                             </div>
                             <div>
                                 <label class="block text-base  font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    {{ __('Message') }}
+                                    {{ __('Message') }} <small>{{ __('(Optional)') }}</small>
                                 </label>
                                 <textarea name="message" class="textarea" placeholder="Message" rows="1">{{ old('message') }}</textarea>
                                 <x-input-error class="mt-2" :messages="$errors->get('message')" />

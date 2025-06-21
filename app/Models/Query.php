@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\BaseModel;
 use Illuminate\Support\Facades\Crypt;
 
-class Enquiry extends BaseModel
+class Query extends BaseModel
 {
     protected $fillable = [
         'name',
