@@ -81,7 +81,7 @@
     <div class="flex h-screen">
         <!-- Sidebar -->
 
-        <x-user::sidebar :active="$page_slug" />
+        <x-user.sidebar :active="$page_slug" />
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col custom-scrollbar overflow-y-auto">
