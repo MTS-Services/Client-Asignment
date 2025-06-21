@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Admin\UserManagment;
+namespace App\Http\Controllers\Backend\Admin\UserManagement;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserManagement\UserRequest;

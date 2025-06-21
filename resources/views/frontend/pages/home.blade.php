@@ -21,7 +21,7 @@
 
         <!-- Main Content -->
         <div class="relative z-10 min-h-screen flex items-center justify-center px-6">
-            <div class="max-w-6xl mx-auto text-center">
+            <div class="max-w-6xl w-full mx-auto text-center">
 
                 <!-- Hero Title with Animation -->
                 <div class="mb-12 animate-fade-in">

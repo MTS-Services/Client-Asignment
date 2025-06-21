@@ -43,12 +43,21 @@ class ApplicationSettingController extends Controller implements HasMiddleware
     {
         $data['general_settings'] = ApplicationSetting::whereIn('key', ['institution_name', 'library_name', 'library_short_name', 'timezone', 'date_format', 'time_format', 'theme_mode', 'app_logo', 'favicon', 'public_registration', 'registration_approval', 'environment', 'app_debug', 'debugbar'])->pluck('value', 'key')->all();
         $data['timezones'] = availableTimezones();
-        return View('backend.admin.application-settings.general', $data);
+        return view('backend.admin.application-settings.general', $data);
     }
 
     public function database(): View
     {
-        return View('backend.admin.application-settings.database');
+
+        $data['database_settings'] = ApplicationSetting::whereIn('key', ['database_driver', 'database_host', 'database_port', 'database_name', 'database_username', 'database_password'])->pluck('value', 'key')->all();
+        return view('backend.admin.application-settings.database', $data);
+    }
+
+    public function smtp(): View
+    {
+
+        $data['smtp_settings'] = ApplicationSetting::whereIn('key', ['smtp_driver', 'smtp_host', 'smtp_port', 'smtp_encryption', 'smtp_username', 'smtp_password', 'smtp_from_address', 'smtp_from_name'])->pluck('value', 'key')->all();
+        return view('backend.admin.application-settings.smtp', $data);
     }
 
     public function updateSettings(ApplicationSettingRequest $request): RedirectResponse

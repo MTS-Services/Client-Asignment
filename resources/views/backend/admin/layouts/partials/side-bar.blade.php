@@ -13,8 +13,12 @@
         <a href="{{ route('admin.dashboard') }}" class="p-4 border-b border-white/10 inline-block">
             <div class="flex items-center gap-4">
                 <div
-                    class="w-10 h-10 glass-card shadow inset-shadow-lg bg-bg-white dark:bg-bg-black p-0 rounded-xl flex items-center justify-center">
-                    <i data-lucide="zap" class="!w-4 !h-4"></i>
+                    class="w-10 h-10 glass-card shadow inset-shadow-lg bg-bg-white dark:bg-bg-black p-0 rounded-xl flex items-center justify-center overflow-hidden">
+                    @if (env('APP_LOGO'))
+                        <img src="{{ storage_url(env('APP_LOGO')) }}" alt="{{ env('APP_NAME') }}" class="w-full h-full">
+                    @else
+                        <i data-lucide="zap" class="!w-4 !h-4"></i>
+                    @endif
                 </div>
                 <div x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
                     x-transition:enter="transition-all duration-300 delay-75"
@@ -22,7 +26,8 @@
                     x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition-all duration-200"
                     x-transition:leave-start="opacity-100 translate-x-0"
                     x-transition:leave-end="opacity-0 -translate-x-4">
-                    <h1 class="text-xl font-bold text-text-light-primary dark:text-text-white">{{ __('MakTech') }}</h1>
+                    <h1 class="text-xl font-bold text-text-light-primary dark:text-text-white">
+                        {{ env('APP_SORT_NAME', 'Admin Portal') }}</h1>
                     <p class="text-text-light-secondary dark:text-text-dark-primary text-sm">{{ __('Admin Dashboard') }}
                     </p>
                 </div>
@@ -74,6 +79,13 @@
                         'icon' => 'user',
                         'active' => 'user',
                         'permission' => 'user-list',
+                    ],
+                    [
+                        'name' => 'Queries',
+                        'route' => route('um.query.index'),
+                        'icon' => 'message-circle-more',
+                        'active' => 'query-list',
+                        'permission' => 'query-list',
                     ],
                 ]" />
             <x-admin.navlink type="dropdown" icon="book-open-text" name="Book Management" :page_slug="$active"
@@ -216,24 +228,31 @@
                 ],
                 [
                     'name' => 'Email Settings',
-                    'icon' => 'mail',
-                    'subitems' => [
-                        [
-                            'name' => 'SMTP Config',
-                            'route' => '#',
-                            'icon' => 'server',
-                            'active' => 'admin-settings-email-smtp',
-                            'permission' => 'application-setting-email',
-                        ],
-                        [
-                            'name' => 'Email Templates',
-                            'route' => '#',
-                            'icon' => 'file-text',
-                            'active' => 'admin-settings-email-templates',
-                            'permission' => 'application-setting-email-template',
-                        ],
-                    ],
+                    'route' => route('app-settings.smtp'),
+                    'icon' => 'server',
+                    'active' => 'app-smtp-settings',
+                    'permission' => 'application-smtp-database',
                 ],
+                // [
+                //     'name' => 'Email Settings',
+                //     'icon' => 'mail',
+                //     'subitems' => [
+                //         [
+                //             'name' => 'SMTP Config',
+                //             'route' => '#',
+                //             'icon' => 'server',
+                //             'active' => 'admin-settings-email-smtp',
+                //             'permission' => 'application-setting-email',
+                //         ],
+                //         [
+                //             'name' => 'Email Templates',
+                //             'route' => '#',
+                //             'icon' => 'file-text',
+                //             'active' => 'admin-settings-email-templates',
+                //             'permission' => 'application-setting-email-template',
+                //         ],
+                //     ],
+                // ],
             ]" />
             {{-- @if (isset($not_use)) --}}
             {{-- 3. MIXED NAVIGATION (Single items + Dropdowns in one parent) --}}

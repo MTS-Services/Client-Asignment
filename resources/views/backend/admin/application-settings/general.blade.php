@@ -159,7 +159,7 @@
                         </div>
                         <div class="2xl:col-span-3 grid grid-cols-1 gap-5 h-fit">
                             <div class="space-y-2">
-                                <p class="label">{{ __('App Logo') }}<small>({{ __('Max: 400x150') }})</small></p>
+                                <p class="label">{{ __('App Logo') }}<small>({{ __('Max: 400x400') }})</small></p>
                                 <input type="file" name="app_logo" class="filepond" id="app_logo"
                                     accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
                                 <x-input-error class="mt-2" :messages="$errors->get('app_logo')" />

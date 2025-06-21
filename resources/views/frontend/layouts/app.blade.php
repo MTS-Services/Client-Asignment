@@ -55,7 +55,7 @@
     </script>
 
     @stack('css')
-{{-- 
+    {{-- 
     <style>
         .bg-animated {
             background-color: hsla(0, 100%, 50%, 1);
@@ -90,10 +90,7 @@
 
 <body>
 
-    {{-- Header --}}
-    {{-- <x-frontend::header :page="$page_slug" /> --}}
-
-    {{-- <x-frontend.theme-toggle /> --}}
+    <x-frontend.enquiry />
 
     <main>
         {{ $slot }}
@@ -105,9 +102,9 @@
     <script src="{{ asset('assets/js/lucide-icon.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-            // }
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         });
     </script>
     @stack('js')
