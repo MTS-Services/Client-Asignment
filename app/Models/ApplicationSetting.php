@@ -140,10 +140,10 @@ class ApplicationSetting extends BaseModel
     //     return $this->key == 'theme_mode' ? self::getThemeInfos()[$this->value] : 'Unknown';
     // }
 
-    public const DATATBASE_DRIVER_MYSQL = 1;
-    public const DATATBASE_DRIVER_PGSQL = 2;
-    public const DATATBASE_DRIVER_SQLITE = 3;
-    public const DATATBASE_DRIVER_SQLSRV = 4;
+    public const DATATBASE_DRIVER_MYSQL = 'mysql';
+    public const DATATBASE_DRIVER_PGSQL = 'pgsql';
+    public const DATATBASE_DRIVER_SQLITE = 'sqlite';
+    public const DATATBASE_DRIVER_SQLSRV = 'sqlsrv';
 
     public static function getDatabaseDriverInfos()
     {
