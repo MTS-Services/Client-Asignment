@@ -1,4 +1,5 @@
 name,guard_name,prefix
+
 admin-list,admin,Admin
 admin-create,admin,Admin
 admin-edit,admin,Admin
@@ -14,18 +15,28 @@ role-create,admin,Role
 role-edit,admin,Role
 role-delete,admin,Role
 role-details,admin,Role
-role-trash,role,Role
-role-restore,role,Role
-role-permanent-delete,role,Role
+role-trash,admin,Role
+role-restore,admin,Role
+role-permanent-delete,admin,Role
 
 permission-list,admin,Permission
 permission-create,admin,Permission
 permission-edit,admin,Permission
 permission-delete,admin,Permission
 permission-details,admin,Permission
-permission-trash,permission,Permission
-permission-restore,permission,Permission
-permission-permanent-delete,permission,Permission
+permission-trash,admin,Permission
+permission-restore,admin,Permission
+permission-permanent-delete,admin,Permission
+
+user-list,admin,User
+user-create,admin,User
+user-edit,admin,User
+user-delete,admin,User
+user-status,admin,User
+user-details,admin,User
+user-trash,admin,User
+user-restore,admin,User
+user-permanent-delete,admin,User
 
 book-list,admin,Book
 book-create,admin,Book
@@ -47,28 +58,14 @@ category-trash,admin,Category
 category-restore,admin,Category
 category-permanent-delete,admin,Category
 
-
-book-issues-list,admin,Book Issues
-book-issues-create,admin,Book Issues
-book-issues-edit,admin,Book Issues
-book-issues-delete,admin,Book Issues
-book-issues-status,admin,Book Issues
-book-issues-details,admin,Book Issues
-book-issues-trash,admin,Book Issues
-book-issues-restore,admin,Book Issues
-book-issues-permanent-delete,admin,Book Issues
-
-magazine-issues-list,admin,Magazine Issues
-magazine-issues-create,admin,Magazine Issues
-magazine-issues-edit,admin,Magazine Issues
-magazine-issues-delete,admin,Magazine Issues
-magazine-issues-status,admin,Magazine Issues
-magazine-issues-details,admin,Magazine Issues
-magazine-issues-trash,admin,Magazine Issues
-magazine-issues-restore,admin,Magazine Issues
-magazine-issues-permanent-delete,admin,Magazine Issues
-
-
+author-list,admin,Author
+author-create,admin,Author
+author-edit,admin,Author
+author-delete,admin,Author
+author-details,admin,Author
+author-trash,admin,Author
+author-restore,admin,Author
+author-permanent-delete,admin,Author
 
 publisher-list,admin,Publisher
 publisher-create,admin,Publisher
@@ -80,27 +77,33 @@ publisher-trash,admin,Publisher
 publisher-restore,admin,Publisher
 publisher-permanent-delete,admin,Publisher
 
+rack-list,admin,Rack
+rack-create,admin,Rack
+rack-edit,admin,Rack
+rack-delete,admin,Rack
+rack-status,admin,Rack
+rack-details,admin,Rack
+rack-trash,admin,Rack
+rack-restore,admin,Rack
+rack-permanent-delete,admin,Rack
 
-user-list,admin,User
-user-create,admin,User
-user-edit,admin,User
-user-delete,admin,User
-user-status,admin,User
-user-details,admin,User
-user-trash,admin,User
-user-restore,admin,User
-user-permanent-delete,admin,User
+book-issues-list,admin,Book Issues
+book-issues-create,admin,Book Issues
+book-issues-edit,admin,Book Issues
+book-issues-delete,admin,Book Issues
+book-issues-status,admin,Book Issues
+book-issues-details,admin,Book Issues
+book-issues-trash,admin,Book Issues
+book-issues-restore,admin,Book Issues
+book-issues-permanent-delete,admin,Book Issues
 
-
-author-list,admin,Author
-author-create,admin,Author
-author-edit,admin,Author
-author-delete,admin,Author
-author-details,admin,Author
-author-trash,admin,Author
-author-restore,admin,Author
-author-permanent-delete,admin,Author
-
+book-issues-list-pending,admin,Book Issues
+book-issues-list-issued,admin,Book Issues
+book-issues-list-returned,admin,Book Issues
+book-issues-list-overdue,admin,Book Issues
+book-issues-list-lost,admin,Book Issues
+book-issues-list-unpaid,admin,Book Issues
+book-issues-list-paid,admin,Book Issues
 
 magazine-list,admin,Magazine
 magazine-create,admin,Magazine
@@ -112,7 +115,6 @@ magazine-trash,admin,Magazine
 magazine-restore,admin,Magazine
 magazine-permanent-delete,admin,Magazine
 
-
 newspaper-list,admin,Newspaper
 newspaper-create,admin,Newspaper
 newspaper-edit,admin,Newspaper
@@ -123,13 +125,12 @@ newspaper-trash,admin,Newspaper
 newspaper-restore,admin,Newspaper
 newspaper-permanent-delete,admin,Newspaper
 
+query-list,admin,Query
 
-rack-list,admin,Rack
-rack-create,admin,Rack
-rack-edit,admin,Rack
-rack-delete,admin,Rack
-rack-status,admin,Rack
-rack-details,admin,Rack
-rack-trash,admin,Rack
-rack-restore,admin,Rack
-rack-permanent-delete,admin,Rack
+application-setting-general,admin,Application Settings
+application-setting-smtp,admin,Application Settings
+application-setting-smtp-template,admin,Application Settings
+application-setting-database,admin,Application Settings
+application-setting-circulation-policies,admin,Application Settings
+application-setting-contact-info,admin,Application Settings
+application-setting-notification,admin,Application Settings

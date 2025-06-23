@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="{{ asset('storage/' . env('FAVICON')) }}" type="image/x-icon">
 
     <title>
         {{ isset($title) ? $title . ' - ' : '' }}
@@ -80,7 +81,7 @@
     <div class="flex h-screen">
         <!-- Sidebar -->
 
-        <x-user::sidebar :active="$page_slug" />
+        <x-user::side-bar :active="$page_slug" />
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col custom-scrollbar overflow-y-auto">

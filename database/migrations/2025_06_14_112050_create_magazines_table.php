@@ -22,8 +22,9 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->string('cover_image')->nullable();
-            $table->tinyInteger('status')->default(Magazine::STATUS_ACTIVE)
-                ->comment('0=Inactive, 1=Active, 2=Archived');
+            $table->tinyInteger('status')->default(Magazine::STATUS_ACTIVE);
+            $table->string('url')->nullable();
+            
             $table->timestamps();
             $table->softDeletes();
             $this->addAdminAuditColumns($table);

@@ -7,7 +7,10 @@ use App\Http\Requests\Auth\UserLoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -19,6 +22,7 @@ class AuthenticatedSessionController extends Controller
         if (Auth::guard('web')->check()) {
             return redirect()->intended(route('user.dashboard', absolute: false));
         }
+
         return view('frontend.auth.user.login');
     }
 
@@ -27,11 +31,37 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(UserLoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $key = $this->throttleKey($request);
 
-        $request->session()->regenerate();
+        // Check if the user is currently locked out
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            session()->flash('error', "Too many login attempts. Please try again in {$seconds} seconds.");
+            return redirect()->back()->withInput($request->only('email'));
+        }
 
-        return redirect()->intended(route('user.dashboard', absolute: false));
+        try {
+            $request->authenticate(); // This will call RateLimiter::hit() on failure
+
+            RateLimiter::clear($key);
+            $request->session()->regenerate();
+
+            session()->flash('success', 'Login successful! Welcome back.');
+            return redirect()->intended(route('user.dashboard', absolute: false));
+        } catch (ValidationException $e) {
+            $attempts = RateLimiter::attempts($key);
+            $remaining = max(5 - $attempts, 0);
+
+            Log::info("Login failed for: {$request->email}, Attempts: {$attempts}");
+
+            if ($remaining > 0) {
+                session()->flash('warning', "Invalid credentials. You have {$remaining} attempts remaining.");
+            } else {
+                session()->flash('error', "Account temporarily locked due to too many failed attempts. Try again later.");
+            }
+
+            return redirect()->back()->withInput($request->only('email'));
+        }
     }
 
     /**
@@ -40,11 +70,15 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
+        $request->session()->forget('password_hash_web');
         return redirect()->route('login');
+    }
+
+    /**
+     * Get the rate limiting throttle key for the given request.
+     */
+    protected function throttleKey(Request $request): string
+    {
+        return strtolower($request->input('email')) . '|' . $request->ip();
     }
 }

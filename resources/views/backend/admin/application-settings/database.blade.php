@@ -15,7 +15,7 @@
                                 <option value="" selected hidden>{{ __('Select database driver') }}</option>
                                 @foreach (App\Models\ApplicationSetting::getDatabaseDriverInfos() as $key => $info)
                                     <option value="{{ $key }}"
-                                        @if (isset($general_settings['database_driver']) && $general_settings['database_driver'] == $key) selected @endif>
+                                        @if (isset($database_settings['database_driver']) && $database_settings['database_driver'] == $key) selected @endif>
                                         {{ $info }}
                                     </option>
                                 @endforeach
@@ -26,7 +26,7 @@
                             <p class="label">{{ __('Database Host') }}</p>
                             <label class="input flex items-center px-2">
                                 <input type="text" placeholder="Database Host"
-                                    value="{{ $general_settings['database_host'] ?? '' }}" name="database_host"
+                                    value="{{ $database_settings['database_host'] ?? '' }}" name="database_host"
                                     class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('database_host')" />
@@ -35,7 +35,7 @@
                             <p class="label">{{ __('Database Port') }}</p>
                             <label class="input flex items-center px-2">
                                 <input type="text" placeholder="Database Port"
-                                    value="{{ $general_settings['database_port'] ?? '' }}" name="database_port"
+                                    value="{{ $database_settings['database_port'] ?? '' }}" name="database_port"
                                     class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('database_port')" />
@@ -44,7 +44,7 @@
                             <p class="label">{{ __('Database Name') }}</p>
                             <label class="input flex items-center px-2">
                                 <input type="text" placeholder="Database Name"
-                                    value="{{ $general_settings['database_name'] ?? '' }}" name="database_name"
+                                    value="{{ $database_settings['database_name'] ?? '' }}" name="database_name"
                                     class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('database_name')" />
@@ -53,8 +53,8 @@
                             <p class="label">{{ __('Database Username') }}</p>
                             <label class="input flex items-center px-2">
                                 <input type="text" placeholder="Database Username"
-                                    value="{{ $general_settings['database_username'] ?? '' }}" name="database_username"
-                                    class="flex-1" />
+                                    value="{{ $database_settings['database_username'] ?? '' }}"
+                                    name="database_username" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('database_username')" />
                         </div>
@@ -62,12 +62,12 @@
                             <p class="label">{{ __('Database Password') }}</p>
                             <label class="input flex items-center px-2">
                                 <input type="password" placeholder="Database Password"
-                                    value="{{ $general_settings['database_password'] ?? '' }}" name="database_password"
-                                    class="flex-1" />
+                                    value="{{ $database_settings['database_password'] ?? '' }}"
+                                    name="database_password" class="flex-1" />
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('database_password')" />
                         </div>
-                        
+
                     </div>
                     <div class="flex justify-end mt-5">
                         <x-admin.primary-button>{{ __('Save') }}</x-admin.primary-button>

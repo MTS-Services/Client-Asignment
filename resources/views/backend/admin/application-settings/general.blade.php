@@ -42,7 +42,8 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('library_short_name')" />
                             </div>
 
-                            <div class="space-y-2">
+                            @if (isset($not_use))
+                                {{-- <div class="space-y-2">
                                 <p class="label">{{ __('Public Registration') }}</p>
                                 <select name="public_registration" class="select">
                                     @foreach (App\Models\ApplicationSetting::getPublicRegistrationInfos() as $key => $info)
@@ -53,19 +54,20 @@
                                     @endforeach
                                 </select>
                                 <x-input-error class="mt-2" :messages="$errors->get('public_registration')" />
-                            </div>
-                            <div class="space-y-2">
-                                <p class="label">{{ __('Registration Approval') }}</p>
-                                <select name="registration_approval" class="select">
-                                    @foreach (App\Models\ApplicationSetting::getRegistrationApprovalInfos() as $key => $info)
-                                        <option value="{{ $key }}"
-                                            @if (isset($general_settings['registration_approval']) && $general_settings['registration_approval'] == $key) selected @endif>
-                                            {{ $info }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <x-input-error class="mt-2" :messages="$errors->get('registration_approval')" />
-                            </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <p class="label">{{ __('Registration Approval') }}</p>
+                                    <select name="registration_approval" class="select">
+                                        @foreach (App\Models\ApplicationSetting::getRegistrationApprovalInfos() as $key => $info)
+                                            <option value="{{ $key }}"
+                                                @if (isset($general_settings['registration_approval']) && $general_settings['registration_approval'] == $key) selected @endif>
+                                                {{ $info }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <x-input-error class="mt-2" :messages="$errors->get('registration_approval')" />
+                                </div> --}}
+                            @endif
 
                             <div class="space-y-2">
                                 <p class="label">{{ __('Timezone') }}</p>
@@ -159,7 +161,7 @@
                         </div>
                         <div class="2xl:col-span-3 grid grid-cols-1 gap-5 h-fit">
                             <div class="space-y-2">
-                                <p class="label">{{ __('App Logo') }}<small>({{ __('Max: 400x150') }})</small></p>
+                                <p class="label">{{ __('App Logo') }}<small>({{ __('Max: 400x400') }})</small></p>
                                 <input type="file" name="app_logo" class="filepond" id="app_logo"
                                     accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
                                 <x-input-error class="mt-2" :messages="$errors->get('app_logo')" />

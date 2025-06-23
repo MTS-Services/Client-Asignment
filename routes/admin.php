@@ -9,13 +9,14 @@ use App\Http\Controllers\Backend\Admin\BookManagement\BookController;
 use App\Http\Controllers\Backend\Admin\BookManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\IssuesManagement\BookIssuesController;
-use App\Http\Controllers\Backend\Admin\UserManagment\UserController;
+use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\MagazineController;
 use App\Http\Controllers\Backend\Admin\NewspaperController;
 use App\Http\Controllers\Backend\Admin\ProfileController;
 use App\Http\Controllers\Backend\Admin\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\BookManagement\PublisherController;
 use App\Http\Controllers\Backend\Admin\BookManagement\RackController;
+use App\Http\Controllers\Backend\Admin\UserManagement\QueryController;
 
 Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
@@ -63,6 +64,10 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
             Route::post('/show/{user}', 'show')->name('show');
             Route::get('/restore/{user}', 'restore')->name('restore');
             Route::delete('/permanent-delete/{user}', 'permanentDelete')->name('permanent-delete');
+        });
+        Route::controller(QueryController::class)->name('query.')->prefix('query')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::POST('/show/{query}', 'show')->name('show');
         });
     });
     Route::resource('magazine', MagazineController::class);
@@ -160,8 +165,9 @@ Route::group(['middleware' => ['auth:admin', 'admin.verified'], 'prefix' => 'adm
 
     // Application Settings 
     Route::controller(ApplicationSettingController::class)->name('app-settings.')->prefix('application-settings')->group(function () {
-        Route::get('/', 'general')->name('general');
         Route::post('/update-settings', 'updateSettings')->name('update-settings');
+        Route::get('/', 'general')->name('general');
         Route::get('/database', 'database')->name('database');
+        Route::get('/smtp', 'smtp')->name('smtp');
     });
 });

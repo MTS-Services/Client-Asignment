@@ -24,7 +24,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                    <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
                         <!-- Title -->
                         <div class="space-y-2">
                             <p class="label">{{ __('Title') }}</p>
@@ -45,19 +45,27 @@
                             </label>
                             <x-input-error class="mt-2" :messages="$errors->get('slug')" />
                         </div>
+                        <div class="space-y-2">
+                            <p class="label">{{ __('url') }}</p>
+                            <label class="input flex items-center gap-2">
+                                <input type="text" id="url" name="url" value="{{ $newspaper->url }}"
+                                    placeholder="Url" class="flex-1" />
+                            </label>
+                            <x-input-error class="mt-2" :messages="$errors->get('url')" />
+                        </div>
+                    </div>
 
-                        <div class="space-y-2 sm:col-span-2">
-                            <p class="label">{{ __('Image') }}</p>
-                            <input type="file" name="cover_image" class="filepond" id="cover_image"
-                                accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
-                            <x-input-error class="mt-2" :messages="$errors->get('cover_image')" />
-                        </div>
-                        {{-- Description --}}
-                        <div class="space-y-2 sm:col-span-2">
-                            <p class="label">{{ __('Description') }}</p>
-                            <textarea name="description" rows="4" placeholder="Description" class="textarea">{{ $newspaper->description }}</textarea>
-                            <x-input-error class="mt-2" :messages="$errors->get('description')" />
-                        </div>
+                    <div class="space-y-2 sm:col-span-2">
+                        <p class="label">{{ __('Image') }}</p>
+                        <input type="file" name="cover_image" class="filepond" id="cover_image"
+                            accept="image/jpeg, image/png, image/jpg, image/webp, image/svg">
+                        <x-input-error class="mt-2" :messages="$errors->get('cover_image')" />
+                    </div>
+                    {{-- Description --}}
+                    <div class="space-y-2 sm:col-span-2">
+                        <p class="label">{{ __('Description') }}</p>
+                        <textarea name="description" rows="4" placeholder="Description" class="textarea">{{ $newspaper->description }}</textarea>
+                        <x-input-error class="mt-2" :messages="$errors->get('description')" />
                     </div>
                     <div class="flex justify-end mt-5">
                         <x-admin.primary-button>{{ __('Update') }}</x-admin.primary-button>

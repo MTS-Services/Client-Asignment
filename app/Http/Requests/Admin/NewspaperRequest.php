@@ -25,6 +25,7 @@ class NewspaperRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'cover_image' => 'nullable|image|max:2048',
+            'url' => 'nullable|url',
         ] + ($this->isMethod('POST') ? $this->store() : $this->update());
     }
 

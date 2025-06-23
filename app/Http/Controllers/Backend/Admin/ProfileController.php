@@ -44,6 +44,8 @@ class ProfileController extends Controller implements HasMiddleware
     {
         try {
             $validated = $request->validated();
+            $validated['creater_id'] = admin()->id;
+            $validated['creater_type'] = get_class(admin());
             $this->adminService->updateadmin($this->adminService->getadmin($id), $validated, $request->file('image'));
             session()->flash('success', 'Profile updated successfully!');
         } catch (\Exception $e) {

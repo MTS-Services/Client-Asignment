@@ -56,6 +56,14 @@ class BookIssuesController extends Controller implements HasMiddleware
 
             // Permission middlewares using the Middleware class
             new Middleware('permission:book-issues-list', only: ['index']),
+            new Middleware('permission:book-issues-list-pending', only: ['index']),
+            new Middleware('permission:book-issues-list-issued', only: ['index']),
+            new Middleware('permission:book-issues-list-returned', only: ['index']),
+            new Middleware('permission:book-issues-list-overdue', only: ['index']),
+            new Middleware('permission:book-issues-list-lost', only: ['index']),
+            new Middleware('permission:book-issues-list-unpaid', only: ['index']),
+            new Middleware('permission:book-issues-list-paid', only: ['index']),
+
             new Middleware('permission:book-issues-details', only: ['show']),
             new Middleware('permission:book-issues-create', only: ['create', 'store']),
             new Middleware('permission:book-issues-edit', only: ['edit', 'update']),
@@ -71,6 +79,8 @@ class BookIssuesController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
+
+
     public function index(Request $request)
     {
         $status = $request->get('status');
@@ -236,9 +246,8 @@ class BookIssuesController extends Controller implements HasMiddleware
      */
     public function create(): View
     {
-        $data['users'] = $this->userService->getUsers()->select(['id', 'name'])->get();
-        $data['issueds'] = $this->adminService->getAdmins()->select(['id', 'name'])->get();
-        $data['books'] = $this->bookService->getBooks()->select(['id', 'title'])->get();
+        $data['users'] = $this->userService->getUsers()->active()->select(['id', 'name'])->get();
+        $data['books'] = $this->bookService->getBooks()->available()->select(['id', 'title'])->get();
         return view('backend.admin.issues-management.book-issues.create', $data);
     }
 
@@ -285,8 +294,8 @@ class BookIssuesController extends Controller implements HasMiddleware
     public function edit(string $id): View
     {
         $data['issue'] = $this->bookIssuesService->getBookIssues($id);
-        $data['users'] = $this->userService->getUsers()->select(['id', 'name'])->get();
-        $data['books'] = $this->bookService->getBooks()->select(['id', 'title'])->get();
+        $data['users'] = $this->userService->getUsers()->active()->select(['id', 'name'])->get();
+        $data['books'] = $this->bookService->getBooks()->available()->select(['id', 'title'])->get();
         return view('backend.admin.issues-management.book-issues.edit', $data);
     }
 
@@ -394,7 +403,7 @@ class BookIssuesController extends Controller implements HasMiddleware
         $bookIssues = $this->bookIssuesService->getBookIssues($id);
         match ($status) {
             BookIssues::statusList()[BookIssues::STATUS_ISSUED] => $bookIssues->update(['status' => BookIssues::STATUS_ISSUED, 'issued_by' => admin()->id, 'updater_id' => admin()->id, 'updater_type' => get_class(admin())]),
-            BookIssues::statusList()[BookIssues::STATUS_PENDING] => $bookIssues->update(['status' => BookIssues::STATUS_PENDING, 'updater_id' => admin()->id, 'updater_type' => get_class(admin()), 'issued_by' => null]),
+            BookIssues::statusList()[BookIssues::STATUS_PENDING] => $bookIssues->update(['status' => BookIssues::STATUS_PENDING, 'updater_id' => admin()->id, 'updater_type' => get_class(admin())]),
         };
         session()->flash('success', 'Admin status updated successfully!');
         return redirect()->back();

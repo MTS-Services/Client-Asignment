@@ -113,6 +113,7 @@ class AdminController extends Controller implements HasMiddleware
 
         ];
     }
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -231,6 +232,7 @@ class AdminController extends Controller implements HasMiddleware
             $query = $this->adminService->getAdmins()->onlyTrashed();
 
             return DataTables::eloquent($query)
+                ->editColumn('role_id', fn($admin) => $admin->role?->name)
                 ->editColumn('deleted_by', fn($admin) => $this->deleter_name($admin))
                 ->editColumn('deleted_at', fn($admin) => $admin->deleted_at_formatted)
                 ->editColumn('action', fn($admin) => view('components.admin.action-buttons', [

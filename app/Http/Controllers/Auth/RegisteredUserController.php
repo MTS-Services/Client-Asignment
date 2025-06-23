@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuthBaseModel;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserOtpMail;
 use App\Models\User;
@@ -41,6 +42,7 @@ class RegisteredUserController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
+                'status' => AuthBaseModel::STATUS_ACTIVE,
                 'password' => Hash::make($request->password),
                 'email_otp' => random_int(100000, 999999),
                 'email_otp_expires_at' => now()->addMinutes(2),

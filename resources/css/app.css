@@ -19,7 +19,8 @@
   }
 }
 
-.input {
+.input,
+.textarea {
   @apply focus:outline-0 focus-within:outline-0 focus:ring-0 focus:border-emerald-500 focus-within:border-emerald-500 w-full;
 }
 

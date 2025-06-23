@@ -11,12 +11,12 @@ use Illuminate\Support\Str;
 
 function timeFormat($time)
 {
-    return $time ? date(('d M, Y H:i A'), strtotime($time)) : 'N/A';
+    return $time ? date((env('DATE_FORMAT', 'd M, Y') . ', ' . env('TIME_FORMAT', 'h:i A')), strtotime($time)) : 'N/A';
 }
 
 function dateFormat($time)
 {
-    return $time ? date(('d M, Y'), strtotime($time)) : 'N/A';
+    return $time ? date((env('DATE_FORMAT', 'd M, Y')), strtotime($time)) : 'N/A';
 }
 function timeFormatHuman($time)
 {

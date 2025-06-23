@@ -416,12 +416,18 @@
     .header-glass-card {
         @apply backdrop-blur-md bg-gradient-to-tr from-[#ddfbe9] to-[#c1e4e5] shadow-glass-card;
     }
+/* 
     .sidebar-glass-card {
-        @apply backdrop-blur-md bg-gradient-to-tr from-[#c1e4e5] to-[#ddfbe9] shadow-glass-card;
-    }
+        @apply  bg-gradient-to-tr from-[#c1e4e5] to-[#ddfbe9] shadow-glass-card;
+    } */
+
     .glass-card {
         @apply backdrop-blur-md bg-gradient-to-tr from-white/30 to-gradient-light-quaternary/10 shadow-glass-card;
     }
+    .sidebar-glass-card {
+        @apply bg-gradient-to-tr from-white/30 to-gradient-light-quaternary/10 shadow-glass-card;
+    }
+
     /* .glass-card {
         @apply backdrop-blur-md bg-gradient-to-tr from-[#ddfbe9] to-[#ddfbe9] shadow-glass-card;
     } */
@@ -429,10 +435,13 @@
     .dark .glass-card {
         @apply backdrop-blur-md bg-transparent bg-gradient-to-b from-gradient-dark-quaternary to-gradient-dark-quinary;
     }
-
     .dark .sidebar-glass-card {
-        @apply backdrop-blur-md bg-transparent bg-gradient-to-b from-gradient-dark-quaternary to-gradient-dark-quinary;
+        @apply bg-transparent bg-gradient-to-b from-gradient-dark-quaternary to-gradient-dark-quinary;
     }
+
+    /* .dark .sidebar-glass-card {
+        @apply backdrop-blur-md bg-transparent bg-gradient-to-b from-gradient-dark-quaternary to-gradient-dark-quinary;
+    } */
 
     .dark .header-glass-card {
         @apply backdrop-blur-md bg-transparent bg-gradient-to-b from-gradient-dark-quaternary to-gradient-dark-quinary;

@@ -25,6 +25,7 @@ class Book extends BaseModel
         'total_copies',
         'available_copies',
         'status', // 1: Available, 2: Maintenance, 3: Retired
+        'file',
 
         'created_by',
         'updated_by',
@@ -79,6 +80,10 @@ class Book extends BaseModel
     {
         return storage_url($this->cover_image);
     }
+    public function getModifiedFileAttribute()
+    {
+        return $this->file ? asset('storage/' . $this->file) : Null;
+    }
 
 
 
@@ -97,7 +102,7 @@ class Book extends BaseModel
 
     public function scopeAvailable(Builder $query): Builder
     {
-        return $query->where('status', self::STATUS_AVAILABLE);
+        return $query->where('status', self::STATUS_AVAILABLE)->where('available_copies', '>', 0);
     }
     public function scopeUnavailable(Builder $query): Builder
     {

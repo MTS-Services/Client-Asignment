@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="{{ asset('storage/' . env('FAVICON')) }}" type="image/x-icon">
 
     <title>
         {{ isset($title) ? $title . ' - ' : '' }}
@@ -55,7 +56,7 @@
     </script>
 
     @stack('css')
-{{-- 
+    {{--
     <style>
         .bg-animated {
             background-color: hsla(0, 100%, 50%, 1);
@@ -90,10 +91,7 @@
 
 <body>
 
-    {{-- Header --}}
-    {{-- <x-frontend::header :page="$page_slug" /> --}}
-
-    {{-- <x-frontend.theme-toggle /> --}}
+    <x-frontend.enquiry />
 
     <main>
         {{ $slot }}
@@ -105,9 +103,9 @@
     <script src="{{ asset('assets/js/lucide-icon.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-            // }
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         });
     </script>
     @stack('js')

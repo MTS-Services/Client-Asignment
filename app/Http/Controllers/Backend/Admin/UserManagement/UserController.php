@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Admin\UserManagment;
+namespace App\Http\Controllers\Backend\Admin\UserManagement;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserManagement\UserRequest;
@@ -132,6 +132,8 @@ class UserController extends Controller implements HasMiddleware
     {
         try {
             $validated = $request->validated();
+            $validated['creater_id'] = admin()->id;
+            $validated['creater_type'] = get_class(admin());
             $file = $request->validated('image') && $request->hasFile('image') ? $request->file('image') : null;
             $this->userService->createUser($validated, $file);
             session()->flash('success', "User created successfully");

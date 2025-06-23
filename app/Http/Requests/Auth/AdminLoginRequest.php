@@ -12,6 +12,11 @@ use Illuminate\Validation\ValidationException;
 class AdminLoginRequest extends FormRequest
 {
     /**
+     * Lockout time in seconds (e.g., 300 = 5 minutes)
+     */
+    private const LOCKOUT_SECONDS = 300;
+
+    /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -42,13 +47,14 @@ class AdminLoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         if (!Auth::guard('admin')->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+            RateLimiter::hit($this->throttleKey(), self::LOCKOUT_SECONDS);
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
         }
 
+        // Only clear rate limiter on successful authentication
         RateLimiter::clear($this->throttleKey());
     }
 
@@ -59,7 +65,7 @@ class AdminLoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -80,6 +86,6 @@ class AdminLoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
+        return 'admin_login:' . Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
     }
 }

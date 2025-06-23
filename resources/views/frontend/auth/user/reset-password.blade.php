@@ -33,6 +33,9 @@
                 <i data-lucide="arrow-left"></i>
                 <span>Back To Home</span>
             </a>
+            @auth('web')
+                <x-user.profile-navlink route="{{ route('logout') }}" logout='true' name="{{ __('Sign Out') }}" />
+            @endauth
             <!-- Left: Form Section -->
             <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
                 <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">
