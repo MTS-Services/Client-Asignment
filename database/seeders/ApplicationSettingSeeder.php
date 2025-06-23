@@ -86,8 +86,8 @@ class ApplicationSettingSeeder extends Seeder
             'value' => '1',
             'env_key' => 'DEBUGBAR',
         ]);
-        
-        // Database Setting         
+
+        // Database Setting
         ApplicationSetting::create([
             'key' => 'database_driver',
             'value' => '1',
@@ -123,7 +123,7 @@ class ApplicationSettingSeeder extends Seeder
         ApplicationSetting::create([
             'key' => 'smtp_driver',
             'value' => 'smtp',
-            'env_key' => 'MAIL_DRIVER',
+            'env_key' => 'MAIL_MAILER',
         ]);
         ApplicationSetting::create([
             'key' => 'smtp_host',
