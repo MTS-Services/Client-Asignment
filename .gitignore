@@ -18,7 +18,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.nova
-/.vscode
 /.zed
 config.bat
 temp_auto_push.bat
